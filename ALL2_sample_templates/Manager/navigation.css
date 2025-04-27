@@ -1,0 +1,9 @@
+
+#navcolumn {
+    position: fixed;
+    width: 13%;
+    height: 100%;
+    left: 0;
+    z-index: 1;
+    background-color: aqua;
+}

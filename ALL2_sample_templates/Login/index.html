@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <link rel = "stylesheet" href="index.css">
+    <!--
+    {% block title %} 
+        User Login
+    {% endblock title %} 
+    -->
+    <body>
+        <div id="form-container">
+            <div id="form-left">
+                <!--{% block content %}-->
+                    <h1>App Name</h1>
+                    <form method="post" action="" id="loginForm">
+                        <!--{% csrf_token%}
+                        {{form}}
+                        -->
+                        <label for="user-email">Email</label><br>
+                        <!--{{form.email}}-->
+                        <input type="email" name="user-email" id="user-email"><br></br>
+                        <label for="password">Password</label><br>
+                        <!--{{form.password}}-->
+                        <input type="password" name="password" id="password"><br></br><br>
+
+                        <!-- Submit Button -->
+                        <input type="submit" value="Login" id="submit-Bttn">
+                    </form>
+                <!--{% endblock %}-->
+            </div>
+            <div id="form-right">
+                <!-- <img src="" alt="inventory-checking.png"> -->
+            </div>
+        </div>
+    </body>
+</html>
