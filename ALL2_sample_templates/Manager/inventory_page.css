@@ -1,0 +1,111 @@
+body, html {
+    margin: 0;
+    background-color: #F0ECDD;
+}
+
+h1 {
+    margin-block-start: 0;
+    padding-top: 1%;
+    padding-left: 8%; /* padding 18% when nav opened */
+}
+
+#dashboard {
+    font-family: "Sansation", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    
+    width: 100%;
+    height: 10vh;
+
+    margin-block-start: 0%;
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    
+    background-color: white;
+    box-shadow: 4px 2px 4px gray;
+}
+
+#main-content {
+    position: relative;
+    left: 8%;
+    top: 11vh;
+
+    width: 75%; /* 80% when navigation is opened*/
+    height: auto;
+}
+
+table {
+    width: 100%;
+    border-style: dashed;
+}
+th {
+    border-style: dashed;
+}
+tr {
+    text-align: center;
+    box-shadow: 1px 1px gray;
+}
+
+.header {
+    width: 3em;
+    height: 3em;
+    float: left;
+}
+
+#product1 {
+    background-color: rgb(255, 160, 160);
+}
+
+#product3 {
+    background-color: rgb(255, 237, 135);
+}
+
+#filter-column {
+    position: absolute;
+    top: 10vh;
+    right: 0;
+
+    width: 15%;
+    height: 100%;
+
+    background: #FFF;
+}
+
+.cat-logo {
+    padding-top: 5%;
+    width: 1em;
+    height: 1em;
+}
+
+ul {
+    text-align: right;
+    justify-self: end;
+}
+
+.filter-div {
+    width: 10em;
+    height: 3em;
+    margin: 2vh;
+}
+
+.filter-choices {
+    width: 100%;
+    height: 100%;
+    
+    font-family: "Sansation", sans-serif;
+    font-weight: 600;
+    font-style: normal;
+
+    border-style: hidden;
+    border-radius: 10px;
+    background: #C3B299;
+}
+
+.filter-div:hover {
+    width: 12em;
+    .filter-choices {
+        color: #FFF;
+        background: #815355;
+    }
+}

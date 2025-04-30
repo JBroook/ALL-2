@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<!-- {% load static %} -->
+<html>
+    <!-- <link rel = "stylesheet" href="{% static 'manager/dashboard.css' %}"> -->
+    <link rel="stylesheet" href="inventory_page.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mukta+Mahee:wght@200;300;400;500;600;700;800&family=Sansation:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
+
+    <head>
+        <div id="dashboard">
+            <h1>Inventory</h1>
+        </div>
+    </head>
+
+    <body>
+        <div id="main-content">
+            <table>
+                <!-- Table Header-->
+                <tr>
+                    <th><img src="assets/up-and-down-arrow.png" class="header"><p> Product Name</p></th>
+                    <th><img src="assets/up-and-down-arrow.png" class="header"><p> Stock</p></th>
+                    <th><img src="assets/up-and-down-arrow.png" class="header"><p> Last Stocked</p></th>
+                    <th><img src="assets/up-and-down-arrow.png" class="header"><p> Supplier</p></th>
+                    <th><img src="assets/up-and-down-arrow.png" class="header"><p> Supplier Contact</p></th>
+                </tr>
+                
+                <!-- Sample Data -->
+                <tr id="product1">
+                    <td><p>Toothpaste</p></td>
+                    <td><p>Toothpaste</p></td>
+                    <td><p>Toothpaste</p></td>
+                    <td><p>Toothpaste</p></td>
+                    <td><p>Toothpaste</p></td>
+                </tr>
+
+                <tr id="product2">
+                    <td><p>Toothpaste</p></td>
+                    <td><p>Toothpaste</p></td>
+                    <td><p>Toothpaste</p></td>
+                    <td><p>Toothpaste</p></td>
+                    <td><p>Toothpaste</p></td>
+                </tr>
+
+                <tr id="product3">
+                    <td><p>Toothpaste</p></td>
+                    <td><p>Toothpaste</p></td>
+                    <td><p>Toothpaste</p></td>
+                    <td><p>Toothpaste</p></td>
+                    <td><p>Toothpaste</p></td>
+                </tr>
+            </table>
+        </div>
+        <div id="filter-column">
+            <h1><img src="assets/adjust.png" class="cat-logo"> Category</h1>
+
+            <!-- Filter Choices -->
+             <ul>
+                <div class="filter-div"><button type="button" class="filter-choices"> Show All </button></div>
+                <div class="filter-div"><button type="button" class="filter-choices"> Accessory-Small </button></div>
+                <div class="filter-div"><button type="button" class="filter-choices"> Accessory-Medium </button></div>
+             </ul>
+        </div>
+    </body>
+</html>
