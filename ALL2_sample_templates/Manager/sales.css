@@ -1,0 +1,250 @@
+body, html {
+    margin: 0;
+    background-color: #F0ECDD;
+}
+
+h1 {
+    margin-block-start: 0;
+    padding-top: 1%;
+    padding-left: 8%; /* padding 18% when nav opened */
+}
+
+#dashboard {
+    font-family: "Sansation", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    
+    width: 100%;
+    height: 10vh;
+
+    margin-block-start: 0%;
+    margin-left: auto;
+    margin-right: auto;
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    
+    background-color: white;
+    box-shadow: 4px 2px 4px gray;
+}
+
+.boxTitle {
+    font-family: "Mukta Mahee", sans-serif;
+    font-weight: 600;
+    font-style: normal;
+    font-size: 2vw;
+    
+    padding-left: 4%;
+    margin: 0;
+    width: auto;
+}
+
+.prints {
+    position: relative;
+    left: 42%;
+
+    width: 7rem;
+    height: 2em;
+    border-radius: 10px;
+    border-style: none;
+    background: rgba(163, 214, 217, 0.50);
+    
+    font-family: "Mukta Mahee", sans-serif;
+    font-size: unset;
+    font-weight: 700;
+    font-style: normal;
+}
+
+#sales-box {
+    position: absolute;
+    top: 12vh;
+    left: 7%;
+
+    width: 38%;
+    height: 34%;
+    
+    background-color: rgb(255, 255, 245);
+    border-radius: 20px;
+}
+
+#sales-box .column {
+    margin: auto;
+    width: 90%;
+    height: 90%;
+    padding: 5%;
+}
+
+#sales-box tbody{
+    height: 80%;
+}
+
+#sales-box tbody td{
+    color: gray;
+}
+
+#sales-box tr {
+    padding: 1%;
+}
+
+#sales-box td.july {
+    background-color: #523249 !important;
+}
+
+#sales-box td {
+    border-radius: 20px;
+    background-color: #D9D9D9;
+    font-family: "Mukta Mahee", sans-serif;
+    font-weight: 150;
+    font-style: normal;
+}
+
+#category-box {
+    position: absolute;
+    top: 50vh;
+    left: 7%;
+
+    width: 38%;
+    height: 34%;
+
+    background-color: rgb(255, 255, 245);
+    border-radius: 20px;
+}
+
+#transaction-box {
+    position: absolute;
+    top: 12vh;
+    left: 47%;
+
+    width: 49%;
+    height: 72%;
+    background-color: rgb(255, 255, 245);
+    border-radius: 20px;
+    overflow: auto;
+}
+
+#transac-details {
+    width: 80%;
+    height: calc(80% - 2em);
+}
+
+#transac-total {
+    margin-top: 0.2em;
+    margin-bottom: 0.2em;
+    padding-left: 6%;
+
+    font-family: "Mukta Mahee", sans-serif;
+    font-weight: 600;
+    font-style: normal;
+    font-size: 1.5vw;
+}
+
+.container {
+    position: absolute;
+    width: 92.5%;
+    height: 50%;
+    left: 7%;
+}
+
+.container.product {
+    display: flex;
+    top: 88vh;
+}
+
+.view-more {
+    width: 3.5%;
+    writing-mode: vertical-lr;
+    align-self: center;
+}
+
+.viewMoreBttn {
+    width: 100%;
+    height: 100%;
+    background-color: #523249;
+    border-top-right-radius: 10px;
+    border-end-end-radius: 10px;
+
+    color: #FFF;
+    font-family: "Mukta Mahee", sans-serif;
+    font-weight: 600;
+    font-style: normal;
+    font-size: 1vw;
+}
+
+.view-more:hover {
+    width: 4.5%;
+    height: 40%;
+    .viewMoreBttn {
+        font-size: 1.5vw;
+    }
+}
+
+.best-product {
+    position: absolute;
+    top: 3%;
+    left: 35%;
+}
+
+#best-product {
+    width: 95.5%;
+    height: 100%;
+    border-radius: 20px;
+    background-color: rgb(255, 255, 245);
+}
+
+ul {
+    display: flex;
+    margin: 0;
+    padding-left: 0.5em;
+    padding-left: 2em;
+    height: 80%
+}
+
+.show-product {
+    width: 20%;
+    height: 100%;
+    justify-items: center;   
+}
+
+.product-img {
+    aspect-ratio: 1 / 1;
+    margin-top: 8%;
+    height: 70%;
+    background-color: #D9D9D9;
+}
+
+.product-details {
+    margin: 0.5em;
+}
+
+.container.stocks {
+    display: flex;
+    top: 142vh;
+    padding-bottom: 3%;
+}
+
+.prints.stocks {
+    position: absolute;
+    top: 3%;
+    left: 15%;
+}
+
+#stocks {
+    width: 95.5%;
+    height: 100%;
+    border-radius: 20px;
+    background-color: rgb(255, 255, 245);
+}
+
+#stocks-table {
+    width: 100%;
+    height: 82%;
+    padding-left: 2.5%;
+    padding-right: 2.5%;
+}
+
+#header {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    height: 5%;
+}
