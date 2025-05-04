@@ -10,6 +10,9 @@ h1 {
     padding-left: 8%; /* padding 18% when nav opened */
 }
 h4 {
+    font-family: "Mukta Mahee", sans-serif;
+    font-weight: 600;
+    font-style: normal;
     margin: 0;
 }
 
@@ -99,6 +102,9 @@ h4 {
     padding: 0;
     padding-top: 5%;
     list-style: none;
+    font-family: "Mukta Mahee", sans-serif;
+    font-weight: 300;
+    font-style: normal;
 }
   
 .dropdown-content li {
@@ -141,6 +147,9 @@ h4 {
 
     width: 90%; /* 80% when navigation is opened*/
     height: 70vh;
+    font-family: "Mukta Mahee", sans-serif;
+    font-weight: 600;
+    font-style: normal;
 }
 
 #user-list {

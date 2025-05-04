@@ -2,6 +2,8 @@ body {
     font-size: 1vw;
     margin: 0%;
     background-image: url(assets/warehouse-1.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 #form-container {
@@ -17,7 +19,7 @@ body {
 
 #form-left {
     width: 56%;
-    height: auto;
+    height: 100%;
     aspect-ratio: 1/3;
     align-content: center;
     justify-items: anchor-center;
@@ -30,32 +32,44 @@ body {
     flex-shrink: 0;
     background-image: url(assets/warehouse-2.jpg);
     background-position-y: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 #loginForm {
-    margin: auto;
+    margin: 0;
+    width: 100%;
+    height: 60%;
     padding: 10%;
     text-align: center;
+    font-size: 1vw;
 }
 
 label{
     color: #000;
     text-align: center;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 16px;
+    font-size: 1vw;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
 }
 
+input {
+    margin-top: 2%;
+    margin-bottom: 2%;
+    width: 40%;
+    height: 8%;
+}
+
 #submit-Bttn {
-    width: 15em;
-    height: 3em;
+    width: 20%;
+    height: 10%;
     flex-shrink: 0;
     text-align: center;
     color: white;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 16px;
+    font-size: 1vw;
     border-radius: 50px;
     border-style: none;
     background: #815355;
