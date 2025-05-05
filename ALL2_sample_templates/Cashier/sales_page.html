@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<!-- {% load static %} -->
+<html>
+    <!-- <link rel = "stylesheet" href="{% static 'manager/inventory.css' %}"> -->
+    <link rel="stylesheet" href="sales_page.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mukta+Mahee:wght@200;300;400;500;600;700;800&family=Sansation:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
+
+    <body>
+        <div class="input-box">
+            <button type="button" class="input-bttn">Scan Item</button>
+            <div class="product-detail">
+                <h3 class="boxTitle">Product Name</h3>
+                <div class="details">
+                    <h4>Product Code</h4>
+                    <p>A11224</p>
+                </div>
+                <div class="details">
+                    <h4>Category</h4>
+                    <p>Accessory - Small</p>
+                </div>
+                <div class="details">
+                    <h4>Current Stock</h4>
+                    <p>20</p>
+                </div>
+                <div class="details quantity">
+                    <h3>Enter Quantity</h3>
+                    <input type="text" name="quantity" id="quantity">
+                </div>
+            </div>
+            <button type="button" class="input-bttn">Enter Code</button>
+            <button type="button" class="input-bttn">Call Manager</button>
+        </div>
+        <div class="cartbox">
+            <h3 class="boxTitle">Cart</h3>
+            <table class="cart">
+                <thead>
+                    <tr>
+                        <th>Product Name</th>
+                        <th>Unit Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody class="cart">
+                    <tr class="cart">
+                        <td>Product with a long long name</td>
+                        <td>3.00</td>
+                        <td>3</td>
+                        <td>9.00</td>
+                    </tr>
+                    <tr class="cart">
+                        <td>Product with a long long name</td>
+                        <td>3.00</td>
+                        <td>3</td>
+                        <td>9.00</td>
+                    </tr>
+                    <tr></tr>
+                </tbody>
+            </table>
+            <div class="container">
+                <div class="keyboardBox">
+                    <button type="button" class="keyboard">1</button>
+                    <button type="button" class="keyboard">2</button>
+                    <button type="button" class="keyboard">3</button>
+                    <button type="button" class="keyboard">4</button>
+                    <button type="button" class="keyboard">5</button>
+                    <button type="button" class="keyboard">6</button>
+                    <button type="button" class="keyboard">7</button>
+                    <button type="button" class="keyboard">8</button>                
+                    <button type="button" class="keyboard">9</button>
+                    <button type="button" class="keyboard clear">Clear All</button>
+                    <button type="button" class="keyboard">0</button>
+                    <button type="button" class="keyboard cancel">Cancel</button>
+                </div>
+                <div class="checkout-box">
+                    <div class="check-out subtotal">
+                        <h4>Subtotal</h4>
+                        <h4>RM 0.00</h4>
+                    </div>
+                    <div class="check-out discount">
+                        <h4>Discount</h4>
+                        <h4>RM 0.00</h4>
+                    </div>
+                    <div class="check-out tax">
+                        <h4>Tax</h4>
+                        <h4>RM 0.00</h4>
+                    </div>
+                    <div class="check-out total">
+                        <h3>Total</h3>
+                        <h3>RM 0.00</h3>
+                    </div>
+                    <button type="button" class="checkOut-Bttn">Check-Out</button>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

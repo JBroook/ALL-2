@@ -205,6 +205,7 @@ h1 {
 
 table.transac-table {
     width: 100%;
+    overflow: hidden;
     text-align: center;
 }
 
