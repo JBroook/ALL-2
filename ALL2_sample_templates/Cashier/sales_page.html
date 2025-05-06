@@ -95,5 +95,99 @@
                 </div>
             </div>
         </div>
+        <div class="dimmer"></div>
+        <div class="payment">
+            <div class="payment-box cash">
+                <img src="assets/back-arrow.png" alt="back-arrow" id="close">
+                <h2 class="boxTitle">Payment Method</h2>
+                    <div class="payment-button">
+                        <button type="button" class="payment-button cash">Cash</button>
+                        <button type="button" class="payment-button card">Credit/Debit Card</button>
+                    </div>
+                <div class="payment-content">
+                    <div class="payment-details">
+                        <div class="receipt-detail">
+                            <h3>RECEIPT ID</h3>
+                            <h3>1100011111</h3>
+                        </div>
+                        <div class="receipt-detail">
+                            <h3>TOTAL COST</h3>
+                            <h3>RM 0.00</h3>
+                        </div>
+                        <div class="receipt-detail">
+                            <h3>PAID</h3>
+                            <div style="display: flex;">
+                                <h3 id="cash-value">RM   </h3>
+                                <input type="number" name="paid" id="cash-paid">
+                            </div>                            
+                        </div>
+                        <div class="receipt-detail">
+                            <h3>CHANGE DUE</h3>
+                            <h3>RM 0.00</h3>
+                        </div>
+                        <button type="button" class="donePayment-bttn">DONE PAYMENT</button>
+                    </div>
+                    <div class="keyboardBox">
+                        <button type="button" class="keyboard">1</button>
+                        <button type="button" class="keyboard">2</button>
+                        <button type="button" class="keyboard">3</button>
+                        <button type="button" class="keyboard">4</button>
+                        <button type="button" class="keyboard">5</button>
+                        <button type="button" class="keyboard">6</button>
+                        <button type="button" class="keyboard">7</button>
+                        <button type="button" class="keyboard">8</button>                
+                        <button type="button" class="keyboard">9</button>
+                        <button type="button" class="keyboard clear">Clear All</button>
+                        <button type="button" class="keyboard">0</button>
+                        <button type="button" class="keyboard cancel">Cancel</button>
+                    </div>
+                </div>
+            </div>
+            <div class="payment-box card">
+                <img src="assets/back-arrow.png" alt="back-arrow" id="close">
+                <h2 class="boxTitle">Payment Method</h2>
+                <div class="payment-button">
+                    <button type="button" class="payment-button cash">Cash</button>
+                    <button type="button" class="payment-button card">Credit/Debit Card</button>
+                </div>
+                <div class="payment-content">
+                    <div class="payment-details">
+                        <div class="receipt-detail">
+                            <h3>RECEIPT ID</h3>
+                            <h3>1100011111</h3>
+                        </div>
+                        <div class="receipt-detail">
+                            <h3>TOTAL COST</h3>
+                            <h3>RM 0.00</h3>
+                        </div>
+                        <div id="card-input-box">
+                            <div class="card-input first">
+                                <img src="assets/credit-card.png" alt="card.png" id="bank-icon">
+                                <input type="text" name="card-info" class="card-info" placeholder="Card Number">
+                            </div>
+                            <div class="card-input sec">
+                                <input type="text" name="expiry" class="card-info sec expiry" placeholder="MM/YY">
+                                <input type="text" name="cvv" class="card-info sec cvv" placeholder="Security Num">
+                            </div>
+                        </div>
+                        <button type="button" class="donePayment-bttn">DONE PAYMENT</button>
+                    </div>
+                    <div class="keyboardBox">
+                        <button type="button" class="keyboard">1</button>
+                        <button type="button" class="keyboard">2</button>
+                        <button type="button" class="keyboard">3</button>
+                        <button type="button" class="keyboard">4</button>
+                        <button type="button" class="keyboard">5</button>
+                        <button type="button" class="keyboard">6</button>
+                        <button type="button" class="keyboard">7</button>
+                        <button type="button" class="keyboard">8</button>                
+                        <button type="button" class="keyboard">9</button>
+                        <button type="button" class="keyboard clear">Clear All</button>
+                        <button type="button" class="keyboard">0</button>
+                        <button type="button" class="keyboard cancel">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
 </html>

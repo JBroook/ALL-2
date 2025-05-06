@@ -47,6 +47,7 @@ h3,h4,h5,p {
 
 .boxTitle {
     justify-self: center;
+    margin-right: 5%;
 }
 
 .product-detail {
@@ -80,7 +81,7 @@ h3,h4,h5,p {
     position: relative;
     left: 10%;
 
-    width: 60%;
+    width: 65%;
     background-color: #FFF;
     box-shadow: -2px 2px 8px 0px rgba(0, 0, 0, 0.3);
 }
@@ -106,9 +107,10 @@ thead.cart, tr.cart {
 }
 
 .keyboardBox {
+    margin-right: 2%;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    width: 47%;
+    width: 50%;
 }
 
 .keyboard {
@@ -172,4 +174,212 @@ thead.cart, tr.cart {
 
 .checkOut-Bttn:hover {
     background: #513436;
+}
+
+/* Pay now */
+.dimmer {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    opacity: 0.5;
+}
+
+.payment-box.cash {
+    position: fixed;
+    bottom: 0;
+    justify-self: anchor-center;
+    width: 60%;
+    height: 55%;
+    background-color: #FFF;
+    z-index: 1;
+    visibility: visible;
+}
+
+.payment-button {
+    width: 100%;
+    text-align: center;
+}
+
+.payment-button.cash {
+    width: 25%;
+    height: 5vh;
+    margin-right: 5%;
+
+    font-family: "Mukta Mahee", sans-serif;
+    font-weight: 500;
+    font-size: 1.2vw;
+    font-style: normal;
+
+    background: #815355;
+    color: #FFF;
+    border-radius: 20px;
+    border-style: none;
+}
+
+.payment-button.card {
+    width: 25%;
+    height: 5vh;
+    margin-right: 10%;
+
+    font-family: "Mukta Mahee", sans-serif;
+    font-weight: 500;
+    font-size: 1.2vw;
+    font-style: normal;
+
+    background: #D9D9D9;
+    color: #595959;
+    border-radius: 20px;
+    border-style: none;
+}
+
+.payment-content {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+    height: 60%;
+    margin-top: 2.5%;
+}
+
+#close {
+    position: absolute;
+    margin-left: 2%;
+    margin-top: 2%;
+    width: 4vh;
+    height: 4vh;
+}
+
+.payment-details {
+    width: 50%;
+    padding-left: 5%;
+    padding-right: 5%;
+    text-align: center;
+    font-size: 1.1vw;
+    font-weight: 700;
+}
+
+.receipt-detail {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 2%;
+}
+
+#cash-value {
+    padding-right: 1%;
+}
+
+#cash-paid {
+    width: 8rem;
+    margin: 0;
+}
+
+.donePayment-bttn {
+    position: absolute;
+    width: 28%;
+    height: 10%;
+    left: 14%;
+    bottom: 8%;
+
+    font-family: "Mukta Mahee", sans-serif;
+    font-weight: 800;
+    font-size: 1.25vw;
+    font-style: normal;
+
+    background-color: #CDE7A0;
+    border-radius: 20px;
+    border-style: none;
+    box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.3);
+}
+
+.donePayment-bttn:hover {
+    background-color: #79c281;    
+}
+
+
+.payment-box.card {
+    position: fixed;
+    bottom: 0;
+    justify-self: anchor-center;
+    width: 70%;
+    height: 65%;
+    background-color: #FFF;
+    z-index: 2;
+    visibility: hidden;
+}
+
+#bank-icon {
+    width: 12%;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    margin-left: 2.5%;
+}
+
+#card-input-box {
+    margin-top: 5%;
+    width: 100%;
+    height: 40%;
+    background-color: #5c6b7d;
+    border-radius: 20px;
+    box-shadow: 0px 2px 0px 0px rgba(0,0,0,0.3);
+}
+
+.card-input {
+    width: 100%;
+    height: 50%;
+    justify-content: center;
+    display: flex;
+}
+
+.card-info {
+    margin-left: 2%;
+    width: 83%;
+    padding-left: 5%;
+    border-style: none;
+    
+    font-family: "Mukta Mahee", sans-serif;
+    font-weight: 500;
+    font-size: 1vw;
+    font-style: normal;
+    letter-spacing: 2px;
+    color: #FFF;
+    background-color: transparent;
+}
+
+.card-info.sec {
+    width: 50%;
+    padding-left: 5%;
+    border-style: none;
+    color: #FFF;
+    background-color: transparent;
+}
+
+.card-info::placeholder {
+    color: #D9D9D9;
+}
+
+.payment:hover {
+    .payment-box.cash{
+        visibility: hidden;
+    }
+    .payment-box.card{
+        visibility: visible;
+    }
+    .payment-button.card {
+        background: #815355;
+        color: #FFF;
+    }
+    .payment-button.cash{    
+        background: #D9D9D9;
+        color: #595959;
+    }
+}
+
+body:hover {
+    .dimmer {
+        visibility: hidden;
+    }
+    .payment-box.cash {
+        visibility: hidden;
+    }
 }
