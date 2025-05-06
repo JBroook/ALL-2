@@ -1,0 +1,76 @@
+{% load static %}
+
+<html>
+<head>
+    <link rel = "stylesheet" href="{% static 'css/product_list.css' %}">
+    <title>Products</title>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+          <h2>🧱 Products</h2>
+          <nav>
+            <ul>
+              <li>Inventory</li>
+              <li>Stock</li>
+              <li>Logout</li>
+            </ul>
+          </nav>
+        </aside>
+    
+        <!-- Main Content -->
+        <main class="main-content">
+          <!-- Filters -->
+          <div class="filters">
+            <h2>List of Product</h2>
+            <div class="dropdowns">
+              <select>
+                <option>Category</option>
+              </select>
+              <select>
+                <option>Availability</option>
+              </select>
+              <input type="search" placeholder="Search...">
+            </div>
+          </div>
+    
+          <!-- Product List -->
+          <div class="product-list">
+            <div class="product-card">Product 1</div>
+            <div class="product-card">Product 2</div>
+            <div class="product-card">Product 3</div>
+          </div>
+    
+          <!-- Add Product Button -->
+          <button class="add-btn">Add Product</button>
+        </main>
+    
+        <!-- Product Details -->
+        <aside class="product-details">
+          <div class="info">
+            <h3>Product Name</h3>
+            <p><strong>Category:</strong> Accessories - Small</p>
+            <p><strong>Stock:</strong> 20 units</p>
+            <p><strong>Supplier:</strong> JI Coop</p>
+            <p><strong>Alert Notice:</strong> 10</p>
+            <p><strong>Price:</strong> RM 8.00</p>
+            <small>Last Edited: 16/04/2025</small>
+          </div>
+    
+          <div class="qr-section">
+            <div class="qr-code">[QR]</div>
+            <div class="buttons">
+              <button class="edit-btn">Edit</button>
+              <button class="print-btn">Print</button>
+              <button class="delete-btn">Delete</button>
+            </div>
+            <div class="tab">
+              <button class="tab-selected">QR</button>
+              <button>Barcode</button>
+            </div>
+          </div>
+        </aside>
+      </div>
+</body>
+</html>

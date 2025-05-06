@@ -1,0 +1,149 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f6eb;
+  }
+  
+  .container {
+    display: flex;
+    height: 100vh;
+  }
+  
+  /* Sidebar */
+  .sidebar {
+    width: 180px;
+    background-color: #c2d1b6;
+    padding: 20px;
+  }
+  
+  .sidebar h2 {
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+  
+  .sidebar nav ul {
+    list-style: none;
+  }
+  
+  .sidebar nav li {
+    padding: 10px 0;
+    cursor: pointer;
+  }
+  
+  /* Main Content */
+  .main-content {
+    flex: 2;
+    padding: 20px;
+    border-right: 1px solid #ccc;
+  }
+  
+  .filters {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .filters h2 {
+    font-size: 20px;
+  }
+  
+  .dropdowns {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .product-list {
+    display: flex;
+    gap: 15px;
+    margin: 20px 0;
+  }
+  
+  .product-card {
+    width: 150px;
+    height: 150px;
+    background-color: #b49f89;
+    padding: 10px;
+    border-radius: 5px;
+    color: white;
+  }
+  
+  .add-btn {
+    background-color: #b6d98e;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+  }
+  
+  /* Product Details */
+  .product-details {
+    width: 300px;
+    background-color: #f7f6f2;
+    padding: 20px;
+  }
+  
+  .product-details .info p {
+    margin: 10px 0;
+  }
+  
+  .qr-section {
+    margin-top: 30px;
+    text-align: center;
+  }
+  
+  .qr-code {
+    width: 100px;
+    height: 100px;
+    background-color: #000;
+    margin: 10px auto;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .buttons button {
+    display: block;
+    margin: 10px auto;
+    padding: 10px 20px;
+    width: 80%;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+  }
+  
+  .edit-btn {
+    background-color: #cce0b4;
+  }
+  
+  .print-btn {
+    background-color: #cce0b4;
+  }
+  
+  .delete-btn {
+    background-color: #e26d6d;
+    color: white;
+  }
+  
+  .tab {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  
+  .tab button {
+    background-color: #ddd;
+    border: none;
+    padding: 5px 10px;
+  }
+  
+  .tab .tab-selected {
+    background-color: #64465f;
+    color: white;
+  }
+  
