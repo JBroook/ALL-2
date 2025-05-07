@@ -1,0 +1,197 @@
+body, html {
+    font-size: 1vw;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #F0ECDD;
+}
+
+h1,h4 {
+    margin: 0;
+    margin-bottom: 1%;
+    padding-top: 1%;
+    padding-left: 1%; /* padding 18% when nav opened */
+}
+h3 {
+    font-family: "Mukta Mahee", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+}
+
+
+#main-content {
+    position: relative;
+    left: 10%;
+    width: 90%;
+    height: 100%;
+    
+    background-color: #CFD2CB;
+}
+
+#dashboard {
+    font-family: "Sansation", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    
+    width: 100%;
+    height: 15%;
+    
+    background-color: white;
+    box-shadow: 4px 2px 4px gray;
+}
+
+.filter {
+    display: flex;
+    width: 100%;
+    height: 43.5%;
+}
+
+.filter.date {
+    width: 90%;
+    height: 100%;
+    padding-left: 2%;
+    background: transparent;
+    border-right: #CFD2CB;
+    border-right-style: solid;
+
+}
+
+#filter-title {
+    margin: 0;
+    align-self: center;
+}
+
+.logo {
+    width: 1.5em;
+    height: 1.5em;
+    padding-left: 1em;
+    align-self: center;
+}
+
+.filter.payment-type {
+    width: 10%;
+    height: 100%;
+    padding-left: 2%;
+    background-color: transparent;
+    border-left: #CFD2CB;
+}
+
+button.filter-date {
+    width: 30%;
+    height: 70%;
+
+    color: #828282;
+    background: #F5EFD8;
+    border-style: none;
+    font-family: "Mukta Mahee", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+button.filter-date.choice {
+    width: 40%;
+    height: 75%;
+}
+
+button.filter-date:hover {
+    color: #F5EFD8;
+    background: #828282;
+}
+
+.filter-date.box {
+    position: fixed;
+    top: 15vh;
+    width: 25%;
+    padding-top: 1%;
+    padding-left: 1%;
+    padding-right: 1%;
+    padding-bottom: 1%;
+    background: #FFFBEE;
+    box-shadow: -2px 2px 8px #CFD2CB;
+    visibility: hidden;
+}
+
+.filter-date.fixed {
+    display: flex;
+    height: 6vh;
+    justify-content: space-between;
+}
+.filter-date.custom {
+    height: 10vh;
+    border-top-style: solid;
+    border-top-color: #C3B299;
+}
+
+.filter-payment.box {
+    position: fixed;
+    left: 88%;
+    top: 15vh;
+    width: 11%;
+    padding-top: 1%;
+    background: #FFFBEE;
+    box-shadow: -2px 2px 8px #CFD2CB;
+    visibility: hidden;
+}
+
+ul{
+    padding-left: 10%;
+    margin: 0;
+}
+
+button.filter-payment {
+    width: 90%;
+    height: 4vh;
+    margin-bottom: 5%;
+    color: #828282;
+    background: #FFFBEE;
+    border-style: none;
+    font-family: "Mukta Mahee", sans-serif;
+    font-weight: 600;
+    font-style: normal;
+}
+
+button.filter-payment:hover {
+    color: #000;
+    background: #F5EFD8;
+}
+
+.filter:hover {
+    .filter-date.box {
+        visibility: visible;
+    }
+    .filter-payment.box {
+        visibility: visible;
+    }
+}
+
+.history {
+    padding-left: 2%;
+    height: 80%;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+.day.title {
+    width: fit-content;
+    margin-bottom: 0.5%;
+    padding-left: 1%;
+}
+
+.day.transactions {
+    display: flex;
+    width: 93%;
+    height: 10vh;
+
+    padding-left: 2.5%;
+    padding-right: 2.5%;
+    margin-bottom: 0.5%;
+    justify-content: space-between;
+    align-items: center;
+
+    background-color: #fff;
+    border-radius: 20px;
+}
+
+.day.transactions:hover {
+    background: #DBEBC0;
+}
