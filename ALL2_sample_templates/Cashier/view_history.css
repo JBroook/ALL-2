@@ -16,8 +16,15 @@ h3 {
     font-family: "Mukta Mahee", sans-serif;
     font-weight: 300;
     font-style: normal;
+    font-size: 1.1vw;
+    margin: 0;
 }
-
+h5 {
+    margin: 0;
+    font-family: "Mukta Mahee", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+}
 
 #main-content {
     position: relative;
@@ -53,7 +60,6 @@ h3 {
     background: transparent;
     border-right: #CFD2CB;
     border-right-style: solid;
-
 }
 
 #filter-title {
@@ -98,7 +104,7 @@ button.filter-date:hover {
     background: #828282;
 }
 
-.filter-date.box {
+.filter-date-box {
     position: fixed;
     top: 15vh;
     width: 25%;
@@ -109,6 +115,7 @@ button.filter-date:hover {
     background: #FFFBEE;
     box-shadow: -2px 2px 8px #CFD2CB;
     visibility: hidden;
+    z-index: 2;
 }
 
 .filter-date.fixed {
@@ -122,7 +129,7 @@ button.filter-date:hover {
     border-top-color: #C3B299;
 }
 
-.filter-payment.box {
+.filter-payment-box {
     position: fixed;
     left: 88%;
     top: 15vh;
@@ -131,6 +138,7 @@ button.filter-date:hover {
     background: #FFFBEE;
     box-shadow: -2px 2px 8px #CFD2CB;
     visibility: hidden;
+    z-index: 2;
 }
 
 ul{
@@ -156,10 +164,10 @@ button.filter-payment:hover {
 }
 
 .filter:hover {
-    .filter-date.box {
+    .filter-date-box {
         visibility: visible;
     }
-    .filter-payment.box {
+    .filter-payment-box {
         visibility: visible;
     }
 }
@@ -169,6 +177,7 @@ button.filter-payment:hover {
     height: 80%;
     overflow: hidden;
     overflow-y: scroll;
+    visibility: hidden;
 }
 
 .day.title {
@@ -194,4 +203,108 @@ button.filter-payment:hover {
 
 .day.transactions:hover {
     background: #DBEBC0;
+}
+
+.transact-detail {
+    position: absolute;
+    display: flex;
+    overflow: hidden;
+    overflow-y: scroll;
+    justify-content: center;
+    
+
+    top: 15vh;
+    width: 100%;
+    height: 85%;
+}
+
+#close {
+    margin-right: 3%;
+    margin-top: 2%;
+    width: 4vh;
+    height: 4vh;
+}
+
+.container {
+    margin-top: 2%;
+    padding-bottom: 5%;
+
+    width: 80vw;
+    height: fit-content;
+    
+    background-color: #fff;
+    border-radius: 30px;
+    justify-items: center;    
+}
+
+#print {
+    position: absolute;
+    top: 7vh;
+    right: 10vh;
+
+    width: 10%;
+    height: 5vh;
+    border-radius: 15px;
+    border-style: none;
+    background-color: rgba(163, 214, 217, 0.5);
+}
+
+.content-detail {
+    width: 60%;
+    height: fit-content;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+.header {
+    font-family: "Mukta Mahee", sans-serif;
+    font-weight: 900;
+    font-style: normal;
+}
+.header2 {
+    font-family: "Mukta Mahee", sans-serif;
+    font-weight: 900;
+    font-style: normal;
+    text-align: end;
+}
+.item {
+    font-family: "Mukta Mahee", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+}
+.item2{
+    font-family: "Mukta Mahee", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+    text-align: end;
+}
+
+.box {
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr;
+}
+
+.included, .final {
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+.included-box, .final-box {
+    width: 80%;
+    margin-top: 1%;
+    padding-top: 1%;
+    border-top: #828282;
+    border-top-style: solid;
+}
+
+.included.box, .final.box {
+    grid-template-columns: 1fr 1fr;
+}
+
+.included.title, .final.title {
+    text-align: left;
+}
+.included.value, .final.value {
+    text-align: right;
 }
