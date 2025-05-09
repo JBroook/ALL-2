@@ -7,13 +7,16 @@ body, html {
     background-color: #F0ECDD;
 }
 
-h3,h4,h5,p {
+h2,h3,h4,h5,p {
     font-family: "Mukta Mahee", sans-serif;
     font-weight: 300;
     font-style: normal;
     margin: 0;
     width: fit-content;
     height: fit-content;
+}
+h2,h3{
+    font-weight: 600;
 }
 
 .input-box {
@@ -64,17 +67,56 @@ h3,h4,h5,p {
     padding: 2%;
 }
 
-.details.quantity {
-    display: block;
-    justify-items: center;
+.details-box {
+    position: absolute;
+    width: inherit;
+    height: inherit;
+    visibility: hidden;
+    text-align: center;
 }
-
-#quantity {
+.details-box.product {
+    visibility: hidden;
+}
+.details-box.addItem {
+    visibility: visible;
+}
+.boxTitle.add {
+    margin-top: 1.5%;
+    margin-right: 0;
+}
+#itemCode, #quantity {
     display: inherit;
     width: 90%;
-    height: 10vh;
+    height: 6vh;
     margin-left: 5%;    
     margin-right: 5%;
+    background: rgba(129, 83, 85, 0.20);
+    border-style: none;
+}
+#addItemBttn {
+    width: 45%;
+    height: 15%;
+    margin-top: 4%;
+
+    color: #FFF;
+    background-color: #513436;
+    border-radius: 10px;
+    justify-self: center;
+
+    font-family: "Mukta Mahee", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 1.2vw;
+}
+
+.product-check {
+    margin-left: 10%;
+    margin-right: 10%;
+    width: 80%;
+    justify-items: center;
+    background: #FFF;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
 
 .cartbox {

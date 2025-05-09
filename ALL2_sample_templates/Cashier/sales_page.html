@@ -11,22 +11,28 @@
         <div class="input-box">
             <button type="button" class="input-bttn scan">Scan Item</button>
             <div class="product-detail">
+                <div class="details-box product">
                 <h3 class="boxTitle">Product Name</h3>
-                <div class="details">
-                    <h4>Product Code</h4>
-                    <p>A11224</p>
+                    <div class="details">
+                        <h3>Product Code</h3>
+                        <h4>A11224</h4>
+                    </div>
+                    <div class="details">
+                        <h3>Category</h3>
+                        <h4>Accessory - Small</h4>
+                    </div>
+                    <div class="details">
+                        <h3>Current Stock</h3>
+                        <h4>20</h4>
+                    </div>
                 </div>
-                <div class="details">
-                    <h4>Category</h4>
-                    <p>Accessory - Small</p>
-                </div>
-                <div class="details">
-                    <h4>Current Stock</h4>
-                    <p>20</p>
-                </div>
-                <div class="details quantity">
-                    <h3>Enter Quantity</h3>
-                    <input type="text" name="quantity" id="quantity">
+                <div class="details-box addItem">
+                    <h2 class="boxTitle add">Item Code</h2>
+                    <input type="text" id="itemCode">
+                    <div class="product-check"><h3>Product with a long long name</h3></div>
+                    <h2 class="boxTitle add">Quantity</h2>
+                    <input type="number" name="quantity" id="quantity">
+                    <button type="button" id="addItemBttn">Add</button>
                 </div>
             </div>
             <button type="button" class="input-bttn code">Enter Code</button>
