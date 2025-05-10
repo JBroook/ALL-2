@@ -304,13 +304,19 @@ ul {
     height: 100%;
     border-radius: 20px;
     background-color: rgb(255, 255, 245);
+    overflow: hidden;
+}
+
+#stocks-table-box {
+    width: 100%;
+    height: 82%;
+    overflow-y: scroll;
 }
 
 #stocks-table {
-    width: 95%;
-    height: 82%;
+    width: 96.5%;
+    height: 100%;
     margin-left: 2.5%;
-    margin-right: 2.5%;
     border-collapse: collapse;
 }
 
@@ -326,7 +332,8 @@ thead.stocks-table {
     z-index: 100;
     top: 0;
     padding-bottom: 0.5em;
-    border-style: dashed;
+    height: 2.5rem;
+    background-color: #F0ECDD;
 }
 
 tbody.stocks-table {
@@ -337,7 +344,6 @@ tbody.stocks-table {
 tr.stocks-table {
     vertical-align: middle;
     height: 3em;
-    background-color: #E8656A;
 }
 
 .stocks-approval {
