@@ -2,6 +2,7 @@ body, html {
     font-family: "Mukta Mahee", sans-serif;
     font-weight: 300;
     font-style: normal;
+    font-size: 1vw;
     margin: 0;
     background-color: #F0ECDD;
 }
@@ -37,7 +38,7 @@ h1 {
         background-color: #FFF;
     }
 }
-@keyframes viewAnimation {
+@keyframes editAnimation {
     0%{
         background-color: #815355;
     }
@@ -69,12 +70,11 @@ h1 {
 #main-content {
     position: relative;
     left: 8%;
-    top: 12vh;
+    top: 5vh;
 
-    width: 74%;
+    width: 70%;
     height: 82vh;
-    padding: 1%;
-    padding-right: 0.5%;
+    padding: 2%;
     background-color: #FFF;
     border-radius: 20px;
 }
@@ -121,7 +121,7 @@ tr {
     visibility: hidden;
 }
 .editBttn:hover{
-    animation: viewAnimation 0.8s infinite alternate;
+    animation: editAnimation 0.8s infinite alternate;
     .editImg{
         visibility: visible;
     }
@@ -135,13 +135,18 @@ tr {
     animation: highStockWarning 0.8s infinite alternate;
 }
 
+tbody tr:hover {
+    border-style: solid;
+    border-color: #000;
+}
+
 #filter-column {
     position: absolute;
-    top: 10vh;
+    top: 0vh;
     right: 0;
 
     width: 15%;
-    height: 90%;
+    height: 100%;
 
     background: #FFF;
 }
@@ -171,10 +176,29 @@ ul {
     font-family: "Sansation", sans-serif;
     font-weight: 600;
     font-style: normal;
+    font-size: 1vw;
 
     border-style: hidden;
     border-radius: 10px;
     background: #C3B299;
+}
+
+#updateStock {
+    position: fixed;
+    bottom: 5vh;
+    right: 5vh;
+
+    width: 10%;
+    height: 6%;
+
+    border-radius: 10px;
+    border-style: none;
+    background-color: #CDE7A1;
+
+    font-family: "Sansation", sans-serif;
+    font-weight: 800;
+    font-size: 1vw;
+    font-style: normal;
 }
 
 .filter-div:hover {
