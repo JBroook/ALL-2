@@ -2,75 +2,109 @@
 
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel = "stylesheet" href="{% static 'css/product_list.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Mukta+Mahee:wght@200;300;400;500;600;700;800&family=Sansation:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
     <title>Products</title>
 </head>
 <body>
-    <div class="container">
-        <!-- Sidebar -->
-        <aside class="sidebar">
-          <h2>🧱 Products</h2>
-          <nav>
-            <ul>
-              <li>Inventory</li>
-              <li>Stock</li>
-              <li>Logout</li>
-            </ul>
-          </nav>
-        </aside>
+  <aside class="sidebar">
     
-        <!-- Main Content -->
-        <main class="main-content">
-          <!-- Filters -->
-          <div class="filters">
-            <h2>List of Product</h2>
-            <div class="dropdowns">
-              <select>
-                <option>Category</option>
+  </aside>
+  <main>
+    <section>
+      <div class="container">
+        <div class="list-header">
+          <div class="list-subheader">
+            <h1>List of Products</h1>
+            <p>Showing {{product_count}} products</p>
+          </div>
+
+          <div class="list-filter">
+            <form method="POST">
+              {% csrf_token %}
+              <select name="category">
+                <option value="none">Category</option>
+                <option value="Electronics">Electronics</option>
+                <option value="Food">Food</option>
+                <option value="Beverage">Beverage</option>
               </select>
-              <select>
-                <option>Availability</option>
+
+              <select name="availability">
+                <option value="none">Availability</option>
+                <option value="low">Low stock</option>
+                <option value="zero">Zero stock</option>
               </select>
-              <input type="search" placeholder="Search...">
+
+              <button type="submit"><img src="{% static 'images/search 1.png' %}" width="40" height="40"></button>
+            </form>
+          </div>
+        </div>
+
+        <div class="list-body">
+          {% for product in products%}
+            <div class="product" style="background-image: url('{{product.image.url}}');">
+              <div class="product-stock">
+                <p>Stock: {{product.quantity}}</p>
+              </div>
+              <a class="fill-div" href="?add={{product.id}}"></a>
+              <div class="product-name">
+                <h3>{{product.name}}</h3>
+                <p>RM {{product.price| floatformat:2}}</p>
+              </div>
             </div>
-          </div>
-    
-          <!-- Product List -->
-          <div class="product-list">
-            <div class="product-card">Product 1</div>
-            <div class="product-card">Product 2</div>
-            <div class="product-card">Product 3</div>
-          </div>
-    
-          <!-- Add Product Button -->
-          <button class="add-btn">Add Product</button>
-        </main>
-    
-        <!-- Product Details -->
-        <aside class="product-details">
-          <div class="info">
-            <h3>Product Name</h3>
-            <p><strong>Category:</strong> Accessories - Small</p>
-            <p><strong>Stock:</strong> 20 units</p>
-            <p><strong>Supplier:</strong> JI Coop</p>
-            <p><strong>Alert Notice:</strong> 10</p>
-            <p><strong>Price:</strong> RM 8.00</p>
-            <small>Last Edited: 16/04/2025</small>
-          </div>
-    
-          <div class="qr-section">
-            <div class="qr-code">[QR]</div>
-            <div class="buttons">
-              <button class="edit-btn">Edit</button>
-              <button class="print-btn">Print</button>
-              <button class="delete-btn">Delete</button>
-            </div>
-            <div class="tab">
-              <button class="tab-selected">QR</button>
-              <button>Barcode</button>
-            </div>
-          </div>
-        </aside>
+          {% endfor%}
+        </div>
+
+        <div id="add-product">
+          <a href="{%url 'product_create' %}">Add Product</a>
+        </div>
       </div>
+    </section>
+
+    <section>
+      <div class="details-tab">
+        <div class="product-details">
+          {% if chosen_product is not None%}
+            <h2>{{chosen_product.name}}</h2>
+            <div class="all-data">
+              <div class="data">
+                <h3>Category</h3>
+                <h3>Stock</h3>
+                <h3>Supplier</h3>
+                <h3>Alert Notice</h3>
+                <h3>Price</h3>
+              </div>
+              <div class="v-separator"></div>
+              <div class="data">
+                <h3>{{chosen_product.category.name}}</h3>
+                <h3>{{chosen_product.quantity}}</h3>
+                <h3>{{chosen_product.supplier}}</h3>
+                <h3>{{chosen_product.alert_threshold}}</h3>
+                <h3>RM {{chosen_product.price | floatformat:2}}</h3>
+              </div>
+            </div>
+          {%else%}
+            <div class="default-message"><h3>Select a product to view its information</h3></div>
+          {%endif%}
+        </div>
+        <div class="qr-details">
+          {% if chosen_product is not None%}
+            <div id="qr-image">
+              <img src="{{chosen_product.qr_code.url}}" width="200" height="200" alt="QR code">
+            </div>
+            <div id="detail-buttons">
+              <button class="normal-button" onclick="window.location.href='{% url 'product_update' chosen_product.id %}'">Edit</button>
+              <button class="normal-button">Print</button>
+              <button id="delete-button" onclick="window.location.href='{% url 'product_delete' chosen_product.id %}'">Delete</button>
+            </div>
+          {% else%}
+            <div class="default-message"><h3>No QR information found</h3></div>
+          {%endif%}
+        </div>
+      </div>
+    </section>
+  </main>
 </body>
 </html>

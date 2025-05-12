@@ -1,0 +1,65 @@
+{% load static %}
+
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel = "stylesheet" href="{% static 'css/product_form.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Mukta+Mahee:wght@200;300;400;500;600;700;800&family=Sansation:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
+    <title>Product Form</title>
+</head>
+<body>
+  <div class="product-form">
+    <h1>
+      {%if create%} 
+        Add Product 
+      {%else%}
+        Edit Product
+      {% endif%}
+    </h1>
+    {%if create%} 
+      <div class="product-image"></div>
+    {%else%}
+      <div class="product-image" style="background-image: url('{{product.image.url}}');"></div>
+    {% endif%}
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="all-fields">
+        <div class="field-wrapper">
+          <h2>Name</h2>
+          {{form.name}}
+        </div>
+        <div class="field-wrapper">
+          <h2>Category</h2>
+          {{form.category}}
+        </div>
+        <div class="field-wrapper">
+          <h2>Supplier</h2>
+          {{form.supplier}}
+        </div>
+        <div class="field-wrapper">
+          <h2>Quantity</h2>
+          {{form.quantity}}
+        </div>
+        <div class="field-wrapper">
+          <h2>Alert Notice</h2>
+          {{form.alert_threshold}}
+        </div>
+        <div class="field-wrapper">
+          <h2>Price</h2>
+          {{form.price}}
+        </div>
+        <div class="field-wrapper">
+          <h2>Image</h2>
+          {{form.image}}
+        </div>
+      </div>
+      <div class="form-buttons">
+        <a id="back" href="{% url 'product_list' %}">Back</a>
+        <button type="submit">Confirm</button>
+      </div>
+    </form>
+  </div>
+  
+</body>
+</html>
