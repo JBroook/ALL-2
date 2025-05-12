@@ -177,7 +177,7 @@ button.filter-payment:hover {
     height: 80%;
     overflow: hidden;
     overflow-y: scroll;
-    visibility: hidden;
+    visibility: visible; /*Change this to see transaction detail*/
 }
 
 .day.title {
@@ -211,7 +211,7 @@ button.filter-payment:hover {
     overflow: hidden;
     overflow-y: scroll;
     justify-content: center;
-    
+    visibility: hidden; /*Change this to see transaction detail*/
 
     top: 15vh;
     width: 100%;
@@ -219,15 +219,32 @@ button.filter-payment:hover {
 }
 
 #close {
-    margin-right: 3%;
-    margin-top: 2%;
     width: 4vh;
     height: 4vh;
+    padding: 0;
+}
+
+#close-box {
+    width: 6vh;
+    height: 6vh;
+    margin-top: 1%;
+    margin-left: 1%;
+    margin-right: 1%;
+
+    background-color: transparent;
+    border-style: none;
+    border-radius: 10px;
+}
+
+#close-box:hover {
+    background-color: #D9D9D9;
 }
 
 .container {
     margin-top: 2%;
-    padding-bottom: 5%;
+    margin-bottom: 2%;
+    padding-top: 2.5%;
+    padding-bottom: 2.5%;
 
     width: 80vw;
     height: fit-content;

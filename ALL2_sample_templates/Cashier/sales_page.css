@@ -284,11 +284,24 @@ thead.cart, tr.cart {
 }
 
 #close {
-    position: absolute;
-    margin-left: 2%;
-    margin-top: 2%;
     width: 4vh;
     height: 4vh;
+    padding: 0;
+}
+
+#close-box {
+    width: 6vh;
+    height: 6vh;
+    margin-top: 1%;
+    margin-left: 2%;
+
+    background-color: transparent;
+    border-style: none;
+    border-radius: 10px;
+}
+
+#close-box:hover {
+    background-color: #D9D9D9;
 }
 
 .payment-details {
