@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<!-- {% load static %} -->
+<html>
+    <!-- <link rel = "stylesheet" href="{% static 'manager/inventory.css' %}"> -->
+    <link rel="stylesheet" href="restock_page.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mukta+Mahee:wght@200;300;400;500;600;700;800&family=Sansation:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
+
+    <body>
+        <div id="main-content">
+            <button type="button" id="close-box"><img src="assets/back-arrow.png" alt="back-arrow" id="close"></button>
+            <div id="important-details">
+                <div class="product-box detail">
+                    <h1>Product with a LONG LONG AHH Name</h1>
+                    <h3>Product Code</h3>
+                    <button type="button" class="qr-barcode">QR</button>
+                    <button type="button" class="qr-barcode">Barcode</button>
+                </div>
+                <div class="product-box qr">
+                    <img src="assets/qr-code.png" alt="Product QR" id="qrCode">
+                </div>
+                <div class="product-box image"></div>
+            </div>
+            <div id="detail-history">
+                <form class="detail-box">
+                    <div class="detail-box form">
+                        <div id="form-label">
+                            <h3 class="form-label">Stock (New):</h3>
+                            <h3 class="form-label">Last Batch:</h3>
+                            <h3 class="form-label">Next Batch (ETA):</h3>
+                            <h3 class="form-label">Cost Per Unit:</h3>
+                            <h3 class="form-label">Unit(s) in Batch:</h3>
+                            <h3 class="form-label">Total Cost:</h3>
+                        </div>
+                        <div id="stock-history">
+                            <div class="stock-history"><input type="number" name="add stocks" id="newStock"></div>
+                            <div class="stock-history"><h3>10</h3></div>
+                            <div class="stock-history"><input type="date" name="next batch" id="nextBatch"></div>
+                            <div class="stock-history"><input type="text" name="unit cost" id="unitCost"></div>
+                            <div class="stock-history"><input type="number" name="total units" id="totalUnits"></div>
+                            <div class="stock-history"><input type="number" name="total cost" id="totalCosts"></div>
+                        </div>
+                    </div>
+                    <button type="button" id="updateBttn">Update Stock</button>
+                </form>
+                
+                <div class="detail-box history">
+                    <h2>Stock History</h2>
+                    <div id="select-history-box">
+                        <div class="hCard"><span class="hCard date">Latest</span></div>
+                        <div class="hCard"><span class="hCard date">Oldest</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

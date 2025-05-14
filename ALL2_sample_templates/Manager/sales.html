@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<!-- {% load static %} -->
+<html>
+    <!-- <link rel = "stylesheet" href="{% static 'manager/inventory.css' %}"> -->
+    <link rel="stylesheet" href="sales.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mukta+Mahee:wght@200;300;400;500;600;700;800&family=Sansation:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/charts.css/dist/charts.min.css">
+
+    <head>
+        <div id="dashboard">
+            <h1>Sales</h1>
+        </div>
+    </head>
+    
+    <body>
+        <div id="main-content">
+            <div id="sales-box">
+                <h2 class="boxTitle">Sales</h2>
+
+                <table class="charts-css column hide-data show-labels">
+                    <!--January-->
+                    <tr style="--size: 0.2">
+                        <th scope="row"> Jan </th>
+                        <td class="january"><span class="data"> $ 20K </span></td>
+                    </tr>
+                    <!--February-->
+                    <tr style="--size: 0.6">
+                        <th scope="row"> Feb </th>
+                        <td class="february"><span class="data"> $ 60K </span></td>
+                    </tr>
+                    <!--March-->
+                    <tr style="--size: 0.3">
+                        <th scope="row"> Mar </th>
+                        <td class="march"><span class="data"> $ 30K </span></td>
+                    </tr>
+                    <!--April-->
+                    <tr style="--size: 0.5">
+                        <th scope="row"> Apr </th>
+                        <td class="april"><span class="data"> $ 50K </span></td>
+                    </tr>
+                    <!--May-->
+                    <tr style="--size: 0.2">
+                    <th scope="row"> May </th>
+                        <td class="may"><span class="data"> $ 20K </span></td>
+                    </tr>
+                    <!--June-->
+                    <tr style="--size: 0.1">
+                        <th scope="row"> Jun </th>
+                        <td class="june"><span class="data"> $ 10K </span></td>
+                    </tr>
+                    <!--July-->
+                    <tr style="--size: 0.4">
+                        <th scope="row"> Jul </th>
+                        <td class="july"><span class="data"> $ 40K </span></td>
+                    </tr>
+                    <!--August-->
+                    <tr style="--size: 0.8">
+                        <th scope="row"> Aug </th>
+                        <td class="august"><span class="data"> $ 80K </span></td>
+                    </tr>
+                    <!--September-->
+                    <tr style="--size: 0.65">
+                        <th scope="row"> Sep </th>
+                        <td class="september"><span class="data"> $ 65K </span></td>
+                    </tr>
+                    <!--October-->
+                    <tr style="--size: 0.4">
+                        <th scope="row"> Oct </th>
+                        <td class="october"><span class="data"> $ 40K </span></td>
+                    </tr>
+                    <!--November-->
+                    <tr style="--size: 0.3">
+                        <th scope="row"> Nov </th>
+                        <td class="november"><span class="data"> $ 30K </span></td>
+                    </tr>
+                    <!--December-->
+                    <tr style="--size: 0.3">
+                        <th scope="row"> Dec </th>
+                        <td class="december"><span class="data"> $ 30K </span></td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div id="category-box">
+                <h2 class="boxTitle">Category</h2>
+            </div>
+
+            <div id="transaction-box">
+                <h2 class="boxTitle">Transactions</h2>
+                <button class="transac-switch">
+                    <p class="periods monthly">Monthly</p>
+                    <p class="periods daily">Daily</p>
+                </button>
+
+                <div id="transac-details">
+                    <table class="transac-table">
+                        <thead class="transac-table">
+                            <tr>
+                                <th> Transaction ID </th>
+                                <th> Payment Method </th>
+                                <th> Timestamp </th>
+                                <th> Amount </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>101111</td>
+                                <td>Credit Card</td>
+                                <td>13-12-2025 20:13:04</td>
+                                <td>RM 200.00</td>
+                            </tr>
+                            <tr>
+                                <td>101111</td>
+                                <td>Credit Card</td>
+                                <td>13-12-2025 20:13:04</td>
+                                <td>RM 200.00</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <h3 id="transac-total"> Total: </h3>
+                <button class="prints"> Print </button>
+            </div>
+
+            <div class="container product">
+                <div id="best-product">
+                    <h2 class="boxTitle">Best Selling Product (Monthly)</h2>
+                    <button class="prints best-product"> Print </button>
+                    
+                    <ul>
+                        <div class="show-product">
+                            <div class="product-img"></div>
+                            <h4 class="product-details">Product with a long long name</h4>
+                            <h3 class="product-details">50 units sold</h3>
+                        </div>
+                        <div class="show-product">
+                            <div class="product-img"></div>
+                            <h4 class="product-details">Product with a long long name</h4>
+                            <h3 class="product-details">50 units sold</h3>
+                        </div>
+                        <div class="show-product">
+                            <div class="product-img"></div>
+                            <h4 class="product-details">Product with a long long name</h4>
+                            <h3 class="product-details">50 units sold</h3>
+                        </div>
+                    </ul>
+                </div>
+
+                <div class="view-more">
+                    <button class="viewMoreBttn"> View More </button>
+                </div>
+            </div>
+
+            <div class="container stocks">
+                <div id="stocks">
+                    <h2 class="boxTitle"> Stocks </h2>
+                    <button class="prints stocks"> Print </button>
+
+                    <div id="stocks-table-box">
+                        <table id="stocks-table">
+                            <thead class="stocks-table">
+                                <tr id="header">
+                                    <th> Supplier </th>
+                                    <th> Product Name </th>
+                                    <th> Ordered On </th>
+                                    <th> ETA </th>
+                                    <th> Batch ID </th>
+                                    <th> Unit Cost </th>
+                                    <th> Units Ordered </th>
+                                    <th> Total Cost </th>
+                                </tr>
+                            </thead>
+                            <tbody class="stocks-table">
+                                <tr class="stocks-table">
+                                    <td>Sample Supplier</td>
+                                    <td>Product with a long long name</td>
+                                    <td>02/05/2025</td>
+                                    <td>12/05/2024</td>
+                                    <td>10111221</td>
+                                    <td>3.00</td>
+                                    <td>100</td>
+                                    <td>300.00</td>
+                                </tr>
+                                <tr class="stocks-table">
+                                    <td>Sample Supplier</td>
+                                    <td>Product with a long long name</td>
+                                    <td>02/05/2025</td>
+                                    <td>12/05/2024</td>
+                                    <td>10111221</td>
+                                    <td>3.00</td>
+                                    <td>100</td>
+                                    <td>300.00</td>
+                                </tr>
+                                <tr class="stocks-table">
+                                    <td>Sample Supplier</td>
+                                    <td>Product with a long long name</td>
+                                    <td>02/05/2025</td>
+                                    <td>12/05/2024</td>
+                                    <td>10111221</td>
+                                    <td>3.00</td>
+                                    <td>100</td>
+                                    <td>300.00</td>
+                                </tr>
+                                <tr class="stocks-table">
+                                    <td>Sample Supplier</td>
+                                    <td>Product with a long long name</td>
+                                    <td>02/05/2025</td>
+                                    <td>12/05/2024</td>
+                                    <td>10111221</td>
+                                    <td>3.00</td>
+                                    <td>100</td>
+                                    <td>300.00</td>
+                                </tr>
+                                <tr class="stocks-table">
+                                    <td>Sample Supplier</td>
+                                    <td>Product with a long long name</td>
+                                    <td>02/05/2025</td>
+                                    <td>12/05/2024</td>
+                                    <td>10111221</td>
+                                    <td>3.00</td>
+                                    <td>100</td>
+                                    <td>300.00</td>
+                                </tr>
+                                <tr class="stocks-table">
+                                    <td>Sample Supplier</td>
+                                    <td>Product with a long long name</td>
+                                    <td>02/05/2025</td>
+                                    <td>12/05/2024</td>
+                                    <td>10111221</td>
+                                    <td>3.00</td>
+                                    <td>100</td>
+                                    <td>300.00</td>
+                                </tr>
+                                <tr class="stocks-table">
+                                    <td>Sample Supplier</td>
+                                    <td>Product with a long long name</td>
+                                    <td>02/05/2025</td>
+                                    <td>12/05/2024</td>
+                                    <td>10111221</td>
+                                    <td>3.00</td>
+                                    <td>100</td>
+                                    <td>300.00</td>
+                                </tr>
+                                <tr class="stocks-table">
+                                    <td>Sample Supplier</td>
+                                    <td>Product with a long long name</td>
+                                    <td>02/05/2025</td>
+                                    <td>12/05/2024</td>
+                                    <td>10111221</td>
+                                    <td>3.00</td>
+                                    <td>100</td>
+                                    <td>300.00</td>
+                                </tr>
+                                <tr></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="view-more">
+                    <button class="viewMoreBttn"> View More </button>
+                </div>
+            </div>
+        </div>
+    </body>
+    
+</html>

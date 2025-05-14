@@ -11,8 +11,8 @@ body html {
     overflow: hidden;
 
     width: 3.5em;
-    height: 20em;
-    top: 30%;
+    height: 11em;
+    top: 37%;
     left: 1%;
     z-index: 1;
 
@@ -43,7 +43,7 @@ p {
 
 .navfull {
     position: relative;
-    padding-left: 6.5em;
+    padding-left: 6.8em;
     padding-right: 6em;
     padding-bottom: 0.5em;
     left: 0;
@@ -56,35 +56,35 @@ p {
     color: #FFFFFF;
 }
 
-/* Change .home for different pages*/
-.logo.home {
+/* Change .sale for different pages */
+.logo.sale {
     width: 2.5em;
     height: 2.5em;
     filter: drop-shadow(4em 0 0px #523249);
 }
 
-.nav.home {
+.nav.sale {
     left: -4.2em;
 }
 
-.navfull.home {
+.navfull.sale {
     font-size: large;
+    padding-left: 6.2em;
     color: #523249;
-    padding-left: 6.8em;
 }
 
-/* Animations */
+/* Animation */
 #navcolumn:hover {
     overflow: hidden;
-    width: 9em;
+    width: 8em;
     .navfull {
         visibility: visible;
     }
     .nav {
-        left: -6.5em;
+        left: -6.1em;
     }
-    .nav.home {
-        left: -6.8em;
+    .nav.sale {
+        left: -6.2em;
     }
 }
 

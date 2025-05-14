@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<!-- {% load static %} -->
+<html>
+    <!-- <link rel = "stylesheet" href="{% static 'manager/inventory.css' %}"> -->
+    <link rel="stylesheet" href="best_selling.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mukta+Mahee:wght@200;300;400;500;600;700;800&family=Sansation:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
+
+    <head>
+        <div id="dashboard">
+            <h1>Product Sales</h1>
+        </div>
+    </head>
+    <body>
+        <div id="main-content">
+            <table class="products">
+                <thead class="products">
+                    <tr>
+                        <th class="products">Rank</th>
+                        <th class="products">Brand</th>
+                        <th class="products">Product Name</th>
+                        <th class="products">Supplier</th>
+                        <th class="products">Total Sale</th>
+                        <th class="products">Profits</th>
+                    </tr>
+                </thead>
+                <tbody class="products">
+                    <tr class="products">
+                        <td>1</td>
+                        <td>Gooners</td>
+                        <td>Product with a long long name</td>
+                        <td>JBroook</td>
+                        <td>200</td>
+                        <td>1000.00</td>
+                    </tr>
+                    <tr class="products">
+                        <td>1</td>
+                        <td>Gooners</td>
+                        <td>Product with a long long name</td>
+                        <td>JBroook</td>
+                        <td>200</td>
+                        <td>1000.00</td>
+                    </tr>
+                    <tr></tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="product-detail-box">
+            <h2>Product Name</h2>
+            <div class="product-detail">
+                <div class="product-detail mthSale">
+                    <h3>Sales (This Month)</h3>
+                    <h3>MAY</h3>
+                    <h3>200</h3>
+                </div>
+                <div class="product-detail prevSale">
+                    <h3>Sales (Prev Month)</h3>
+                    <div class="dropbtn">
+                        <div class="dropdown-button">
+                            <h3> APR <img src="assets/arrow-down.png" class="logo dropdown"></h3>
+                        </div>
+                        <div class="dropdown-content">
+                            <ul class="dropdown-content">
+                                <li class="dropdown-content"><a href="#">JAN</a></li>
+                                <li class="dropdown-content"><a href="#">FEB</a></li>
+                                <li class="dropdown-content"><a href="#">MAR</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <h3>10</h3>
+                </div>
+                <div class="product-detail supplier">
+                    <h3>Supplier</h3>
+                    <h3>JBroook</h3>
+                </div>
+                <div class="product-detail unit-cost">
+                    <h3>Unit Cost</h3>
+                    <h3>2.00</h3>
+                </div>
+                <div class="product-detail price">
+                    <h3>Selling Price</h3>
+                    <h3>5.00</h3>
+                </div>
+                <div class="product-detail graph">
+                    <h2>Graph of Sales by Month</h2>
+                    <div id="graph"></div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

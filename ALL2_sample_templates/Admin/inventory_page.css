@@ -1,0 +1,210 @@
+body, html {
+    font-family: "Mukta Mahee", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+    font-size: 1vw;
+    margin: 0;
+    background-color: #F0ECDD;
+}
+
+h1 {
+    margin-block-start: 0;
+    padding-top: 1%;
+    padding-left: 8%; /* padding 18% when nav opened */
+}
+
+@keyframes lowStockWarning {
+    0% {
+        background-color: #F0D38B;
+    }
+    30% {
+        background-color: #F0D38B;
+    }
+    100% {
+        background-color: #FFF;
+    }
+}
+@keyframes highStockWarning {
+    0% {
+        color: #FFF;
+        background-color: #E8656A;
+    }
+    30% {
+        color: #FFF;
+        background-color: #E8656A;
+    }
+    100% {
+        color: #000;
+        background-color: #FFF;
+    }
+}
+@keyframes editAnimation {
+    0%{
+        background-color: #815355;
+    }
+    30%{
+        background-color: #815355;
+    }
+    100%{
+        background-color: transparent;
+    }
+}
+
+#dashboard {
+    font-family: "Sansation", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    
+    width: 100%;
+    height: 10vh;
+
+    margin-block-start: 0%;
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    
+    background-color: white;
+    box-shadow: 4px 2px 4px gray;
+}
+
+#main-content {
+    position: relative;
+    left: 8%;
+    top: 5vh;
+
+    width: 70%;
+    height: 82vh;
+    padding: 2%;
+    background-color: #FFF;
+    border-radius: 20px;
+}
+
+.table {
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+thead {
+    position: sticky;
+    z-index: 2;
+    top: 0;
+    background-color: #FFF;
+}
+tr {
+    position: relative;
+    text-align: center;
+    box-shadow: 0px 1px gray;
+}
+
+.header {
+    width: 3em;
+    height: 3em;
+    float: left;
+}
+
+.editBttn {
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    border-style: none;
+    
+    position: absolute; top:0; left:0;
+}
+.editImg {
+    width: 3vh;
+    height: 3vh;
+    visibility: hidden;
+}
+.editBttn:hover{
+    animation: editAnimation 0.8s infinite alternate;
+    .editImg{
+        visibility: visible;
+    }
+}
+
+#product1 {
+    animation: lowStockWarning 0.8s infinite alternate;
+}
+
+#product3 {
+    animation: highStockWarning 0.8s infinite alternate;
+}
+
+tbody tr:hover {
+    border-style: solid;
+    border-color: #000;
+}
+
+#filter-column {
+    position: absolute;
+    top: 0vh;
+    right: 0;
+
+    width: 15%;
+    height: 100%;
+
+    background: #FFF;
+}
+
+.cat-logo {
+    padding-top: 5%;
+    width: 1em;
+    height: 1em;
+}
+
+ul {
+    text-align: right;
+    justify-self: end;
+}
+
+.filter-div {
+    width: 10em;
+    height: 3em;
+    margin: 1.5vh;
+    float: right;
+}
+
+.filter-choices {
+    width: 100%;
+    height: 100%;
+    
+    font-family: "Sansation", sans-serif;
+    font-weight: 600;
+    font-style: normal;
+    font-size: 1vw;
+
+    border-style: hidden;
+    border-radius: 10px;
+    background: #C3B299;
+}
+
+#updateStock {
+    position: fixed;
+    bottom: 5vh;
+    right: 5vh;
+
+    width: 10%;
+    height: 6%;
+
+    border-radius: 10px;
+    border-style: none;
+    background-color: #CDE7A1;
+
+    font-family: "Sansation", sans-serif;
+    font-weight: 800;
+    font-size: 1vw;
+    font-style: normal;
+}
+
+.filter-div:hover {
+    width: 12em;
+    .filter-choices {
+        color: #FFF;
+        background: #815355;
+    }
+}
