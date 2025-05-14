@@ -9,6 +9,10 @@ body, html {
     font-weight: 300;
     font-style: normal;
 }
+h1,h3 {
+    margin-top: 1%;
+    margin-bottom: 1%;
+}
 
 #close {
     width: 4vh;
@@ -52,9 +56,29 @@ body, html {
     width: 30%;
     height: 100%;
 }
+.product-box.detail {
+    width: auto;
+    margin-right: auto;
+}
+
+.qr-barcode {
+    width: 20%;
+    height: 20%;
+
+    background-color: #F4F4F4;
+    border-radius: 10px;
+    border-style: none;
+    font-family: "Mukta Mahee", sans-serif;
+    font-weight: 300;
+    font-size: 1.1vw;
+    font-style: normal;
+}
+.qr-barcode:hover {
+    background-color: rgba(205, 231, 161, 0.8);
+}
 
 .product-box.qr {
-    margin-left: auto;
+    width: auto;
 }
 
 #qrCode {
@@ -65,6 +89,8 @@ body, html {
 }
 
 .product-box.image {
+    width: 52vh;
+    height: 100%;
     background-color: #C3B299;
 }
 
@@ -111,6 +137,13 @@ body, html {
     height: 4.2vh;
     background-color: rgba(195, 178, 153, 0.25);
 }
+input{
+    width: 94%;
+    height: 90%;
+    padding-left: 2.5%;
+    padding-right: 2.5%;
+    background: transparent;
+}
 #updateBttn {
     width: 25vh;
     height: 7vh;
@@ -146,4 +179,10 @@ body, html {
     align-content: center;
     background-color: #FFF;
     border-radius: 20px;
+}
+.hCard.date {
+    background-color: transparent;
+}
+.hCard:hover {
+    background-color: #C3B299;
 }
