@@ -1,0 +1,17 @@
+{% load static %}
+<html>
+    <link rel = "stylesheet" href="{% static 'css/navigation.css' %}">
+    
+    <body>
+        {% block content%}
+        <div class="navigation-column" id="navcolumn">
+            <!-- Cashier View -->
+            <a class="nav sale"><img src="assets/shipping.png" class="logo sale"><p class="navfull sale"> Sale</p></a>
+            <a class="nav history"><img src="assets/file.png" class="logo history"><p class="navfull history"> History</p></a>
+
+            <!-- Logout -->
+            <a class="nav"><img src="assets/logout.png" class="logo"><p class="navfull"> Logout</p></a>
+        </div>
+        {% endblock %}
+    </body>
+</html>

@@ -1,0 +1,98 @@
+body html {
+    font-size: 1vw;
+}
+
+#navcolumn {
+    display: inline-grid;
+    justify-content: center;
+    text-align: center;
+    
+    position: relative;
+    overflow: hidden;
+
+    width: 3.5em;
+    height: 11em;
+    top: 37%;
+    left: 1%;
+    z-index: 1;
+
+    border-radius: 30px;
+    background-color: #CBD4C2;
+}
+
+.nav {
+    position: relative;
+    width: 2em;
+    height: 2em;
+    top: 20%;
+    left: -3.9em;
+}
+
+.logo {
+    width: 2em;
+    height: 2em;
+    filter: drop-shadow(4em 0 0px #FFFFFF);
+}
+
+p {
+    margin: 0;
+    top: -1.5em;
+    left: 6.5em;
+    position: relative;
+}
+
+.navfull {
+    position: relative;
+    padding-left: 6.8em;
+    padding-right: 6em;
+    padding-bottom: 0.5em;
+    left: 0;
+    visibility: hidden;
+
+    font-family: "Mukta Mahee", sans-serif;
+    font-weight: 600;
+    font-style: normal;
+    text-align: left;
+    color: #FFFFFF;
+}
+
+/* Change .sale for different pages */
+.logo.sale {
+    width: 2.5em;
+    height: 2.5em;
+    filter: drop-shadow(4em 0 0px #523249);
+}
+
+.nav.sale {
+    left: -4.2em;
+}
+
+.navfull.sale {
+    font-size: large;
+    padding-left: 6.2em;
+    color: #523249;
+}
+
+/* Animation */
+#navcolumn:hover {
+    overflow: hidden;
+    width: 8em;
+    .navfull {
+        visibility: visible;
+    }
+    .nav {
+        left: -6.1em;
+    }
+    .nav.sale {
+        left: -6.2em;
+    }
+}
+
+a:hover {
+    .logo{
+        filter: drop-shadow(4em 0 0px #e0ffab);
+    }
+    .navfull {
+        color: #000;
+    }
+}
