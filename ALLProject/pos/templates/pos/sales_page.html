@@ -1,8 +1,10 @@
+{% extends "pos/navigation.html" %}
 <!DOCTYPE html>
 {% load static %}
+{% block content %}
 <html>
-    <link rel="stylesheet" href="{% static 'css/sales_page.css' %}">
-    <script src="{% static 'js/sales_page.js' %}"></script>
+    <link rel="stylesheet" href="{% static "css/sales_page.css" %}">
+    <script src="{% static "js/sales_page.js" %}"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Mukta+Mahee:wght@200;300;400;500;600;700;800&family=Sansation:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
@@ -14,8 +16,6 @@
     </title>
 
     <body>
-        {% block content%}
-        {% endblock %}
         <div class="input-box">
             <button type="button" class="input-bttn scan">Scan Item</button>
             <div class="product-detail">
@@ -84,7 +84,7 @@
                     <button type="button" class="keyboard">7</button>
                     <button type="button" class="keyboard">8</button>                
                     <button type="button" class="keyboard">9</button>
-                    <button type="button" class="keyboard clear">Clear All</button>
+                    <button type="button" class="keyboard clear">Clear Cart</button>
                     <button type="button" class="keyboard">0</button>
                     <button type="button" class="keyboard cancel">Cancel</button>
                 </div>
@@ -223,5 +223,6 @@
                 </div>
             </div>
         </div>
+        {% endblock %}
     </body>
 </html>

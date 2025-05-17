@@ -7,14 +7,14 @@ body html {
     justify-content: center;
     text-align: center;
     
-    position: relative;
+    position: absolute;
     overflow: hidden;
 
     width: 3.5em;
     height: 11em;
     top: 37%;
     left: 1%;
-    z-index: 1;
+    z-index: 3;
 
     border-radius: 30px;
     background-color: #CBD4C2;

@@ -1,8 +1,13 @@
-from django.shortcuts import render
+from django.http import HttpResponse
+from django.template import loader
 
 # Create your views here.
 def cashierPOSView(request):
-    return render(request, 'pos/sales_page.html')
+    template = loader.get_template('pos/sales_page.html')
+    context = {}
+    return HttpResponse(template.render(context,request))
 
 def cashierHistoryView(request):
-    return render(request,'pos/view_history.html')
+    template = loader.get_template('pos/view_history.html')
+    context = {}
+    return HttpResponse(template.render(context,request))
