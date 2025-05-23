@@ -1,7 +1,4 @@
 from django.db import models
-
-# Create your models here.
-from django.db import models
 from inventory.models import Product
 from users.models import Employee
 

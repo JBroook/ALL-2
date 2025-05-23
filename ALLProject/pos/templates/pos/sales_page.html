@@ -1,10 +1,9 @@
 {% extends "pos/navigation.html" %}
+<!DOCTYPE html>
 {% load static %}
 {% block content %}
     <link rel="stylesheet" href="{% static "css/sales_page.css" %}">
     <script src="{% static "js/addProduct.js" %}"></script>
-    <script>
-    </script>
     
     <body>
         <div class="input-box">
@@ -33,53 +32,55 @@
                         <div>{{ success }}</div>
                     {% endif %}
                     {% if show_quantity %}
-                    <script>
-                        document.querySelector('.details-box.default').style.visibility = 'hidden';
-                        document.querySelector('.details-box.addItem').style.visibility = 'hidden';
-                        document.querySelector('.details-box.quantity').style.visibility = 'visible';
-                    </script>
+                        <script>
+                            document.querySelector('.details-box.default').style.visibility = 'hidden';
+                            document.querySelector('.details-box.addItem').style.visibility = 'hidden';
+                            document.querySelector('.details-box.quantity').style.visibility = 'visible';
+                        </script>
                     {% else %}
                         {% if success_message %}
-                        <script>
-                            resetToDefault(); // Show default box after successful quantity submission    
-                        </script>
+                            <script>
+                                resetToDefault(); // Show default box after successful quantity submission    
+                            </script>
                         {% else %}
-                        <script>
-                            // Keep default state unless addItem is explicitly shown
-                            document.querySelector('.details-box.default').style.visibility = 'visible';
-                            document.querySelector('.details-box.addItem').style.visibility = 'hidden';
-                            document.querySelector('.details-box.quantity').style.visibility = 'hidden';
-                        </script>
+                            <script>
+                                // Keep default state unless addItem is explicitly shown
+                                document.querySelector('.details-box.default').style.visibility = 'visible';
+                                document.querySelector('.details-box.addItem').style.visibility = 'hidden';
+                                document.querySelector('.details-box.quantity').style.visibility = 'hidden';
+                            </script>
                         {% endif %}
                     {% endif %}
 
-                        <h3 class="boxTitle">{{ product.name }}</h3>
-                        <div class="details">
-                            <h3>Product Code</h3>
-                            <h4>{{product.id}}</h4>
+                    <h3 class="boxTitle">{{ product.name }}</h3>
+                    <div class="details">
+                        <h3>Product Code</h3>
+                        <h4>{{product.id}}</h4>
+                    </div>
+                    <div class="details">
+                        <h3>Category</h3>
+                        <h4>{{ product.category }}</h4>
+                    </div>
+                    <div class="details">
+                        <h3>Current Stock</h3>
+                        <h4>{{ product.quantity }}</h4>
+                    </div>
+                    
+                    <form action="" method="post" id="quantity_form">
+                        {% csrf_token %}
+                        <div id="enterQuantity">
+                            <input type="hidden" name="item_code" value="{{ item_code }}">
+                            {{ quantity_form }}
                         </div>
-                        <div class="details">
-                            <h3>Category</h3>
-                            <h4>{{ product.category }}</h4>
-                        </div>
-                        <div class="details">
-                            <h3>Current Stock</h3>
-                            <h4>{{ product.quantity }}</h4>
-                        </div>
-                        
-                        <form action="" method="post" id="quantity_form">
-                            {% csrf_token %}
-                            <div id="enterQuantity">
-                                <input type="hidden" name="item_code" value="{{ item_code }}">
-                                {{ quantity_form }}
-                            </div>
-                            <div class="buttons confirm">
-                                <button type="button" class="close-product-box"><img src="{% static 'assets/back-arrow.png' %}" alt="back-arrow" id="close-product"></button>
-                                <input type="submit" id="confirmBttn">
-                            </div>  
-                        </form>
+                    
+                        <div class="buttons confirm">
+                            <button type="button" class="close-product-box"><img src="{% static 'assets/back-arrow.png' %}" alt="back-arrow" id="close-product"></button>
+                            <input type="submit" id="confirmBttn">
+                        </div>  
+                    </form>
                 </div>
-            </div>
+            </div> 
+
             <button type="button" class="input-bttn code" id="enterCode">Enter Code</button>
             <button type="button" class="input-bttn manager">Call Manager</button>
         </div>
