@@ -1,0 +1,184 @@
+{% extends "pos/sales_page.html" %}
+{% load static %}
+{% block cart %}
+    <link rel="stylesheet" href="{% static "css/sales_cart.css" %}">
+    <script src="{% static "js/checkout.js" %}"></script>
+
+    <div class="cartbox">
+        <h3 class="boxTitle">Cart</h3>
+        <table class="cart">
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Unit Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody class="cart">
+                <tr class="cart">
+                    <td>Product with a long long name</td>
+                    <td>3.00</td>
+                    <td>3</td>
+                    <td>9.00</td>
+                </tr>
+                <tr class="cart">
+                    <td>Product with a long long name</td>
+                    <td>3.00</td>
+                    <td>3</td>
+                    <td>9.00</td>
+                </tr>
+                <tr></tr>
+            </tbody>
+        </table>
+        <div class="container">
+            <div class="keyboardBox">
+                <button type="button" class="keyboard" value="1">1</button>
+                <button type="button" class="keyboard" value="2">2</button>
+                <button type="button" class="keyboard" value="3">3</button>
+                <button type="button" class="keyboard" value="4">4</button>
+                <button type="button" class="keyboard" value="5">5</button>
+                <button type="button" class="keyboard" value="6">6</button>
+                <button type="button" class="keyboard" value="7">7</button>
+                <button type="button" class="keyboard" value="8">8</button>                
+                <button type="button" class="keyboard" value="9">9</button>
+                <button type="button" class="keyboard clear">Clear Cart</button>
+                <button type="button" class="keyboard" value="0">0</button>
+                <button type="button" class="keyboard cancel">Cancel</button>
+            </div>
+            <div class="checkout-box">
+                <div class="check-out subtotal">
+                    <h4>Subtotal</h4>
+                    <h4>RM 0.00</h4>
+                </div>
+                <div class="check-out discount">
+                    <h4>Discount</h4>
+                    <h4>RM 0.00</h4>
+                </div>
+                <div class="check-out tax">
+                    <h4>Tax</h4>
+                    <h4>RM 0.00</h4>
+                </div>
+                <div class="check-out total">
+                    <h3>Total</h3>
+                    <h3>RM 0.00</h3>
+                </div>
+                <button type="button" class="checkOut-Bttn" id="checkOutBttn">Check-Out</button>
+            </div>
+        </div>
+    </div>
+    <div class="dimmer"></div>
+    <div class="payment">
+        <div class="payment-box cash">
+            <button type="button" id="close-box"><img src="{% static 'assets/back-arrow.png' %}" alt="back-arrow" id="close"></button>
+            <h2 class="boxTitle">Payment Method</h2>
+            <div class="payment-button">
+                <button type="button" class="cashBttn" onclick="changePayment('cashBttn')"
+                style="width: 25%; height: 5vh; margin-right: 5%;
+                        font-family: 'Mukta Mahee', sans-serif; font-weight: 500; font-size: 1.2vw; font-style: normal;
+                        background: #815355; color: #FFF; border-radius: 20px; border-style: none;">
+                    Cash
+                </button>
+                <button type="button" class="cardBttn" onclick="changePayment('cardBttn')"
+                style="width: 25%; height: 5vh; margin-right: 5%;
+                        font-family: 'Mukta Mahee', sans-serif; font-weight: 500; font-size: 1.2vw; font-style: normal;
+                        border-radius: 20px; border-style: none; background: #D9D9D9; color: #595959;">
+                    Credit/Debit Card
+                </button>
+            </div>
+            <div class="payment-content">
+                <div class="payment-details">
+                    <div class="receipt-detail">
+                        <h3>RECEIPT ID</h3>
+                        <h3>1100011111</h3>
+                    </div>
+                    <div class="receipt-detail">
+                        <h3>TOTAL COST</h3>
+                        <h3>RM 0.00</h3>
+                    </div>
+                    <div class="receipt-detail">
+                        <h3>PAID</h3>
+                        <div style="display: flex;">
+                            <h3 id="cash-value">RM   </h3>
+                            <input type="number" name="paid" id="cash-paid">
+                        </div>                            
+                    </div>
+                    <div class="receipt-detail">
+                        <h3>CHANGE DUE</h3>
+                        <h3>RM 0.00</h3>
+                    </div>
+                    <button type="button" class="donePayment-bttn">DONE PAYMENT</button>
+                </div>
+                <div class="keyboardBox">
+                <button type="button" class="keyboard" value="1">1</button>
+                <button type="button" class="keyboard" value="2">2</button>
+                <button type="button" class="keyboard" value="3">3</button>
+                <button type="button" class="keyboard" value="4">4</button>
+                <button type="button" class="keyboard" value="5">5</button>
+                <button type="button" class="keyboard" value="6">6</button>
+                <button type="button" class="keyboard" value="7">7</button>
+                <button type="button" class="keyboard" value="8">8</button>
+                <button type="button" class="keyboard" value="9">9</button>
+                <button type="button" class="keyboard clear">Clear All</button>
+                <button type="button" class="keyboard" value="0">0</button>
+                <button type="button" class="keyboard cancel">Cancel</button>
+                </div>
+            </div>
+        </div>
+        <div class="payment-box card">
+            <button type="button" id="close-box"><img src="{% static 'assets/back-arrow.png' %}" alt="back-arrow" id="close"></button>
+            <h2 class="boxTitle">Payment Method</h2>
+            <div class="payment-button">
+                <button type="button" class="cashBttn" onclick="changePayment('cashBttn')"
+                style="width: 25%; height: 5vh; margin-right: 5%;
+                        font-family: 'Mukta Mahee', sans-serif; font-weight: 500; font-size: 1.2vw; font-style: normal;
+                        background: #D9D9D9; color: #595959; border-radius: 20px; border-style: none;">
+                    Cash
+                </button>
+                <button type="button" class="cardBttn" onclick="changePayment('cashBttn')"
+                style="width: 25%; height: 5vh; margin-right: 5%;
+                        font-family: 'Mukta Mahee', sans-serif; font-weight: 500; font-size: 1.2vw; font-style: normal;
+                        background: #815355; color: #FFF; border-radius: 20px; border-style: none;">
+                    Credit/Debit Card
+                </button>
+            </div>
+            <div class="payment-content">
+                <div class="payment-details">
+                    <div class="receipt-detail">
+                        <h3>RECEIPT ID</h3>
+                        <h3>1100011111</h3>
+                    </div>
+                    <div class="receipt-detail">
+                        <h3>TOTAL COST</h3>
+                        <h3>RM 0.00</h3>
+                    </div>
+                    <div id="card-input-box">
+                        <div class="card-input first">
+                            <img src="{% static 'assets/credit-card.png' %}" alt="card.png" id="bank-icon">
+                            <input type="text" name="card-info" class="card-info" placeholder="Card Number">
+                        </div>
+                        <div class="card-input sec">
+                            <input type="text" name="expiry" class="card-info sec expiry" placeholder="MM/YY">
+                            <input type="text" name="cvv" class="card-info sec cvv" placeholder="Security Num">
+                        </div>
+                    </div>
+                    <button type="button" class="donePayment-bttn">DONE PAYMENT</button>
+                </div>
+                <div class="keyboardBox">
+                <button type="button" class="keyboard" value="1">1</button>
+                <button type="button" class="keyboard" value="2">2</button>
+                <button type="button" class="keyboard" value="3">3</button>
+                <button type="button" class="keyboard" value="4">4</button>
+                <button type="button" class="keyboard" value="5">5</button>
+                <button type="button" class="keyboard" value="6">6</button>
+                <button type="button" class="keyboard" value="7">7</button>
+                <button type="button" class="keyboard" value="8">8</button>
+                <button type="button" class="keyboard" value="9">9</button>
+                <button type="button" class="keyboard clear">Clear All</button>
+                <button type="button" class="keyboard" value="0">0</button>
+                <button type="button" class="keyboard cancel">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

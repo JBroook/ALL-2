@@ -1,228 +1,89 @@
 {% extends "pos/navigation.html" %}
-<!DOCTYPE html>
 {% load static %}
 {% block content %}
-<html>
     <link rel="stylesheet" href="{% static "css/sales_page.css" %}">
-    <script src="{% static "js/sales_page.js" %}"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Mukta+Mahee:wght@200;300;400;500;600;700;800&family=Sansation:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
-
-    <title>
-        {% block title %}
-        Cashier POS
-        {% endblock title %}
-    </title>
-
+    <script src="{% static "js/addProduct.js" %}"></script>
+    <script>
+    </script>
+    
     <body>
         <div class="input-box">
             <button type="button" class="input-bttn scan">Scan Item</button>
             <div class="product-detail">
-                <div class="details-box product">
-                    <h3 class="boxTitle">Product Name</h3>
-                    <div class="details">
-                        <h3>Product Code</h3>
-                        <h4>A11224</h4>
-                    </div>
-                    <div class="details">
-                        <h3>Category</h3>
-                        <h4>Accessory - Small</h4>
-                    </div>
-                    <div class="details">
-                        <h3>Current Stock</h3>
-                        <h4>20</h4>
-                    </div>
-                </div>
+                <div class="details-box default"></div>
+
                 <div class="details-box addItem">
-                    <h2 class="boxTitle add">Item Code</h2>
-                    <input type="text" id="itemCode">
-                    <div class="product-check"><h3>Product with a long long name</h3></div>
-                    <h2 class="boxTitle add">Quantity</h2>
-                    <input type="number" name="quantity" id="quantity">
-                    <button type="button" id="addItemBttn">Add</button>
+                    <form action="" method="post" id="item_code_form">
+                        <h1 class="boxTitle add">Add Product</h1>
+                        {% csrf_token %}
+                        {{ item_code_form.as_p}}
+                        <div class="buttons add">
+                            <button type="button" class="close-product-box"><img src="{% static 'assets/back-arrow.png' %}" alt="back-arrow" id="close-product"></button>
+                            <button type="submit" id="addItemBttn">Add</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="details-box quantity">
+                    {% if error %}
+                        <div>{{ error }}</div>
+                    {% endif %}
+
+                    {% if success %}
+                        <div>{{ success }}</div>
+                    {% endif %}
+                    {% if show_quantity %}
+                    <script>
+                        document.querySelector('.details-box.default').style.visibility = 'hidden';
+                        document.querySelector('.details-box.addItem').style.visibility = 'hidden';
+                        document.querySelector('.details-box.quantity').style.visibility = 'visible';
+                    </script>
+                    {% else %}
+                        {% if success_message %}
+                        <script>
+                            resetToDefault(); // Show default box after successful quantity submission    
+                        </script>
+                        {% else %}
+                        <script>
+                            // Keep default state unless addItem is explicitly shown
+                            document.querySelector('.details-box.default').style.visibility = 'visible';
+                            document.querySelector('.details-box.addItem').style.visibility = 'hidden';
+                            document.querySelector('.details-box.quantity').style.visibility = 'hidden';
+                        </script>
+                        {% endif %}
+                    {% endif %}
+
+                        <h3 class="boxTitle">{{ product.name }}</h3>
+                        <div class="details">
+                            <h3>Product Code</h3>
+                            <h4>{{product.id}}</h4>
+                        </div>
+                        <div class="details">
+                            <h3>Category</h3>
+                            <h4>{{ product.category }}</h4>
+                        </div>
+                        <div class="details">
+                            <h3>Current Stock</h3>
+                            <h4>{{ product.quantity }}</h4>
+                        </div>
+                        
+                        <form action="" method="post" id="quantity_form">
+                            {% csrf_token %}
+                            <div id="enterQuantity">
+                                <input type="hidden" name="item_code" value="{{ item_code }}">
+                                {{ quantity_form }}
+                            </div>
+                            <div class="buttons confirm">
+                                <button type="button" class="close-product-box"><img src="{% static 'assets/back-arrow.png' %}" alt="back-arrow" id="close-product"></button>
+                                <input type="submit" id="confirmBttn">
+                            </div>  
+                        </form>
                 </div>
             </div>
-            <button type="button" class="input-bttn code">Enter Code</button>
+            <button type="button" class="input-bttn code" id="enterCode">Enter Code</button>
             <button type="button" class="input-bttn manager">Call Manager</button>
         </div>
-        <div class="cartbox">
-            <h3 class="boxTitle">Cart</h3>
-            <table class="cart">
-                <thead>
-                    <tr>
-                        <th>Product Name</th>
-                        <th>Unit Price</th>
-                        <th>Quantity</th>
-                        <th>Total</th>
-                    </tr>
-                </thead>
-                <tbody class="cart">
-                    <tr class="cart">
-                        <td>Product with a long long name</td>
-                        <td>3.00</td>
-                        <td>3</td>
-                        <td>9.00</td>
-                    </tr>
-                    <tr class="cart">
-                        <td>Product with a long long name</td>
-                        <td>3.00</td>
-                        <td>3</td>
-                        <td>9.00</td>
-                    </tr>
-                    <tr></tr>
-                </tbody>
-            </table>
-            <div class="container">
-                <div class="keyboardBox">
-                    <button type="button" class="keyboard">1</button>
-                    <button type="button" class="keyboard">2</button>
-                    <button type="button" class="keyboard">3</button>
-                    <button type="button" class="keyboard">4</button>
-                    <button type="button" class="keyboard">5</button>
-                    <button type="button" class="keyboard">6</button>
-                    <button type="button" class="keyboard">7</button>
-                    <button type="button" class="keyboard">8</button>                
-                    <button type="button" class="keyboard">9</button>
-                    <button type="button" class="keyboard clear">Clear Cart</button>
-                    <button type="button" class="keyboard">0</button>
-                    <button type="button" class="keyboard cancel">Cancel</button>
-                </div>
-                <div class="checkout-box">
-                    <div class="check-out subtotal">
-                        <h4>Subtotal</h4>
-                        <h4>RM 0.00</h4>
-                    </div>
-                    <div class="check-out discount">
-                        <h4>Discount</h4>
-                        <h4>RM 0.00</h4>
-                    </div>
-                    <div class="check-out tax">
-                        <h4>Tax</h4>
-                        <h4>RM 0.00</h4>
-                    </div>
-                    <div class="check-out total">
-                        <h3>Total</h3>
-                        <h3>RM 0.00</h3>
-                    </div>
-                    <button type="button" class="checkOut-Bttn" id="checkOutBttn">Check-Out</button>
-                </div>
-            </div>
-        </div>
-        <div class="dimmer"></div>
-        <div class="payment">
-            <div class="payment-box cash">
-                <button type="button" id="close-box"><img src="{% static 'assets/back-arrow.png' %}" alt="back-arrow" id="close"></button>
-                <h2 class="boxTitle">Payment Method</h2>
-                <div class="payment-button">
-                    <button type="button" class="cashBttn" onclick="changePayment('cashBttn')"
-                    style="width: 25%; height: 5vh; margin-right: 5%;
-                            font-family: 'Mukta Mahee', sans-serif; font-weight: 500; font-size: 1.2vw; font-style: normal;
-                            background: #815355; color: #FFF; border-radius: 20px; border-style: none;">
-                        Cash
-                    </button>
-                    <button type="button" class="cardBttn" onclick="changePayment('cardBttn')"
-                    style="width: 25%; height: 5vh; margin-right: 5%;
-                            font-family: 'Mukta Mahee', sans-serif; font-weight: 500; font-size: 1.2vw; font-style: normal;
-                            border-radius: 20px; border-style: none; background: #D9D9D9; color: #595959;">
-                        Credit/Debit Card
-                    </button>
-                </div>
-                <div class="payment-content">
-                    <div class="payment-details">
-                        <div class="receipt-detail">
-                            <h3>RECEIPT ID</h3>
-                            <h3>1100011111</h3>
-                        </div>
-                        <div class="receipt-detail">
-                            <h3>TOTAL COST</h3>
-                            <h3>RM 0.00</h3>
-                        </div>
-                        <div class="receipt-detail">
-                            <h3>PAID</h3>
-                            <div style="display: flex;">
-                                <h3 id="cash-value">RM   </h3>
-                                <input type="number" name="paid" id="cash-paid">
-                            </div>                            
-                        </div>
-                        <div class="receipt-detail">
-                            <h3>CHANGE DUE</h3>
-                            <h3>RM 0.00</h3>
-                        </div>
-                        <button type="button" class="donePayment-bttn">DONE PAYMENT</button>
-                    </div>
-                    <div class="keyboardBox">
-                        <button type="button" class="keyboard">1</button>
-                        <button type="button" class="keyboard">2</button>
-                        <button type="button" class="keyboard">3</button>
-                        <button type="button" class="keyboard">4</button>
-                        <button type="button" class="keyboard">5</button>
-                        <button type="button" class="keyboard">6</button>
-                        <button type="button" class="keyboard">7</button>
-                        <button type="button" class="keyboard">8</button>                
-                        <button type="button" class="keyboard">9</button>
-                        <button type="button" class="keyboard clear">Clear All</button>
-                        <button type="button" class="keyboard">0</button>
-                        <button type="button" class="keyboard cancel">Cancel</button>
-                    </div>
-                </div>
-            </div>
-            <div class="payment-box card">
-                <button type="button" id="close-box"><img src="{% static 'assets/back-arrow.png' %}" alt="back-arrow" id="close"></button>
-                <h2 class="boxTitle">Payment Method</h2>
-                <div class="payment-button">
-                    <button type="button" class="cashBttn" onclick="changePayment('cashBttn')"
-                    style="width: 25%; height: 5vh; margin-right: 5%;
-                            font-family: 'Mukta Mahee', sans-serif; font-weight: 500; font-size: 1.2vw; font-style: normal;
-                            background: #D9D9D9; color: #595959; border-radius: 20px; border-style: none;">
-                        Cash
-                    </button>
-                    <button type="button" class="cardBttn" onclick="changePayment('cashBttn')"
-                    style="width: 25%; height: 5vh; margin-right: 5%;
-                            font-family: 'Mukta Mahee', sans-serif; font-weight: 500; font-size: 1.2vw; font-style: normal;
-                            background: #815355; color: #FFF; border-radius: 20px; border-style: none;">
-                        Credit/Debit Card
-                    </button>
-                </div>
-                <div class="payment-content">
-                    <div class="payment-details">
-                        <div class="receipt-detail">
-                            <h3>RECEIPT ID</h3>
-                            <h3>1100011111</h3>
-                        </div>
-                        <div class="receipt-detail">
-                            <h3>TOTAL COST</h3>
-                            <h3>RM 0.00</h3>
-                        </div>
-                        <div id="card-input-box">
-                            <div class="card-input first">
-                                <img src="{% static 'assets/credit-card.png' %}" alt="card.png" id="bank-icon">
-                                <input type="text" name="card-info" class="card-info" placeholder="Card Number">
-                            </div>
-                            <div class="card-input sec">
-                                <input type="text" name="expiry" class="card-info sec expiry" placeholder="MM/YY">
-                                <input type="text" name="cvv" class="card-info sec cvv" placeholder="Security Num">
-                            </div>
-                        </div>
-                        <button type="button" class="donePayment-bttn">DONE PAYMENT</button>
-                    </div>
-                    <div class="keyboardBox">
-                        <button type="button" class="keyboard">1</button>
-                        <button type="button" class="keyboard">2</button>
-                        <button type="button" class="keyboard">3</button>
-                        <button type="button" class="keyboard">4</button>
-                        <button type="button" class="keyboard">5</button>
-                        <button type="button" class="keyboard">6</button>
-                        <button type="button" class="keyboard">7</button>
-                        <button type="button" class="keyboard">8</button>                
-                        <button type="button" class="keyboard">9</button>
-                        <button type="button" class="keyboard clear">Clear All</button>
-                        <button type="button" class="keyboard">0</button>
-                        <button type="button" class="keyboard cancel">Cancel</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {% endblock %}
+        
+        {% block cart %}{% endblock %}
     </body>
-</html>
+{% endblock %}

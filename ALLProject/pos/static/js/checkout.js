@@ -50,5 +50,5 @@ function changePayment(id) {
         // Show card payment box, hide cash payment box
         document.querySelector('.payment-box.cash').style.visibility = 'hidden';
         document.querySelector('.payment-box.card').style.visibility = 'visible';
-    }
+    };
 }

@@ -49,7 +49,6 @@ h2,h3{
 
 .boxTitle {
     justify-self: center;
-    margin-right: 5%;
 }
 
 .product-detail {
@@ -63,7 +62,7 @@ h2,h3{
 .details {
     display: flex;
     justify-content: space-between;
-    padding: 2%;
+    padding: 1%;
 }
 
 .details-box {
@@ -73,32 +72,64 @@ h2,h3{
     visibility: hidden;
     text-align: center;
 }
-.details-box.product {
+.details-box.default{
+    visibility: visible;
+}
+.details-box.quantity {
     visibility: hidden;
 }
 .details-box.addItem {
-    visibility: visible;
+    visibility: hidden;
+    align-content: center;
 }
 .boxTitle.add {
     margin-top: 1.5%;
     margin-right: 0;
+    margin-bottom: 4%;
 }
-#itemCode, #quantity {
+.buttons {
+    display: flex;
+    margin-top: 4%;
+    justify-content: center;
+    align-items: center;
+}
+
+#itemCode {
     display: inherit;
     width: 90%;
-    height: 6vh;
+    height: 8vh;
     margin-left: 5%;    
     margin-right: 5%;
     background: rgba(129, 83, 85, 0.20);
     border-style: none;
 }
-#addItemBttn {
+
+#enterQuantity {
+    text-align: -webkit-center;
+}
+#quantity {
+    display: inherit;
+    width: 60%;
+    height: 5vh;
+    margin-left: 5%;    
+    margin-right: 5%;
+    background: rgba(129, 83, 85, 0.20);
+    border-style: none;
+}
+.form-group.input {
+    display: flex;
+    justify-self: center;
+    align-items: center;
+    margin-top: 1%;
+}
+
+#addItemBttn, #confirmBttn {
     width: 45%;
-    height: 15%;
-    margin-top: 4%;
+    height: 7vh;
 
     color: #FFF;
-    background-color: #513436;
+    background-color: #815355;
+    border-style: none;
     border-radius: 10px;
     justify-self: center;
 
@@ -107,15 +138,26 @@ h2,h3{
     font-style: normal;
     font-size: 1.2vw;
 }
+#addItemBttn:hover, #confirmBttn:hover{
+    background: #513436;
+}
 
-.product-check {
-    margin-left: 10%;
-    margin-right: 10%;
-    width: 80%;
-    justify-items: center;
-    background: #FFF;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
+#close-product {
+    width: 3vh;
+    height: 3vh;
+    padding: 0;
+}
+.close-product-box {
+    width: 5vh;
+    height: 5vh;
+    margin-right: 2%;
+
+    background-color: #DAE0D3;
+    border-style: none;
+    border-radius: 10px;
+}
+.close-product-box:hover {
+    background-color: rgba(232, 101, 106);
 }
 
 .cartbox {
@@ -124,259 +166,4 @@ h2,h3{
     width: 65%;
     background-color: #FFF;
     box-shadow: -2px 2px 8px 0px rgba(0, 0, 0, 0.3);
-}
-
-.cart {
-    width: 90%;
-    height: 62%;
-    vertical-align: middle;
-    text-align: center;
-}
-
-thead.cart, tr.cart {
-    height: 2%;
-    padding-top: 2.5%;
-    padding-bottom: 2.5%;
-}
-
-.container {
-    display: flex;
-    justify-content: space-evenly;
-    width: 100%;
-    height: 33%;
-}
-
-.keyboardBox {
-    margin-right: 2%;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    width: 50%;
-}
-
-.keyboard {
-    margin: 2%;
-    
-    font-family: "Mukta Mahee", sans-serif;
-    font-weight: 500;
-    font-size: 1.2vw;
-    
-    border-radius: 10px;
-    border-style: none;
-    background-color: rgba(163, 214, 217, 0.3);
-}
-
-.keyboard.clear {    
-    background-color: rgba(232, 101, 106, 0.30);
-}
-
-.keyboard.cancel {
-    background: rgba(240, 139, 191, 0.30);
-}
-
-.keyboard:hover {
-    background-color: rgba(163, 214, 217);
-}
-
-.keyboard.clear:hover {
-    color: #FFF;
-    background-color: rgba(232, 101, 106);
-}
-
-.keyboard.cancel:hover {
-    color: #FFF;
-    background: rgba(240, 139, 191);
-}
-
-.checkout-box {
-    width: 45%;
-}
-
-.check-out {
-    display: flex;
-    justify-content: space-between;
-    padding-top: 2%;
-}
-
-.checkOut-Bttn {
-    width: 100%;
-    height: 32%;
-    margin-top: 3%;
-
-    border-radius: 20px;
-    border-style: none;
-    background: #815355;
-
-    color: #FFF;
-    font-family: "Mukta Mahee", sans-serif;
-    font-weight: 500;
-    font-size: 2vw;
-}
-
-.checkOut-Bttn:hover {
-    background: #513436;
-}
-
-/* Pay now */
-.dimmer {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: #000;
-    opacity: 0.5;
-    visibility: hidden;
-}
-
-.payment-box.cash {
-    position: fixed;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 60%;
-    height: 55%;
-    background-color: #FFF;
-    z-index: 1;
-    visibility: hidden;
-}
-
-.payment-button {
-    width: 100%;
-    text-align: center;
-}
-
-.payment-content {
-    display: flex;
-    justify-content: space-evenly;
-    width: 100%;
-    height: 60%;
-    margin-top: 2.5%;
-}
-
-#close {
-    width: 4vh;
-    height: 4vh;
-    padding: 0;
-}
-
-#close-box {
-    width: 6vh;
-    height: 6vh;
-    margin-top: 1%;
-    margin-left: 2%;
-
-    background-color: transparent;
-    border-style: none;
-    border-radius: 10px;
-}
-
-#close-box:hover {
-    background-color: #D9D9D9;
-}
-
-.payment-details {
-    width: 50%;
-    padding-left: 5%;
-    padding-right: 5%;
-    text-align: center;
-    font-size: 1.1vw;
-    font-weight: 700;
-}
-
-.receipt-detail {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    margin-top: 2%;
-}
-
-#cash-value {
-    padding-right: 1%;
-}
-
-#cash-paid {
-    width: 8rem;
-    margin: 0;
-}
-
-.donePayment-bttn {
-    position: absolute;
-    width: 28%;
-    height: 10%;
-    left: 14%;
-    bottom: 8%;
-
-    font-family: "Mukta Mahee", sans-serif;
-    font-weight: 800;
-    font-size: 1.25vw;
-    font-style: normal;
-
-    background-color: #CDE7A0;
-    border-radius: 20px;
-    border-style: none;
-    box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.3);
-}
-
-.donePayment-bttn:hover {
-    background-color: #79c281;    
-}
-
-.payment-box.card {
-    position: fixed;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 70%;
-    height: 65%;
-    background-color: #FFF;
-    z-index: 2;
-    visibility: hidden;
-}
-
-#bank-icon {
-    width: 12%;
-    aspect-ratio: 1/1;
-    object-fit: cover;
-    margin-left: 2.5%;
-}
-
-#card-input-box {
-    margin-top: 5%;
-    width: 100%;
-    height: 40%;
-    background-color: #5c6b7d;
-    border-radius: 20px;
-    box-shadow: 0px 2px 0px 0px rgba(0,0,0,0.3);
-}
-
-.card-input {
-    width: 100%;
-    height: 50%;
-    justify-content: center;
-    display: flex;
-}
-
-.card-info {
-    margin-left: 2%;
-    width: 83%;
-    padding-left: 5%;
-    border-style: none;
-    
-    font-family: "Mukta Mahee", sans-serif;
-    font-weight: 500;
-    font-size: 1vw;
-    font-style: normal;
-    letter-spacing: 2px;
-    color: #FFF;
-    background-color: transparent;
-}
-
-.card-info.sec {
-    width: 50%;
-    padding-left: 5%;
-    border-style: none;
-    color: #FFF;
-    background-color: transparent;
-}
-
-.card-info::placeholder {
-    color: #D9D9D9;
 }
