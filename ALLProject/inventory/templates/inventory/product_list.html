@@ -1,3 +1,6 @@
+{% extends 'inventory/navigation.html' %}
+
+{% block content %}
 {% load static %}
 
 <html>
@@ -95,8 +98,11 @@
               <img src="{{chosen_product.qr_code.url}}" width="200" height="200" alt="QR code">
             </div>
             <div id="detail-buttons">
-              <button class="normal-button" onclick="window.location.href='{% url 'product_update' chosen_product.id %}'">Edit</button>
+              <button class="normal-button" onclick="window.location.href='{% url 'product_update' chosen_product.id %}'">
+                Edit</button>
               <button class="normal-button">Print</button>
+              <button class="normal-button" onclick="window.location.href='{% url 'product_restock' chosen_product.id %}'">
+                Restock</button>
               <button id="delete-button" onclick="window.location.href='{% url 'product_delete' chosen_product.id %}'">Delete</button>
             </div>
           {% else%}
@@ -108,3 +114,5 @@
   </main>
 </body>
 </html>
+
+{% endblock%}

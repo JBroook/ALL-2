@@ -1,5 +1,5 @@
 from django import forms
-from .models import Product, Category
+from .models import Product, Category, Restock
 
 class ProductForm(forms.ModelForm):
     class Meta:
@@ -38,3 +38,30 @@ class ProductForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.label_suffix = ""
+
+class DateInput(forms.DateInput):
+    input_type = 'date'
+
+class RestockForm(forms.ModelForm):
+    product_id = -1
+
+    class Meta:
+        model = Restock
+        fields = '__all__'
+        exclude = ['product']
+        labels = {
+            'cpu' : "Cost Per Unit",
+            'units' : "Unit(s) in Batch",
+            'date' : "Date Stocked"
+        }
+
+        category = forms.ModelChoiceField(queryset=Category.objects.all()),
+
+        widgets = {
+            'date' : DateInput()
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.label_suffix = ""
+        self.product_id = kwargs.get('product_id')

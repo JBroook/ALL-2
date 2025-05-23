@@ -1,0 +1,22 @@
+{% load static %}
+
+{% block navbar %}
+<html>
+    <link rel="stylesheet" href="{% static 'css/navigation.css'%}">
+    
+    <body>
+        <div class="navigation-column" id="navcolumn">
+            <!-- Admin View-->
+            <a class="nav products"><img src="{% static 'images/shipping.png' %}" class="logo products"><p class="navfull products"> Products</p></a>
+            <a class="nav inventory"><img src="{% static 'images/report.png' %}" class="logo inventory"><p class="navfull inventory"> Inventory</p></a>
+            
+            <!-- Logout -->
+            <a class="nav"><img src="{% static 'images/logout.png' %}" class="logo"><p class="navfull"> Logout</p></a>
+        </div>
+    </body>
+</html>
+{%endblock%}
+
+{% block content%}
+
+{%endblock%}

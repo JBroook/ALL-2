@@ -1,0 +1,16 @@
+{%load static %}
+
+{% for product in products%}
+    <tr {%if product.quantity <= 5%} id="product1" {%else%} id="product2" {%endif%}>
+        <td><p>{{product.name}}</p></td>
+        <td><p>{{product.quantity}}</p></td>
+        <td><p>{{product.name}}</p></td>
+        <td><p>{{product.supplier}}</p></td>
+        <td><p>{{product.supplier}}</p></td>
+        <td>
+            <button type="button" class="editBttn" onclick="window.location.href='{% url 'product_update' product.id %}'">
+                <img src="{% static "images/edit.png"%}" alt="edit" class="editImg">
+            </button>
+        </td>
+    </tr>
+{% endfor %}

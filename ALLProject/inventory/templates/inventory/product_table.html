@@ -1,0 +1,57 @@
+ {% load static %}
+<html>
+    <!-- <link rel = "stylesheet" href="{% static 'manager/inventory.css' %}"> -->
+    <link rel="stylesheet" href={% static "css/product_table.css"%}>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mukta+Mahee:wght@200;300;400;500;600;700;800&family=Sansation:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
+
+    <script src={% static "js/product_table_partial.js"%}></script>
+
+    <head>
+        <div id="dashboard">
+            <h1>Inventory</h1>
+        </div>
+    </head>
+
+    <body>
+        <div id="main-content">
+            <div class="table">
+                <table>
+                    <!-- Table Header-->
+                    <thead>
+                        <tr>
+                            <th><img src="{% static "images/up-and-down-arrow.png"%}" class="header"><p> Product Name</p></th>
+                            <th><img src="{% static "images/up-and-down-arrow.png"%}" class="header"><p> Stock</p></th>
+                            <th><img src="{% static "images/up-and-down-arrow.png"%}" class="header"><p> Last Stocked</p></th>
+                            <th><img src="{% static "images/up-and-down-arrow.png"%}" class="header"><p> Supplier</p></th>
+                            <th><img src="{% static "images/up-and-down-arrow.png"%}" class="header"><p> Supplier Contact</p></th>
+                        </tr>
+                    </thead>
+                    
+                    <!-- Sample Data -->
+                     <tbody id="product-table-body">
+                    {% include "partials/product_table_partial.html"%}  
+                     </tbody>
+                </table>
+            </div>
+        </div>
+        <div id="filter-column">
+            <h1><img src={% static "images/adjust.png"%} class="cat-logo"> Category</h1>
+
+            <!-- Filter Choices -->
+             <ul>
+                <div class="filter-div">
+                    <button type="button" class="filter-choices" onclick="refresh_table(-1)"> Show All </button>
+                </div>
+                {% for category in categories %}
+                    <div class="filter-div">
+                        <button type="button" class="filter-choices" onclick="refresh_table({{category.id}})"> 
+                            {{category.name}}
+                        </button>
+                    </div>
+                {% endfor %}
+             </ul>
+        </div>
+    </body>
+</html>
