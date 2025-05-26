@@ -4,6 +4,7 @@
 {% block cart %}
     <link rel="stylesheet" href="{% static "css/sales_cart.css" %}">
     <script src="{% static "js/checkout.js" %}"></script>
+
     <div class="cartbox">
         <h3 class="boxTitle">Cart</h3>
         <table class="cart">
@@ -16,18 +17,19 @@
                 </tr>
             </thead>
             <tbody class="cart">
-                <tr class="cart">
-                    <td>Product with a long long name</td>
-                    <td>3.00</td>
-                    <td>3</td>
-                    <td>9.00</td>
-                </tr>
-                <tr class="cart">
-                    <td>Product with a long long name</td>
-                    <td>3.00</td>
-                    <td>3</td>
-                    <td>9.00</td>
-                </tr>
+                {% if cart %}
+                    {% for item in cart %}
+                        <tr class="cart">
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.unit_price|floatformat:2 }}</td>
+                            <td>{{ item.quantity }}</td>
+                            <td>{{ item.total_price|floatformat:2 }}</td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr></tr> 
+                {% endif %}
+                
                 <tr></tr>
             </tbody>
         </table>
@@ -63,11 +65,15 @@
                     <h3>Total</h3>
                     <h3>RM 0.00</h3>
                 </div>
-                <button type="button" class="checkOut-Bttn" id="checkOutBttn">Check-Out</button>
+                <form action="" method="post" id='checkout_form'>
+                    {% csrf_token %}
+                    <input type="hidden" name="check_out" value="true">
+                    <button type="submit" class="checkOut-Bttn" id="checkOutBttn">Check-Out</button>
+                </form>
             </div>
         </div>
     </div>
-    <div class="dimmer"></div>
+    {% comment %} <div class="dimmer"></div>
     <div class="payment">
         <div class="payment-box cash">
             <button type="button" id="close-box"><img src="{% static 'assets/back-arrow.png' %}" alt="back-arrow" id="close"></button>
@@ -180,5 +186,5 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> {% endcomment %}
 {% endblock %}

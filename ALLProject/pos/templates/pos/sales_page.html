@@ -17,20 +17,13 @@
                         {% csrf_token %}
                         {{ item_code_form.as_p}}
                         <div class="buttons add">
-                            <button type="button" class="close-product-box"><img src="{% static 'assets/back-arrow.png' %}" alt="back-arrow" id="close-product"></button>
+                            <button type="button" class="close-product-box" id="close-addItem"><img src="{% static 'assets/back-arrow.png' %}" alt="back-arrow" id="close-product"></button>
                             <button type="submit" id="addItemBttn">Add</button>
                         </div>
                     </form>
                 </div>
 
                 <div class="details-box quantity">
-                    {% if error %}
-                        <div>{{ error }}</div>
-                    {% endif %}
-
-                    {% if success %}
-                        <div>{{ success }}</div>
-                    {% endif %}
                     {% if show_quantity %}
                         <script>
                             document.querySelector('.details-box.default').style.visibility = 'hidden';
@@ -74,7 +67,7 @@
                         </div>
                     
                         <div class="buttons confirm">
-                            <button type="button" class="close-product-box"><img src="{% static 'assets/back-arrow.png' %}" alt="back-arrow" id="close-product"></button>
+                            <button type="button" class="close-product-box" id="close-quantity"><img src="{% static 'assets/back-arrow.png' %}" alt="back-arrow" id="close-product"></button>
                             <input type="submit" id="confirmBttn">
                         </div>  
                     </form>
