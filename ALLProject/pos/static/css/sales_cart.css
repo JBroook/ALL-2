@@ -34,7 +34,7 @@ thead.cart, tr.cart {
     width: 50%;
 }
 
-.keyboard {
+.keyboard, .keyboard-cash, .keyboard-card {
     margin: 2%;
     
     font-family: "Mukta Mahee", sans-serif;
@@ -46,7 +46,7 @@ thead.cart, tr.cart {
     background-color: rgba(163, 214, 217, 0.3);
 }
 
-.keyboard.clear {    
+.keyboard.clear, .keyboard-cash.clear, .keyboard-card.clear{
     background-color: rgba(232, 101, 106, 0.30);
 }
 
@@ -54,11 +54,11 @@ thead.cart, tr.cart {
     background: rgba(240, 139, 191, 0.30);
 }
 
-.keyboard:hover {
+.keyboard:hover, .keyboard-cash:hover, .keyboard-card:hover{
     background-color: rgba(163, 214, 217);
 }
 
-.keyboard.clear:hover {
+.keyboard.clear:hover, .keyboard-cash.clear:hover, .keyboard-card.clear:hover {
     color: #FFF;
     background-color: rgba(232, 101, 106);
 }
@@ -252,9 +252,14 @@ thead.cart, tr.cart {
     font-weight: 500;
     font-size: 1vw;
     font-style: normal;
-    letter-spacing: 2px;
+    letter-spacing: 5px;
+
     color: #FFF;
     background-color: transparent;
+}
+#cardNo {
+    font-size: 1.2vw;
+    letter-spacing: 8px;
 }
 
 .card-info.sec {
