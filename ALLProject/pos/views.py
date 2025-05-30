@@ -21,6 +21,7 @@ def cashierPOSView(request):
         request.session['cart'] = []
     if request.session['cart']:
         cart_cost = sum(item['total_price'] for item in request.session['cart'])
+        print(cart_cost)
         
     # print(request.session['cart'])
     print(request.POST)
@@ -83,10 +84,11 @@ def cashierPOSView(request):
                 payment_method = checkout_form.cleaned_data['payment_method']
                 print("Payment Method: ", payment_method)
                 if request.session['cart']:
-                    if payment_method == "Cash" and checkout_form.cleaned_data['paid_amount'] < cart_cost:
-                        error = "Cash amount is lower than cost of products"
+                    if payment_method == "cash" and checkout_form.cleaned_data['cashPaid'] < cart_cost:
+                        error = "ERROR: Cash amount is lower than cost of products"
                     else:
                         try:
+                            change = cart_cost-checkout_form.cleaned_data['cashPaid']
                             # Create Cart Record
                             new_cart = Cart.objects.create(
                                 total_cost=0.00,
@@ -122,22 +124,25 @@ def cashierPOSView(request):
                             new_cart.total_cost = cart_cost
                             new_cart.save()
 
+                            if payment_method == 'debit_card':
+                                success = "Checkout Successful. Data saved."
+                            elif payment_method == 'cash':
+                                success = f"Checkout Successful. \nPlease return Change: RM {change*-1:.2f}"
+
                             # Clear Cart in session
                             print("finish adding cart")
                             request.session['cart'] = []
                             request.session.modified = True
-
-                            success = "Checkout Successful. Data saved."
-                            return HttpResponseRedirect(reverse('sales'))
+                            for key in list(request.session.keys()):
+                                if not key.startswith("_"): # skip keys set by the django system
+                                    del request.session[key]
+                            #return HttpResponseRedirect(reverse('sales'))
                             
                         except ObjectDoesNotExist:
                             error = "ERROR: One or more products in cart not found"
                 else:
                     print(checkout_form.errors)
                     error = "ERROR: Cart is either empty or invalid checkout."
-        else:
-            #print("Checkout form invalid: ", checkout_form.errors)
-            error = "ERROR: Invalid CheckOut Form."
 
     context = {
         'item_code_form' : item_code_form,
@@ -151,7 +156,8 @@ def cashierPOSView(request):
         'cart_cost' : cart_cost,
         'show_quantity' : show_quantity,
     }
-    print(error)
+    print("Error: ",error)
+    print("Success: ",success)
     return HttpResponse(template.render(context,request))
 
 def cashierHistoryView(request):

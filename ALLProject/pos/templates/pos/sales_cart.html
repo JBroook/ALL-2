@@ -1,10 +1,10 @@
 {% extends "pos/sales_page.html" %}
-<!DOCTYPE html>
 {% load static %}
 
 {% block cart %}
     <link rel="stylesheet" href="{% static "css/sales_cart.css" %}">
     <script src="{% static "js/checkout.js" %}"></script>
+    <script src="{% static "js/alert.js" %}"></script>
 
     <div class="cartbox">
         <h3 class="boxTitle">Cart</h3>
@@ -118,17 +118,6 @@
                                 {% comment %} <input type="text" name="paid" id="cash-paid"> {% endcomment %}
                             </div>                            
                         </div>
-                        <div class="receipt-detail">
-                            <h3>CHANGE DUE</h3>
-                            <h3 id="changeAmount">RM 
-                                {% comment %} {% if checkout_form.paid.value %}
-                                    {% with change=checkout_form.cashPaid.value-cart_cost %}
-                                        {{ change|floatformat:2 }}
-                                    {% endwith %}
-                                {% else %}0.00
-                                {% endif %} {% endcomment %}
-                            </h3>
-                        </div>
                         <button type="submit" class="donePayment-bttn" id="doneCash-Payment" data-payment="cash">DONE PAYMENT</button>
                     </div>
                     <div class="keyboardBox">
@@ -210,4 +199,30 @@
             </div>
         </form>
     </div>
+
+    {% if error %}
+        <div id="error-container">
+            <div class="dimmer-error"></div>
+
+            <div id="error-box">
+                <button type="button" id="close-error">X</button>
+
+                <p id="error-title">ERROR / ALERT</p>
+                <p id="error-msg">{{ error }}</p>
+            </div>
+        </div>
+    {% endif %}
+    {% if success %}
+        <div id="success-container">
+            <div class="dimmer-success"></div>
+
+            <div id="success-box">
+                <button type="button" id="close-success">X</button>
+
+                <p id="success-title">UPDATE SUCCESS</p>
+                <p id="success-msg">{{ success }}</p>
+            </div>
+        </div>
+    {% endif %}
+
 {% endblock %}

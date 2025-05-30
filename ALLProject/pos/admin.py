@@ -38,6 +38,15 @@ class CartItemAdmin(admin.ModelAdmin):
     quantity.short_description = 'Quantity'
     total_cost.short_description = 'Total Cost'
 
+class PaymentAdmin(admin.ModelAdmin):
+    list_display = ('payment_method','total_cost')
+
+    def payment_method(self,obj):
+        return obj.payment_method
+    
+    def total_cost(self,obj):
+        return obj.total_cost
+
 admin.site.register(models.Cart, CartAdmin)
 admin.site.register(models.CartItem, CartItemAdmin)
-admin.site.register(models.Payment)
+admin.site.register(models.Payment, PaymentAdmin)
