@@ -56,7 +56,11 @@
                     </div>
                     <div class="details">
                         <h3>Current Stock</h3>
-                        <h4>{{ product.quantity }}</h4>
+                        {% for message in messages %}
+                            {% if message.tags == 'info' %}
+                                <h4>{{ message }}</h4>
+                            {% endif %}
+                        {% endfor %}
                     </div>
                     
                     <form action="" method="post" id="quantity_form">

@@ -45,9 +45,17 @@
                 <button type="button" class="keyboard" value="7">7</button>
                 <button type="button" class="keyboard" value="8">8</button>                
                 <button type="button" class="keyboard" value="9">9</button>
-                <button type="button" class="keyboard clear">Clear Cart</button>
+                <form action="" method="post" id="clear_cart_form">
+                    {% csrf_token %}
+                    {{ clear_cart_form }}
+                    <button type="submit" class="keyboard clear">Clear Cart</button>
+                </form>
                 <button type="button" class="keyboard" value="0">0</button>
-                <button type="button" class="keyboard cancel">Cancel</button>
+                <form action="" method="post" id="clear_last_form">
+                    {% csrf_token %}
+                    {{ clear_last_form }}
+                    <button type="submit" class="keyboard cancel">Cancel</button>
+                </form>
             </div>
             <div class="checkout-box">
                 <div class="check-out subtotal">
@@ -200,29 +208,34 @@
         </form>
     </div>
 
-    {% if error %}
-        <div id="error-container">
-            <div class="dimmer-error"></div>
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags == 'error' %}
+                <div id="error-container">
+                    <div class="dimmer-error"></div>
 
-            <div id="error-box">
-                <button type="button" id="close-error">X</button>
+                    <div id="error-box">
+                        <button type="button" id="close-error">X</button>
 
-                <p id="error-title">ERROR / ALERT</p>
-                <p id="error-msg">{{ error }}</p>
-            </div>
-        </div>
+                        <p id="error-title">ERROR / ALERT</p>
+                        <p id="error-msg">{{ message }}</p>
+                    </div>
+                </div>
+
+            {% elif message.tags == 'success' %}
+                <div id="success-container">
+                    <div class="dimmer-success"></div>
+
+                    <div id="success-box">
+                        <button type="button" id="close-success">X</button>
+
+                        <p id="success-title">UPDATE SUCCESS</p>
+                        <p id="success-msg">{{ message }}</p>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
     {% endif %}
-    {% if success %}
-        <div id="success-container">
-            <div class="dimmer-success"></div>
-
-            <div id="success-box">
-                <button type="button" id="close-success">X</button>
-
-                <p id="success-title">UPDATE SUCCESS</p>
-                <p id="success-msg">{{ success }}</p>
-            </div>
-        </div>
-    {% endif %}
+    
 
 {% endblock %}

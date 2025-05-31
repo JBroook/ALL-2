@@ -28,3 +28,11 @@ class CheckOutForm(forms.Form):
     
     cvv = forms.CharField(required=False, max_length=4,
                           widget=forms.TextInput(attrs={'class':'card-info sec cvv', 'id':'cardCVV', 'placeholder':'Security Num'}))
+    
+class ClearCartItems(forms.Form):
+    clear_cart = forms.BooleanField(required=False, 
+                                    widget=forms.HiddenInput(attrs={'id':'clear_cart','value':'True'}))
+    
+class ClearLastCartItem(forms.Form):
+    clear_last = forms.BooleanField(required=False,
+                                    widget=forms.HiddenInput(attrs={'id':'clear_last','value':'True'}))

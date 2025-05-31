@@ -50,7 +50,16 @@ thead.cart, tr.cart {
     background-color: rgba(232, 101, 106, 0.30);
 }
 
+#clear_cart_form, #clear_last_form {
+    margin: 2%;
+}
+.keyboard.clear{
+    width: 96%;
+    height: 96%;
+}
 .keyboard.cancel {
+    width: 96%;
+    height: 96%;
     background: rgba(240, 139, 191, 0.30);
 }
 
@@ -389,7 +398,7 @@ thead.cart, tr.cart {
     justify-self: center;
     width: 95%;
     font-weight: 500;
-    font-size: 1.2vw;
+    font-size: 1.5vw;
 }
 
 #success-msg {
