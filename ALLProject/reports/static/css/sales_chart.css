@@ -1,0 +1,43 @@
+
+#sales-box {
+    position: absolute;
+    top: 12vh;
+    left: 7%;
+
+    width: 38%;
+    height: 34%;
+    
+    background-color: rgb(255, 255, 245);
+    border-radius: 20px;
+}
+
+#sales-box .column {
+    margin: auto;
+    width: 90%;
+    height: 90%;
+    padding: 5%;
+}
+
+#sales-box tbody{
+    height: 80%;
+}
+
+#sales-box tbody td{
+    color: gray;
+}
+
+#sales-box tr {
+    padding: 1%;
+}
+
+#sales-box td.july {
+    background-color: #523249 !important;
+}
+
+#sales-box td {
+    border-radius: 20px;
+    background-color: #D9D9D9;
+    font-family: "Mukta Mahee", sans-serif;
+    font-weight: 150;
+    font-style: normal;
+}

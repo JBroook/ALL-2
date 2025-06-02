@@ -1,0 +1,98 @@
+
+#transaction-box {
+    position: absolute;
+    top: 12vh;
+    left: 47%;
+
+    width: 49%;
+    height: 72%;
+    background-color: rgb(255, 255, 245);
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+#transac-details {
+    width: 95%;
+    height: calc(80% - 2em);
+    margin-left: 2.5%;
+    margin-right: 2.5%;
+}
+
+#transac-total {
+    margin-top: 0.2em;
+    margin-bottom: 0.2em;
+    padding-left: 6%;
+
+    font-family: "Mukta Mahee", sans-serif;
+    font-weight: 600;
+    font-style: normal;
+    font-size: 1.5vw;
+}
+
+.transac-switch {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 20%;
+    height: 10%;
+    border-style: none;
+    background-color: #CDE7A1;
+
+    font-family: "Mukta Mahee", sans-serif;
+    font-weight: 600;
+    font-style: normal;
+    font-size: 1vw;
+}
+
+.periods {
+    position: absolute;
+    bottom: 0;
+
+    margin: 0;
+    width: auto;
+    color: #839762;
+}
+
+.periods.monthly {
+    top: 0;
+    color: #000;
+    font-size: 1.7vw;
+    justify-self: anchor-center;
+    padding-right: 20%;
+}
+
+.periods.daily {
+    width: fit-content;
+    justify-self: end;
+    right: 0;
+    padding-right: 5%;
+}
+
+.transac-switch:focus{
+    .periods.daily {
+        top: 0;
+        color: #000;
+        font-size: 1.7vw;
+        justify-self: anchor-center;
+        padding-right: 20%;
+    }
+    .periods.monthly {
+        justify-self: end;
+        top: auto;
+        bottom: 0;
+        right: 0;
+    
+        margin: 0;
+        width: fit-content;
+        height: fit-content;
+        padding-right: 5%;
+        font-size: 1vw;
+        color: #839762;
+    }
+}
+
+table.transac-table {
+    width: 100%;
+    overflow: hidden;
+    text-align: center;
+}

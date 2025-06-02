@@ -1,0 +1,18 @@
+{% block nav %}
+{% load static %}
+    <link rel="stylesheet" href="{% static "css/manager/navigation.css" %}">
+
+    <body>
+        <div class="navigation-column" id="navcolumn">
+            <!-- Manager View -->
+            <a class="nav home"><img src="{% static "assets/home.png" %}" class="logo home"><p class="navfull home"> Home</p></a>
+            <a class="nav inventory"><img src="{% static "assets/shipping.png" %}" class="logo inventory"><p class="navfull inventory"> Inventory</p></a>
+            <a class="nav sales"><img src="{% static "assets/report.png" %}" class="logo sales"><p class="navfull sales"> Sales</p></a>
+            <a class="nav users"><img src="{% static "assets/users.png" %}" class="logo users"><p class="navfull users"> Users</p></a>
+            
+            <!-- Logout -->
+            <a class="nav"><img src="{% static "assets/logout.png" %}" class="logo"><p class="navfull"> Logout</p></a>
+        </div>
+    </body>
+{% endblock nav %}
+{% block dashboard %}{% endblock dashboard %}

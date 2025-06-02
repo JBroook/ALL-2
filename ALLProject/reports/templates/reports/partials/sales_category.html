@@ -1,0 +1,9 @@
+{% extends "reports/partials/best_product.html" %}
+{% load static %}
+{% block category_chart %}
+    <link rel = "stylesheet" href="{% static 'css/sales_category.css' %}">
+    <div id="category-box">
+        <h2 class="boxTitle">Category</h2>
+    </div>
+    {% block bar_chart %}{% endblock bar_chart %}
+{% endblock category_chart %}

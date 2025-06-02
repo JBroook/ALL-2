@@ -1,0 +1,85 @@
+.container.stocks {
+    display: flex;
+    top: 88vh;
+    padding-bottom: 3%;
+}
+
+.prints {
+    position: relative;
+    left: 42%;
+
+    width: 7rem;
+    height: 2em;
+    border-radius: 10px;
+    border-style: none;
+    background: rgba(163, 214, 217, 0.50);
+    
+    font-family: "Mukta Mahee", sans-serif;
+    font-size: unset;
+    font-weight: 700;
+    font-style: normal;
+}
+.prints.stocks {
+    position: absolute;
+    top: 3%;
+    left: 15%;
+}
+
+#stocks {
+    width: 95.5%;
+    height: 100%;
+    border-radius: 20px;
+    background-color: rgb(255, 255, 245);
+    overflow: hidden;
+}
+
+#stocks-table-box {
+    width: 100%;
+    height: 82%;
+    overflow-y: scroll;
+}
+
+#stocks-table {
+    width: 96.5%;
+    height: 100%;
+    margin-left: 2.5%;
+    border-collapse: collapse;
+}
+
+#header {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    height: 5%;
+}
+
+thead.stocks-table {
+    position: sticky;
+    z-index: 100;
+    top: 0;
+    padding-bottom: 0.5em;
+    height: 2.5rem;
+    background-color: #F0ECDD;
+}
+
+tbody.stocks-table {
+    vertical-align: top;
+    text-align: center;
+}
+
+tr.stocks-table {
+    vertical-align: middle;
+    height: 3em;
+}
+
+.stocks-approval {
+    width: 80%;
+    height: 80%;
+    background-color: #F0D38B;
+    border-style: none;
+    border-radius: 20px;
+}
+
+.stocks-approval:hover {
+    background-color: #CDE7A0;
+}

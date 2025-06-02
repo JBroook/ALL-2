@@ -1,0 +1,12 @@
+
+#category-box {
+    position: absolute;
+    top: 50vh;
+    left: 7%;
+
+    width: 38%;
+    height: 34%;
+
+    background-color: rgb(255, 255, 245);
+    border-radius: 20px;
+}

@@ -1,0 +1,43 @@
+{% extends "reports/partials/show_restock.html" %}
+{% load static %}
+{% block transactions %}
+    <link rel = "stylesheet" href="{% static 'css/sales_transactions.css' %}">
+
+    <div id="transaction-box">
+        <h2 class="boxTitle">Transactions</h2>
+        <button class="transac-switch">
+            <p class="periods monthly">Monthly</p>
+            <p class="periods daily">Daily</p>
+        </button>
+
+        <div id="transac-details">
+            <table class="transac-table">
+                <thead class="transac-table">
+                    <tr>
+                        <th> Transaction ID </th>
+                        <th> Payment Method </th>
+                        <th> Timestamp </th>
+                        <th> Amount </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>101111</td>
+                        <td>Credit Card</td>
+                        <td>13-12-2025 20:13:04</td>
+                        <td>RM 200.00</td>
+                    </tr>
+                    <tr>
+                        <td>101111</td>
+                        <td>Credit Card</td>
+                        <td>13-12-2025 20:13:04</td>
+                        <td>RM 200.00</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <h3 id="transac-total"> Total: </h3>
+        <button class="prints"> Print </button>
+    </div>
+{% endblock transactions %}

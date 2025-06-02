@@ -1,0 +1,116 @@
+{% extends "reports/partials/sales_chart.html" %}
+{% load static %}
+{% block stocks %}
+    <link rel = "stylesheet" href="{% static 'css/show_restock.css' %}">
+    <div class="container stocks">
+        <div id="stocks">
+            <h2 class="boxTitle"> Stocks </h2>
+            <button class="prints stocks"> Print </button>
+
+            <div id="stocks-table-box">
+                <table id="stocks-table">
+                    <thead class="stocks-table">
+                        <tr id="header">
+                            <th> Supplier </th>
+                            <th> Product Name </th>
+                            <th> Ordered On </th>
+                            <th> ETA </th>
+                            <th> Unit Cost </th>
+                            <th> Current Stock </th>
+                            <th> Units Ordered </th>
+                            <th> Total Cost </th>
+                        </tr>
+                    </thead>
+                    <tbody class="stocks-table">
+                        <tr class="stocks-table">
+                            <td>Sample Supplier</td>
+                            <td>Product with a long long name</td>
+                            <td>02/05/2025</td>
+                            <td>12/05/2024</td>
+                            <td>3.00</td>
+                            <td>33</td>
+                            <td>100</td>
+                            <td>300.00</td>
+                        </tr>
+                        <tr class="stocks-table">
+                            <td>Sample Supplier</td>
+                            <td>Product with a long long name</td>
+                            <td>02/05/2025</td>
+                            <td>12/05/2024</td>
+                            <td>3.00</td>
+                            <td>33</td>
+                            <td>100</td>
+                            <td>300.00</td>
+                        </tr>
+                        <tr class="stocks-table">
+                            <td>Sample Supplier</td>
+                            <td>Product with a long long name</td>
+                            <td>02/05/2025</td>
+                            <td>12/05/2024</td>
+                            <td>3.00</td>
+                            <td>33</td>
+                            <td>100</td>
+                            <td>300.00</td>
+                        </tr>
+                        <tr class="stocks-table">
+                            <td>Sample Supplier</td>
+                            <td>Product with a long long name</td>
+                            <td>02/05/2025</td>
+                            <td>12/05/2024</td>
+                            <td>3.00</td>
+                            <td>33</td>
+                            <td>100</td>
+                            <td>300.00</td>
+                        </tr>
+                        <tr class="stocks-table">
+                            <td>Sample Supplier</td>
+                            <td>Product with a long long name</td>
+                            <td>02/05/2025</td>
+                            <td>12/05/2024</td>
+                            <td>3.00</td>
+                            <td>33</td>
+                            <td>100</td>
+                            <td>300.00</td>
+                        </tr>
+                        <tr class="stocks-table">
+                            <td>Sample Supplier</td>
+                            <td>Product with a long long name</td>
+                            <td>02/05/2025</td>
+                            <td>12/05/2024</td>
+                            <td>3.00</td>
+                            <td>33</td>
+                            <td>100</td>
+                            <td>300.00</td>
+                        </tr>
+                        <tr class="stocks-table">
+                            <td>Sample Supplier</td>
+                            <td>Product with a long long name</td>
+                            <td>02/05/2025</td>
+                            <td>12/05/2024</td>
+                            <td>3.00</td>
+                            <td>33</td>
+                            <td>100</td>
+                            <td>300.00</td>
+                        </tr>
+                        <tr class="stocks-table">
+                            <td>Sample Supplier</td>
+                            <td>Product with a long long name</td>
+                            <td>02/05/2025</td>
+                            <td>12/05/2024</td>
+                            <td>3.00</td>
+                            <td>33</td>
+                            <td>100</td>
+                            <td>300.00</td>
+                        </tr>
+                        <tr></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="view-more">
+            <button class="viewMoreBttn"> View More </button>
+        </div>
+    </div>
+    {% block transactions %}{% endblock transactions %}
+{% endblock stocks %}
