@@ -7,12 +7,14 @@
             <h2 class="boxTitle">Best Selling Product (Monthly)</h2>
             <button class="prints best-product"> Print </button>
             
-            <ul>
-                <div class="show-product">
-                    <div class="product-img"></div>
-                    <h4 class="product-details">Product with a long long name</h4>
-                    <h3 class="product-details">50 units sold</h3>
-                </div>
+            <ul id="show-product">
+                {% for items in best_product %}
+                    <div class="show-product">
+                        <div class="product-img-box"><img src="{{items.image}}" alt="Product Image" class="product-img"></div>
+                        <h4 class="product-details">{{ items.product }}</h4>
+                        <h3 class="product-details">{{ items.quantity_sold }} units sold</h3>
+                    </div>
+                {% endfor %}
                 <div class="show-product">
                     <div class="product-img"></div>
                     <h4 class="product-details">Product with a long long name</h4>

@@ -2,6 +2,8 @@
 {% load static %}
 {% block transactions %}
     <link rel = "stylesheet" href="{% static 'css/sales_transactions.css' %}">
+    {% comment %} SELECT * FROM pos_payment
+WHERE timeStamp like "2025-06-03%" {% endcomment %}
 
     <div id="transaction-box">
         <h2 class="boxTitle">Transactions</h2>
@@ -20,19 +22,22 @@
                         <th> Amount </th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>101111</td>
-                        <td>Credit Card</td>
-                        <td>13-12-2025 20:13:04</td>
-                        <td>RM 200.00</td>
-                    </tr>
-                    <tr>
-                        <td>101111</td>
-                        <td>Credit Card</td>
-                        <td>13-12-2025 20:13:04</td>
-                        <td>RM 200.00</td>
-                    </tr>
+                <tbody class="transac-table">
+                    {% if transacts %}
+                        {% for items in transacts %}
+                            <tr>
+                                <td>{{items.id}}</td>
+                                <td>{{items.payment_method}}</td>
+                                <td>{{items.timeStamp}}</td>
+                                <td>RM {{items.total_cost|floatformat:2}}</td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="4">No Transaction Made Today</td>
+                        </tr>
+                    {% endif %}
+                    
                 </tbody>
             </table>
         </div>

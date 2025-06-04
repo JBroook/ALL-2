@@ -4,5 +4,5 @@ from . import views
 
 appname = 'report'
 urlpatterns = [
-    path('sales/', views.ManagerReportView, name="sales"),
+    path('', views.ManagerReportView, name="report"),
 ]
