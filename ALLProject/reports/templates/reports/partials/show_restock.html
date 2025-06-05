@@ -22,86 +22,20 @@
                         </tr>
                     </thead>
                     <tbody class="stocks-table">
-                        <tr class="stocks-table">
-                            <td>Sample Supplier</td>
-                            <td>Product with a long long name</td>
-                            <td>02/05/2025</td>
-                            <td>12/05/2024</td>
-                            <td>3.00</td>
-                            <td>33</td>
-                            <td>100</td>
-                            <td>300.00</td>
-                        </tr>
-                        <tr class="stocks-table">
-                            <td>Sample Supplier</td>
-                            <td>Product with a long long name</td>
-                            <td>02/05/2025</td>
-                            <td>12/05/2024</td>
-                            <td>3.00</td>
-                            <td>33</td>
-                            <td>100</td>
-                            <td>300.00</td>
-                        </tr>
-                        <tr class="stocks-table">
-                            <td>Sample Supplier</td>
-                            <td>Product with a long long name</td>
-                            <td>02/05/2025</td>
-                            <td>12/05/2024</td>
-                            <td>3.00</td>
-                            <td>33</td>
-                            <td>100</td>
-                            <td>300.00</td>
-                        </tr>
-                        <tr class="stocks-table">
-                            <td>Sample Supplier</td>
-                            <td>Product with a long long name</td>
-                            <td>02/05/2025</td>
-                            <td>12/05/2024</td>
-                            <td>3.00</td>
-                            <td>33</td>
-                            <td>100</td>
-                            <td>300.00</td>
-                        </tr>
-                        <tr class="stocks-table">
-                            <td>Sample Supplier</td>
-                            <td>Product with a long long name</td>
-                            <td>02/05/2025</td>
-                            <td>12/05/2024</td>
-                            <td>3.00</td>
-                            <td>33</td>
-                            <td>100</td>
-                            <td>300.00</td>
-                        </tr>
-                        <tr class="stocks-table">
-                            <td>Sample Supplier</td>
-                            <td>Product with a long long name</td>
-                            <td>02/05/2025</td>
-                            <td>12/05/2024</td>
-                            <td>3.00</td>
-                            <td>33</td>
-                            <td>100</td>
-                            <td>300.00</td>
-                        </tr>
-                        <tr class="stocks-table">
-                            <td>Sample Supplier</td>
-                            <td>Product with a long long name</td>
-                            <td>02/05/2025</td>
-                            <td>12/05/2024</td>
-                            <td>3.00</td>
-                            <td>33</td>
-                            <td>100</td>
-                            <td>300.00</td>
-                        </tr>
-                        <tr class="stocks-table">
-                            <td>Sample Supplier</td>
-                            <td>Product with a long long name</td>
-                            <td>02/05/2025</td>
-                            <td>12/05/2024</td>
-                            <td>3.00</td>
-                            <td>33</td>
-                            <td>100</td>
-                            <td>300.00</td>
-                        </tr>
+                        {% if all_restock %}
+                            {% for items in all_restock %}
+                                <tr class="stocks-table">
+                                    <td>{{ items.0 }}</td>
+                                    <td>{{ items.1 }}</td>
+                                    <td>02/05/2025</td>
+                                    <td>{{ items.2 }}</td>
+                                    <td>{{ items.3|floatformat:2 }}</td>
+                                    <td>{{ items.4 }}</td>
+                                    <td>{{ items.5 }}</td>
+                                    <td>{{ items.6|floatformat:2 }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
                         <tr></tr>
                     </tbody>
                 </table>

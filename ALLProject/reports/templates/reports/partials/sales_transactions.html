@@ -25,13 +25,16 @@ WHERE timeStamp like "2025-06-03%" {% endcomment %}
                 <tbody class="transac-table">
                     {% if transacts %}
                         {% for items in transacts %}
-                            <tr>
+                            <tr style="height:10%;">
                                 <td>{{items.id}}</td>
                                 <td>{{items.payment_method}}</td>
                                 <td>{{items.timeStamp}}</td>
                                 <td>RM {{items.total_cost|floatformat:2}}</td>
                             </tr>
                         {% endfor %}
+                        <tr>
+                            <td></td>
+                        </tr>
                     {% else %}
                         <tr>
                             <td colspan="4">No Transaction Made Today</td>
