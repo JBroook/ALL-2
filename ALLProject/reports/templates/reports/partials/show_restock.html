@@ -13,8 +13,9 @@
                         <tr id="header">
                             <th> Supplier </th>
                             <th> Product Name </th>
-                            <th> Ordered On </th>
-                            <th> ETA </th>
+                            {% comment %} <th> Ordered On </th> {% endcomment %}
+                            {% comment %} <th> ETA </th> {% endcomment %}
+                             <th> Restocked On </th>
                             <th> Unit Cost </th>
                             <th> Current Stock </th>
                             <th> Units Ordered </th>
@@ -27,7 +28,7 @@
                                 <tr class="stocks-table">
                                     <td>{{ items.0 }}</td>
                                     <td>{{ items.1 }}</td>
-                                    <td>02/05/2025</td>
+                                    {% comment %} <td>02/05/2025</td> {% endcomment %}
                                     <td>{{ items.2 }}</td>
                                     <td>{{ items.3|floatformat:2 }}</td>
                                     <td>{{ items.4 }}</td>

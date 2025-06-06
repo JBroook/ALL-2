@@ -2,8 +2,48 @@
 {% load static %}
 {% block category_chart %}
     <link rel = "stylesheet" href="{% static 'css/sales_category.css' %}">
+    <script src="{% static 'js/canvasjs.min.js' %}"></script>
+    {% if month %}
+        <style>
+            #sales-box td.{{ month }} {
+                background-color: burlywood !important;
+            }
+        </style>
+    {% endif %}
+
     <div id="category-box">
-        <h2 class="boxTitle">Category</h2>
+        <h2 class="boxTitle" id="category-title">Product Categories</h2>
+        <div id="chartContainer" style="width: 100%; height:110%"></div>
+        <script>
+            window.onload = function () {
+                var chart = new CanvasJS.Chart("chartContainer",{
+                theme: "light2",
+                backgroundColor: "rgb(255, 255, 245)",
+                animationEnabled: true,
+                exportEnabled: true,
+                toolTip:{   
+                    content: "{name}: sold {total} products"
+                },
+                title: {
+                    text: "Products Sold",
+                    dockInsidePlotArea: true,
+                    verticalAlign: "center",
+                    maxWidth: 100,
+                    fontSize: 16
+                },
+                data: [{
+                    type: "doughnut",
+                    radius: "80",
+                    innerRadius: "60",
+                    indexLabel: "{name} - {y}",
+                    yValueFormatString: "#,##0.0\"%\"",
+                    startAngle: 90,
+                    dataPoints: {{ category_sale|safe }}
+                }]
+                });
+                chart.render();
+            }
+        </script>
     </div>
     {% block bar_chart %}{% endblock bar_chart %}
 {% endblock category_chart %}
