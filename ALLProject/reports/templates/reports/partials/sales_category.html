@@ -3,13 +3,6 @@
 {% block category_chart %}
     <link rel = "stylesheet" href="{% static 'css/sales_category.css' %}">
     <script src="{% static 'js/canvasjs.min.js' %}"></script>
-    {% if month %}
-        <style>
-            #sales-box td.{{ month }} {
-                background-color: burlywood !important;
-            }
-        </style>
-    {% endif %}
 
     <div id="category-box">
         <h2 class="boxTitle" id="category-title">Product Categories</h2>

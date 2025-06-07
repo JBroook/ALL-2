@@ -17,17 +17,6 @@
     margin-right: 2.5%;
 }
 
-#transac-total {
-    margin-top: 0.2em;
-    margin-bottom: 0.2em;
-    padding-left: 6%;
-
-    font-family: "Mukta Mahee", sans-serif;
-    font-weight: 600;
-    font-style: normal;
-    font-size: 1.5vw;
-}
-
 .transac-switch {
     position: absolute;
     top: 0;
@@ -52,42 +41,41 @@
     color: #839762;
 }
 
-.periods.monthly {
+.periods.daily {    
+    width: fit-content;
+    justify-self: end;
+    right: 0;
+    top: 55%;
+    padding-right: 5%;
+}
+.periods.monthly {    
     top: 0;
     color: #000;
     font-size: 1.7vw;
     justify-self: anchor-center;
-    padding-right: 20%;
+    padding-right: 35%;
 }
 
-.periods.daily {
-    width: fit-content;
+.periods.changed-monthly {
     justify-self: end;
+    top: auto;
+    bottom: 0;
     right: 0;
+
+    margin: 0;
+    width: fit-content;
+    height: fit-content;
     padding-right: 5%;
+    font-size: 1vw;
+    color: #839762;
 }
 
-.transac-switch:focus{
-    .periods.daily {
-        top: 0;
-        color: #000;
-        font-size: 1.7vw;
-        justify-self: anchor-center;
-        padding-right: 20%;
-    }
-    .periods.monthly {
-        justify-self: end;
-        top: auto;
-        bottom: 0;
-        right: 0;
-    
-        margin: 0;
-        width: fit-content;
-        height: fit-content;
-        padding-right: 5%;
-        font-size: 1vw;
-        color: #839762;
-    }
+.periods.changed-daily {
+    top: 0;
+    color: #000;
+    font-size: 1.7vw;
+    justify-self: anchor-center;
+    padding-right: 55%;
 }
 
 table.transac-table {
@@ -99,4 +87,35 @@ table.transac-table {
 
 tbody.transac-table {
     font-family: monospace;
+}
+
+#transac-total-box {
+    position: absolute;
+    display: flex;
+    bottom: 40px;
+    width: 100%;
+    height: 40px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#transac-total {
+    margin-top: 0.2em;
+    margin-bottom: 0.2em;
+    padding-left: 6%;
+
+    font-family: "Mukta Mahee", sans-serif;
+    font-weight: 600;
+    font-style: normal;
+    font-size: 1.5vw;
+}
+
+#revenue {
+    float: right;
+    padding-right: 6%;
+}
+
+#transac-print {
+    position: absolute;
+    bottom: 10px;
 }

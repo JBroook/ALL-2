@@ -15,7 +15,7 @@
     margin: auto;
     width: 90%;
     height: 90%;
-    padding: 5%;
+    padding-bottom: 5%;
 }
 
 #sales-box tbody{
@@ -32,4 +32,10 @@
     font-family: "Mukta Mahee", sans-serif;
     font-weight: 150;
     font-style: normal;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.charts-css .tooltip {
+    bottom: 120%;
 }
