@@ -1,0 +1,25 @@
+<div id="actual-info">
+    <h2 class="title"> {{employee.user.first_name}} {{employee.user.last_name}}</h2>
+
+    <div class="info-container">
+        <div class="info-field">
+            <h3>Username</h3>
+            <p>{{employee.user.username}}</p>
+        </div>
+        
+        <div class="info-field">
+            <h3>Email</h3>
+            <p>{{employee.user.email}}</p>
+        </div>
+        
+        <div class="info-field">
+            <h3>Role</h3>
+            <p>{{employee.role}}</p>
+        </div>
+    </div>
+
+    <div id="button-container">
+        <button onclick="edit_user({{employee.id}})">Edit User</button>
+        <button onclick="delete_user({{employee.id}})">Delete User</button>
+    </div>
+</div>

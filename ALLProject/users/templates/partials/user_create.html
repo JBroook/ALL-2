@@ -2,19 +2,21 @@
     <h2 class="title"> Add User </h2>
     <form method="POST" action="{% url 'user_create'%}">
         {% csrf_token %}
-        {% comment %} <div class="form-input">
-            {% for field in user_form%}
-                <label class="form-label" for="{{ field.auto_id }}">{{ field.label }}</label>
+        {% for field in user_form%}
+            <div class="form-field">
+                <h3>{{field.label}}</h3>
+                <p>{{field.help_text}}</p>
                 {{field}}
-            {% endfor %}
-            <label class="form-label" for="{{ field.auto_id }}">{{ employee_form.role.label }}</label>
+            </div>
+        {% endfor %}
+
+        <div class="form-field">
+            <h3>{{employee_form.role.label}}</h3>
             {{employee_form.role}}
-        </div> {% endcomment %}
+        </div>
 
-        {{user_form}}
-
-        {{employee_form}}
-
-        <button type="submit">Add User</button>
+        <div id="button-container">
+            <button type="submit">Add User</button>
+        </div>
     </form>
 </div>

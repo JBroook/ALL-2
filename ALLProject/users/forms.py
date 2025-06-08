@@ -1,31 +1,76 @@
 from django import forms
 from .models import Employee
-# from django.contrib.auth.models import User
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
-# class UserForm(forms.ModelForm):
-#     class Meta:
-#         model = User
-#         fields = ['username','email','password']
-#         labels = {
-#             'username' : "Username",
-#             'email' : "Email",
-#             'password' : 'Password',
-#         }
+class UserForm(UserCreationForm):
+    email = forms.EmailField(required=True, help_text='Required. Enter a valid email address.')
 
-#         widgets = {
-#             'username' : forms.TextInput(
-#                 attrs={
-#                     'placeholder':'e.g. JohnAdam', 'class':'form-control'
-#                     }),
-#             'email' : forms.TextInput(
-#                 attrs={
-#                     'placeholder':'e.g. johnadam@gmail.com', 'class':'form-control'
-#                     }),
-#             'password' : forms.PasswordInput(
-#                 attrs={
-#                     'placeholder':'*******', 'class':'form-control'
-#                     }),
-#         }
+    class Meta:
+        model = User
+        fields = ("username", "email", "first_name", "last_name", "password1", "password2")
+
+        widgets = {
+            'username' : forms.TextInput(
+                attrs={
+                    'placeholder':'e.g. JohnAdam', 'class':'form-control'
+                    }),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(UserForm, self).__init__(*args, **kwargs)
+        self.fields['password1'].widget.attrs.update({
+            'placeholder': '*******',
+            'class': 'form-control'
+        })
+        self.fields['password2'].widget.attrs.update({
+            'placeholder': '*******',
+            'class': 'form-control'
+        })
+        self.fields['email'].widget.attrs.update({
+            'placeholder': 'e.g. johnadam@gmail.com',
+            'class': 'form-control'
+        })
+        self.fields['first_name'].widget.attrs.update({
+            'placeholder': 'e.g. John',
+            'class': 'form-control'
+        })
+        self.fields['last_name'].widget.attrs.update({
+            'placeholder': 'e.g. Adams',
+            'class': 'form-control'
+        })
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.email = self.cleaned_data["email"]
+        if commit:
+            user.save()
+        return user
+    
+class UserEditForm(UserChangeForm):
+    class Meta:
+        model = User
+        fields = ("username", "email", "first_name", "last_name")
+        exclude = ['password']
+
+        widgets = {
+            'username' : forms.TextInput(
+                attrs={
+                    'placeholder':'e.g. JohnAdam', 'class':'form-control'
+                    }),
+            'email' : forms.TextInput(
+                attrs={
+                    'placeholder':'e.g. johnadam@gmail.com', 'class':'form-control'
+                    }),
+            'first_name' : forms.TextInput(
+                attrs={
+                    'placeholder':'e.g. John', 'class':'form-control'
+                    }),
+            'last_name' : forms.TextInput(
+                attrs={
+                    'placeholder':'e.g. Adam', 'class':'form-control'
+                    }),
+        }
 
 class EmployeeForm(forms.ModelForm):
     class Meta:
