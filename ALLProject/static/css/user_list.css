@@ -92,9 +92,11 @@ h4 {
     list-style: none;
     background: #FFF;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    display: flex;
+    justify-content: center;
 }
 
-.dropdown-content a {
+.dropdown-content li {
     color: black;
     text-decoration: none;
     display: block;
@@ -105,6 +107,13 @@ h4 {
     font-family: "Mukta Mahee", sans-serif;
     font-weight: 300;
     font-style: normal;
+    width: 100%;
+}
+
+.dropdown-content ul {
+    padding: 0;
+    list-style-type: none;
+    width: 100%;
 }
   
 .dropdown-content li {
@@ -144,7 +153,6 @@ h4 {
     position: relative;
     left: 8%;
     top: 16vh;
-
     width: 90%; /* 80% when navigation is opened*/
     height: 70vh;
     font-family: "Mukta Mahee", sans-serif;
@@ -189,20 +197,24 @@ h4 {
     background: #adb3a7;
 }
 
-.adduser-box {
+#userinfo-box {
     position: absolute;
-    top: 10vh;
+    top: 12vh;
     right: 1%;
-    visibility: hidden;
 
     width: 30%;
     height: 85%;
     background-color: #FFF;
-    box-shadow: -8px 8px 0px 0px rgba(0,0,0,0.3);
+    border-radius: 15px;
+    box-shadow: 0px 5px 8px #828282;
     
     font-family: "Mukta Mahee", sans-serif;
     font-weight: 600;
     font-style: normal;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #close {
@@ -226,17 +238,12 @@ h4 {
     background-color: #D9D9D9;
 }
 
-.addUser.title {
-    position: absolute;
-    top: 2%;
-    left: 40%;
-    margin: 0;
-    width: fit-content;
-    height: fit-content;
-    
+.title {    
     font-family: "Mukta Mahee", sans-serif;
     font-weight: 800;
     font-style: normal;
+
+    text-align: center;
 }
 
 form.addUser {
@@ -355,4 +362,163 @@ input.addUser {
 .editBtn.del:hover {
     color: #FFF;
     background: rgba(232, 101, 106, 1);
+}
+
+#actual-info {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+}
+
+#actual-info form{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.5vw 0 1.5vw;
+}
+
+.form-input {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form-control {
+    border: none;
+    background-color: #f8ece4;
+    border-radius: 3px;
+    width: 25vw;
+    height: 5vh;
+    margin-bottom: 2vh;
+    font-size: 2.5vh;
+    padding-left: 0.5vw;
+    font-family: "Mukta Mahee", sans-serif;
+}
+
+.form-label {
+    font-size: 20px;
+}
+
+#button-container {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 6vh;
+    padding-bottom: 2vh;
+}
+
+#button-container button {
+    width: 10vw;
+    height: fit-content;
+    background: #C3B299;
+    border-radius: 20px;
+    font-family: "Mukta Mahee", sans-serif;
+    font-weight: 800;
+    font-size: 1vw;
+    font-style: normal;
+    padding: 0.5vh 0 0.5vh 0;
+    margin: 0 0.5vw 0 0.5vw;
+}
+
+#actual-info button:hover {
+    color: #FFF;
+    background: #815355;
+}
+
+.helptext {
+    font-size: 0.8vw;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    width: 100%;
+    margin-bottom: 1vh;
+}
+
+.form-field h3 {
+    margin: 0;
+    font-size: 1.5vw;
+}
+
+.form-field p {
+    margin-top: 0;
+    margin-bottom: 0.5vh;
+    word-break: break-all;
+    white-space: normal;
+}
+
+.info-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 1.5vw 0 1.5vw;
+}
+
+.info-field h3 {
+    margin: 0;
+    font-size: 1.5vw;
+}
+
+.info-field p{
+    border: none;
+    background-color: #f8ece4;
+    border-radius: 3px;
+    width: 25vw;
+    height: 5vh;
+    margin-bottom: 2vh;
+    font-size: 2.5vh;
+    padding-left: 0.5vw;
+    font-family: "Mukta Mahee", sans-serif;
+}
+
+.container {
+  display: flex;
+  flex-flow: column;
+  width: 460px;
+  height: 340px;
+  background-color: white;
+  margin: 20px;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.container p {
+  text-align: center;
+}
+
+.button-row {
+  display: flex;
+  justify-content: center;
+}
+
+.button-row button {
+  width: 162px;
+  height: 50px;
+  border: none;
+  border-radius: 40px;
+  background: #DBEBC0;
+  margin: 5px;
+  font-size: 20px;
+}
+
+.button-row button:hover {
+  background: #bdcaa6; 
+}
+
+#delete-button {
+  background: #E8656A;
+  color: white;
+}
+
+#delete-button:hover {
+  background: #c7575b; 
 }

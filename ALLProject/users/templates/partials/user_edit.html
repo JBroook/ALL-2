@@ -1,0 +1,24 @@
+<div id="actual-info">
+    <h2 class="title"> Edit User </h2>
+    <form method="POST" action="{% url 'user_edit' employee_id%}">
+        {% csrf_token %}
+        {% for field in user_form%}
+            {% if field != user_form.password %}
+                <div class="form-field">
+                    <h3>{{field.label}}</h3>
+                    <p>{{field.help_text}}</p>
+                    {{field}}
+                </div>
+            {%endif%}
+        {% endfor %}
+
+        <div class="form-field">
+            <h3>{{employee_form.role.label}}</h3>
+            {{employee_form.role}}
+        </div>
+
+        <div id="button-container">
+            <button type="submit">Confirm</button>
+        </div>
+    </form>
+</div>
