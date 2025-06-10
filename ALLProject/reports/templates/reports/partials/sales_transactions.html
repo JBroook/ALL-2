@@ -62,6 +62,10 @@
             <h3 id="transac-total"> Total: </h3>
             <h3 id="revenue">RM {{total_revenue}}</h3>
         </div>
-        <button class="prints" id="transac-print"> Print </button>
+        <form action="" method="post" id="sales_report">
+            {% csrf_token %}
+            {{sales_report}}
+            <button type="submit" class="prints" id="transac-print"> Print </button>
+        </form>
     </div>
 {% endblock transactions %}
