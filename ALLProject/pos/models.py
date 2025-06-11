@@ -15,7 +15,6 @@ class Payment(models.Model):
     timeStamp = models.DateTimeField(auto_now_add=True)
 
 class Cart(models.Model):
-    product = models.ManyToManyField(Product,through='CartItem')
     total_cost = models.FloatField(default=0.00)
     payment_status = models.BooleanField(null=True)
     timeStamp = models.DateTimeField(auto_now_add=True)

@@ -97,3 +97,7 @@ h1 {
     top: 3%;
     left: 35%;
 }
+
+.prints:hover {
+    background: rgb(142, 222, 226);
+}

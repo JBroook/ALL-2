@@ -2,11 +2,12 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.template import loader
 from django.shortcuts import render
+from django.contrib import messages
 from django.conf import settings
 from django.db.models import F, Count, Sum
 from .models import Payment, Product, CartItem, Restock, Category
 from .forms import printSales
-from datetime import datetime,date
+from datetime import datetime,date,timedelta
 
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
@@ -25,7 +26,10 @@ def ManagerReportView(request):
     template = loader.get_template('reports/partials/sales_transactions.html')
     sales_report = printSales()
 
+    if 'day_month' not in request.session:
+        request.session['day_month'] = "day"
     print(request.POST)
+    print(request.session['day_month'])
 
     # Get Best Selling Products
     all_products = Product.objects.all().values()
@@ -43,12 +47,13 @@ def ManagerReportView(request):
     best_product.sort(key=lambda x:x['quantity_sold'])
     best_product.reverse()
     #print(best_product)
-
+    #print(all_products)
+    
     # Sales for each category (Donut Chart)
     total_sold = CartItem.objects.aggregate(total=Sum('quantity'))
     category_sale = list(Category.objects.values('name').annotate(total=Sum('product__cartitem__quantity')))
-    category_sale = [item for item in category_sale if item['total'] is not None]
-    for i in category_sale:
+    category_sale_only = [item for item in category_sale if item['total'] is not None]
+    for i in category_sale_only:
         percentage = round(((i['total']/total_sold['total']) * 360),2)
         i.update({'y':percentage})
     # print(total_sold)
@@ -89,71 +94,135 @@ def ManagerReportView(request):
 
     # Get Today's Transactions
     total_revenue = 0
+    total_transacts = 0
     if 'change-monthly' in request.POST:
-        month_or_day = "month"
-        show_transacts = Payment.objects.filter(timeStamp__month = today.month).values()
-        for i in show_transacts:
-            total_revenue += float(i['total_cost'])
+        if request.POST['change-monthly'] == "1":
+            show_transacts = Payment.objects.filter(timeStamp__month = today.month).values()
+            products_sold = CartItem.objects.all().filter(cart_id__timeStamp__month = today.month).aggregate(sold=Sum('quantity'))
+            for i in show_transacts:
+                total_transacts += 1
+                total_revenue += float(i['total_cost'])
+            request.session['day_month'] = "month"
+            
+        elif request.POST['change-monthly'] == "0":
+            show_transacts = Payment.objects.filter(timeStamp__day = today.day).values()
+            products_sold = CartItem.objects.all().filter(cart_id__timeStamp__month = today.day).aggregate(sold=Sum('quantity'))
+            for i in show_transacts:
+                total_transacts += 1
+                total_revenue += float(i['total_cost'])
+            request.session['day_month'] = "day"
+    
     else:
-        month_or_day = "day"
-        show_transacts = Payment.objects.filter(timeStamp__day = today.day).values()
-        for i in show_transacts:
-            total_revenue += float(i['total_cost'])
+        if request.session['day_month'] == "day":
+            show_transacts = Payment.objects.filter(timeStamp__day = today.day).values()
+            products_sold = CartItem.objects.all().filter(cart_id__timeStamp__month = today.day).aggregate(sold=Sum('quantity'))
+            for i in show_transacts:
+                total_transacts += 1
+                total_revenue += float(i['total_cost'])
+        elif request.session['day_month'] == "month":
+            show_transacts = Payment.objects.filter(timeStamp__month = today.month).values()
+            products_sold = CartItem.objects.all().filter(cart_id__timeStamp__month = today.month).aggregate(sold=Sum('quantity'))
+            for i in show_transacts:
+                total_transacts += 1
+                total_revenue += float(i['total_cost'])
 
-    print(total_revenue)
+    # if 'change-monthly' in request.POST:
+    #     print('change-monthly found')
+    #     print(request.POST['change-monthly'])
+    #     print(type(request.POST['change-monthly']))
+    # print(total_revenue)
+    #print(avg_transact_revenue)
+    # print(products_sold)
     # print(transacts_day)
     # for items in transacts_day:
     #     print(items)
-    print(month_or_day)
+    # print(month_or_day)
     # print(transacts_mth)
     # for items in transacts_mth:
     #     print(items)
+    # print(total_transacts)
 
     if 'sales_report' in request.POST:
         print("Printing Report")
-        print_pdf(request)
+        title = "Sales Report"
+        user = f"Manager Name - {this_month.capitalize()} {today.day} {today.year}"
+
+        if total_transacts != 0:
+            avg_transact_revenue = total_revenue / total_transacts
+        else:
+            avg_transact_revenue = 0
+            # messages.error(request,"ERROR: There are no transactions done today")
+            # raise LookupError("ERROR: There are no transactions done today")
+
+        #Total Revenue, Total Transaction Count, Average Revenue per transact, Total Products Sold
+        report_detail_data = [
+            ['Metric','Value'],
+            ['Total Sales Revenue', f"{total_revenue}"],
+            ['Total Transactions', str(total_transacts)],
+            ['Average Sale Per Order', f'RM {avg_transact_revenue:.2f}'],
+            ['Total Products Sold', str(products_sold['sold'])]
+        ] 
+
+        #Category, Product Name, Quantity Sold, Revenue By Product
+        if request.session['day_month'] == 'day':
+            report_type = "Daily"
+            period = str(today)
+            top_product_data = CartItem.objects.filter(cart_id__timeStamp__day=today.day).values(
+                'product__category__name',
+                'product__name'
+            ).annotate(quantity=Sum('quantity')).annotate(revenue=Sum('total_cost')).order_by('product__name')
+
+        elif request.session['day_month'] == 'month':
+            nxt_mnth = today.replace(day=28) + timedelta(days=today.day)
+            last_day = nxt_mnth - timedelta(days=nxt_mnth.day)
+
+            report_type = "Monthly"
+            period = f"{this_month.capitalize()} 1 2025 - {this_month.capitalize()} {last_day.day} 2025"
+            top_product_data = CartItem.objects.filter(cart_id__timeStamp__month=today.month).values(
+                'product__category__name',
+                'product__name'
+            ).annotate(quantity=Sum('quantity')).annotate(revenue=Sum('total_cost')).order_by('product__name')
+            
+        print(list(product.values() for product in top_product_data))
+        print_pdf(title,report_type,period,user,report_detail_data,list(product.values() for product in top_product_data))
         return HttpResponseRedirect(reverse('report'))
     
+    # print(request.session['day_month'])
     context = {
         'sales_report': sales_report,
         'month': this_month,
         'best_product' : best_product,
-        'category_sale' : category_sale,
+        'category_sale' : category_sale_only,
         'all_monthly_sales' : all_monthly_sales,
         'sales_per_month': sales_per_month,
         'all_restock' : all_restock,
         'transacts' : show_transacts,
         'total_revenue' : total_revenue,
-        'month_or_day' : month_or_day,
+        'month_or_day' : request.session['day_month'],
         }
     return HttpResponse(template.render(context,request))
     
-def add_header_footer(canvas, doc):
+def add_header_footer(canvas, doc,title,report_type,period,user):
     # Get the page width and height
     width, height = A4
     
-    title = "Sales Report"
-    report_type = "Daily"
-    period = "May 1 2025 - June 1 2025"
-    user = "Manager Name - 2025-06-01"
-
     #Header
     canvas.setFont("TimesNewRoman-Bold", 20)
-    canvas.drawString(232, height-25-0.5*cm, title)
+    canvas.drawString(232, height-1.3*cm, title)
 
     # Report Details    
     canvas.setFont("TimesNewRoman", 13)
     canvas.drawString(1.5*cm, height-65, f"Report Type -- {report_type}")
-    canvas.drawString(1.5*cm, height-80, f"Date Period: {period}")
-    canvas.drawString(1.5*cm, height-95, f"Generated by: {user}")
+    canvas.drawString(1.5*cm, height-85, f"Date Period: {period}")
+    canvas.drawString(1.5*cm, height-105, f"Generated by: {user}")
     
     # Add Logo
     logo = finders.find('images/logo.png')
     if logo:
-        image_width = 2.6*cm
-        image_height = 1.6*cm
+        image_width = 2.8*cm
+        image_height = 1.7*cm
         x_image = width - image_width - 50  
-        y_position = height - image_height - 50
+        y_position = height - image_height - 55
 
         canvas.drawImage(logo, x_image, y_position, width=image_width, height=image_height,mask="auto")
 
@@ -164,14 +233,11 @@ def add_header_footer(canvas, doc):
     # Footer
     footer_text = "--- Created Using WareHub ---"
     
-    # Set font and size for footer
     canvas.setFont("TimesNewRoman", 8)
-    
-    # Draw footer at the bottom (with margin)
-    canvas.drawString(232, 0.5*cm, footer_text)
+    canvas.drawString(232, 1.5*cm, footer_text)
 
-def generate_report(request):    
-    title = "Sales Report"
+def generate_report(title,report_type,period,user,report_detail,data):
+
     # check for times new romans font
     font_path = finders.find('fonts/Times New Roman.ttf')
     font_path2 = finders.find('fonts/Times New Roman - Bold.ttf')
@@ -184,7 +250,7 @@ def generate_report(request):
 
     # Create a buffer for the PDF
     buffer = BytesIO()
-    doc = SimpleDocTemplate(buffer, pagesize=A4, rightMargin=1.5*cm, leftMargin=1.5*cm, topMargin=4*cm, bottomMargin=4*cm)
+    doc = SimpleDocTemplate(buffer, pagesize=A4, rightMargin=1.5*cm, leftMargin=1.5*cm, topMargin=4.5*cm, bottomMargin=2*cm)
     width, height = A4
     available_width = width-(1.5*cm*2)
     
@@ -195,21 +261,20 @@ def generate_report(request):
     styles = getSampleStyleSheet()
 
     # Main Content Table
-    report_data = [
-        ['Metric','Value'],
-        ['Total Sales Revenue', 'RM2100.20'],
-        ['Total Transactions', '50'],
-        ['Average Sale Per Order', 'RM 200.18'],
-        ['Total Products Sold', '311']
-    ]
-    report_table = Table(report_data, colWidths=[available_width*0.5, available_width*0.5])
+    report_table = Table(report_detail, colWidths=[available_width*0.5, available_width*0.5])
     report_table.setStyle(TableStyle([
+        ('VALIGN',(0,0),(-1,-1),'MIDDLE'),
         ('ALIGN',(0,0),(-1,-1),'CENTER'),
         ('FONTNAME',(0,0),(-1,0),'TimesNewRoman'),
         ('FONTSIZE',(0,0),(-1,0),12),
-        ('BOTTOMPADDING',(0,0),(-1,0),0.5*cm),
-        ('GRID',(0,0),(-1,0),0.01*cm,colors.black),
+        # ('TOPPADDING',(0,0),(0,1),0.1*cm),
+        ('BOTTOMPADDING',(0,0),(0,1),0.2*cm),
+        ('TOPPADDING',(1,0),(-1,-1),0.25*cm),
+        ('BOTTOMPADDING',(1,0),(-1,-1),0.25*cm),
+        ('GRID',(0,1),(-1,-1),0.01*cm,colors.lightslategrey),
+        ('GRID',(0,0),(1,0),0.03*cm,colors.black),
     ]))
+    
     subheader_style = styles['Heading3']
     subheader_style.fontSize = 13
     subheader_style.alignment = 1
@@ -217,25 +282,26 @@ def generate_report(request):
     flowables.append(report_table)
 
     # Top Products Sold Table
-    products_data = [
-        ['Category','Product','Sold','Revenue'],
-        ['Drinks','Milk','30','RM 300.00'],
-        ['Meat','Chicken','26','RM 300.00'],
-        ['Electronics','Headphones','5','RM 57.50']
-    ]
-    products_table = Table(products_data, colWidths=[available_width*0.25, available_width*0.25, available_width*0.25, available_width*0.25])
+    products_data = [['Category','Product','Sold','Revenue (RM)']] + data
+
+    products_table = Table(products_data, colWidths=[available_width*0.25, available_width*0.5, available_width*0.1, available_width*0.15])
     products_table.setStyle(TableStyle([
+        # ('VALIGN',(1,1),(-1,-1),'MIDDLE'),
         ('ALIGN',(0,0),(-1,-1),'CENTER'),
         ('FONTNAME',(0,0),(-1,0),'TimesNewRoman'),
         ('FONTSIZE',(0,0),(-1,0),12),
-        ('BOTTOMPADDING',(0,0),(-1,0),0.5*cm),
-        ('GRID',(0,0),(-1,0),0.01*cm,colors.black),
+        ('BOTTOMPADDING',(0,0),(-1,-1),0.3*cm),
+        ('GRID',(0,1),(-1,-1),0.01*cm,colors.lightslategrey),
+        ('GRID',(0,0),(-1,0),0.03*cm,colors.black),
     ]))
     flowables.append(Paragraph("<b>Top Products Sold</b>",subheader_style))
     flowables.append(products_table)
-
-    # Footer
-    doc.build(flowables, onFirstPage=add_header_footer, onLaterPages=add_header_footer)
+    
+    # Wrapper function to pass additional parameters to add_header_footer
+    def create_header_footer():
+        return lambda canvas, doc: add_header_footer(canvas, doc, title, report_type, period, user)
+    # Header & Footer
+    doc.build(flowables, onFirstPage=create_header_footer(), onLaterPages=create_header_footer())
 
     # Return PDF as a response
     buffer.seek(0)
@@ -244,8 +310,8 @@ def generate_report(request):
 
     return response
     
-def print_pdf(request):
-    response = generate_report(request)
+def print_pdf(title,report_type,period,user,report_detail,data):
+    response = generate_report(title,report_type,period,user,report_detail,data)
     if os.name == 'nt':  # For Windows
         buffer = response.content
         with open("temp.pdf", "wb") as f:
