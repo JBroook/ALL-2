@@ -5,7 +5,11 @@
     <div class="container product">
         <div id="best-product">
             <h2 class="boxTitle">Best Selling Product (Monthly)</h2>
-            <button class="prints best-product"> Print </button>
+            <form action="" method="post" id="product_report">
+                {% csrf_token %}
+                {{product_report}}
+                <button type="submit" class="prints best-product"> Print </button>
+            </form>
             
             <ul id="show-product">
                 {% for items in best_product %}

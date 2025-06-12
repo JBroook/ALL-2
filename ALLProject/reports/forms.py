@@ -6,3 +6,7 @@ class printSales(forms.Form):
     month_or_day = forms.ChoiceField(required=False,
                                      choices=[('day','Day'),('month','Month')],
                                      widget=forms.HiddenInput(attrs={'id':'monthday'}))
+    
+class printBestProduct(forms.Form):
+    product_report = forms.BooleanField(required=False, 
+                                    widget=forms.HiddenInput(attrs={'id':'sales_report','value':'True'}))

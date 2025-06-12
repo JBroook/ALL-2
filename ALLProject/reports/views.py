@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.conf import settings
 from django.db.models import F, Count, Sum
 from .models import Payment, Product, CartItem, Restock, Category
-from .forms import printSales
+from .forms import printSales, printBestProduct
 from datetime import datetime,date,timedelta
 
 from reportlab.pdfbase import pdfmetrics
@@ -25,6 +25,7 @@ import os
 def ManagerReportView(request):
     template = loader.get_template('reports/partials/sales_transactions.html')
     sales_report = printSales()
+    product_report = printBestProduct()
 
     if 'day_month' not in request.session:
         request.session['day_month'] = "day"
@@ -54,7 +55,7 @@ def ManagerReportView(request):
     category_sale = list(Category.objects.values('name').annotate(total=Sum('product__cartitem__quantity')))
     category_sale_only = [item for item in category_sale if item['total'] is not None]
     for i in category_sale_only:
-        percentage = round(((i['total']/total_sold['total']) * 360),2)
+        percentage = round(((i['total']/total_sold['total'])* 100),2)
         i.update({'y':percentage})
     # print(total_sold)
     # print(category_sale)
@@ -147,6 +148,13 @@ def ManagerReportView(request):
         title = "Sales Report"
         user = f"Manager Name - {this_month.capitalize()} {today.day} {today.year}"
 
+        width, height = A4
+        available_width = width-(1.5*cm*2)
+        report_title = "Sales Summary"
+        data_title = "Top Products Sold"
+        report_col = [available_width*0.5, available_width*0.5]
+        data_col = [available_width*0.25, available_width*0.5, available_width*0.1, available_width*0.15]
+
         if total_transacts != 0:
             avg_transact_revenue = total_revenue / total_transacts
         else:
@@ -155,7 +163,7 @@ def ManagerReportView(request):
             # raise LookupError("ERROR: There are no transactions done today")
 
         #Total Revenue, Total Transaction Count, Average Revenue per transact, Total Products Sold
-        report_detail_data = [
+        report_data = [
             ['Metric','Value'],
             ['Total Sales Revenue', f"{total_revenue}"],
             ['Total Transactions', str(total_transacts)],
@@ -170,7 +178,7 @@ def ManagerReportView(request):
             top_product_data = CartItem.objects.filter(cart_id__timeStamp__day=today.day).values(
                 'product__category__name',
                 'product__name'
-            ).annotate(quantity=Sum('quantity')).annotate(revenue=Sum('total_cost')).order_by('product__name')
+            ).annotate(quantity=Sum('quantity')).annotate(revenue=Sum('total_cost')).order_by('-quantity')
 
         elif request.session['day_month'] == 'month':
             nxt_mnth = today.replace(day=28) + timedelta(days=today.day)
@@ -181,15 +189,73 @@ def ManagerReportView(request):
             top_product_data = CartItem.objects.filter(cart_id__timeStamp__month=today.month).values(
                 'product__category__name',
                 'product__name'
-            ).annotate(quantity=Sum('quantity')).annotate(revenue=Sum('total_cost')).order_by('product__name')
+            ).annotate(quantity=Sum('quantity')).annotate(revenue=Sum('total_cost')).order_by('-quantity')
             
-        print(list(product.values() for product in top_product_data))
-        print_pdf(title,report_type,period,user,report_detail_data,list(product.values() for product in top_product_data))
+        top_product_data = ['Category','Product','Sold','Revenue(RM)'] + list(product.values() for product in top_product_data)
+        
+        # print(list(product.values() for product in top_product_data))
+        print_pdf(title,report_type,period,user,report_title,report_col,report_data,data_title,data_col,list(product.values() for product in top_product_data))
+        return HttpResponseRedirect(reverse('report'))
+    
+    if 'product_report' in request.POST:
+        print("Printing Product Report")
+        nxt_mnth = today.replace(day=28) + timedelta(days=today.day)
+        last_day = nxt_mnth - timedelta(days=nxt_mnth.day)
+        
+        title = "Product Sales Report"
+        report_type = "Monthly"
+        period = f"{this_month.capitalize()} 1 2025 - {this_month.capitalize()} {last_day.day} 2025"
+        user = f"Manager Name - {this_month.capitalize()} {today.day} {today.year}"
+
+        width, height = A4
+        available_width = width-(1.5*cm*2)
+        report_title = "Best Selling Category"
+        data_title = "Top Products Sold"
+        report_col = [available_width*0.5, available_width*0.25, available_width*0.25]
+        data_col = [available_width*0.1,available_width*0.2, available_width*0.45, available_width*0.1, available_width*0.15]
+
+        # Category Name, Quantity, Revenue, Total Sold
+        report_data = [
+            ['Category Name','Quantity Sold','Revenue(RM)']
+        ]
+        cat_data = CartItem.objects.filter(cart_id__timeStamp__year=today.year).values(
+            'product__category__name'
+            ).annotate(quantity=Sum('quantity')).annotate(revenue=Sum('total_cost')).order_by('-quantity')
+        
+        products_sold = CartItem.objects.filter(cart_id__timeStamp__year = today.year).aggregate(
+            sold=Sum('quantity'),
+            revenue=Sum('total_cost')
+            )
+        
+        report_data = report_data + list(product.values() for product in cat_data)
+        report_data = report_data + [['Total Sold',products_sold['sold'],products_sold['revenue']]]
+        # print("Report Data: ",report_data)
+            
+        # Top Products, Category Name, Quantity, Revenue
+        top_product_data = CartItem.objects.filter(cart_id__timeStamp__year=today.year).values(
+            'product__category__name',
+            'product__name'
+        ).annotate(quantity=Sum('quantity')).annotate(revenue=Sum('total_cost')).order_by('-quantity')
+        i = 0
+        new_product_data = [['Rank','Category','Product Name','Sold','Revenue(RM)']]
+        # print("Old Product Data: ",top_product_data)
+        # top_product_data = list(top_product_data)
+
+        for product in top_product_data:
+            i+=1
+            new_product = [str(i), product['product__category__name'], product['product__name'], product['quantity'], product['revenue']]
+            # print("New Product: ",new_product)
+            new_product_data.append(new_product)
+
+        # print("New Product Data: ", new_product_data)
+        # print("Old Product Data: ",top_product_data)
+        print_pdf(title,report_type,period,user,report_title,report_col,report_data,data_title,data_col,new_product_data)
         return HttpResponseRedirect(reverse('report'))
     
     # print(request.session['day_month'])
     context = {
         'sales_report': sales_report,
+        'product_report': product_report,
         'month': this_month,
         'best_product' : best_product,
         'category_sale' : category_sale_only,
@@ -202,13 +268,16 @@ def ManagerReportView(request):
         }
     return HttpResponse(template.render(context,request))
     
+
+
+# Report Creation
 def add_header_footer(canvas, doc,title,report_type,period,user):
     # Get the page width and height
     width, height = A4
     
     #Header
     canvas.setFont("TimesNewRoman-Bold", 20)
-    canvas.drawString(232, height-1.3*cm, title)
+    canvas.drawString(212, height-1.3*cm, title)
 
     # Report Details    
     canvas.setFont("TimesNewRoman", 13)
@@ -236,7 +305,7 @@ def add_header_footer(canvas, doc,title,report_type,period,user):
     canvas.setFont("TimesNewRoman", 8)
     canvas.drawString(232, 1.5*cm, footer_text)
 
-def generate_report(title,report_type,period,user,report_detail,data):
+def generate_report(title,report_type,period,user,report_title,report_col,report_detail,data_title,data_col,data):
 
     # check for times new romans font
     font_path = finders.find('fonts/Times New Roman.ttf')
@@ -252,7 +321,6 @@ def generate_report(title,report_type,period,user,report_detail,data):
     buffer = BytesIO()
     doc = SimpleDocTemplate(buffer, pagesize=A4, rightMargin=1.5*cm, leftMargin=1.5*cm, topMargin=4.5*cm, bottomMargin=2*cm)
     width, height = A4
-    available_width = width-(1.5*cm*2)
     
     # Holds flowable objects
     flowables = []
@@ -261,7 +329,7 @@ def generate_report(title,report_type,period,user,report_detail,data):
     styles = getSampleStyleSheet()
 
     # Main Content Table
-    report_table = Table(report_detail, colWidths=[available_width*0.5, available_width*0.5])
+    report_table = Table(report_detail, colWidths=report_col)
     report_table.setStyle(TableStyle([
         ('VALIGN',(0,0),(-1,-1),'MIDDLE'),
         ('ALIGN',(0,0),(-1,-1),'CENTER'),
@@ -272,19 +340,17 @@ def generate_report(title,report_type,period,user,report_detail,data):
         ('TOPPADDING',(1,0),(-1,-1),0.25*cm),
         ('BOTTOMPADDING',(1,0),(-1,-1),0.25*cm),
         ('GRID',(0,1),(-1,-1),0.01*cm,colors.lightslategrey),
-        ('GRID',(0,0),(1,0),0.03*cm,colors.black),
+        ('GRID',(0,0),(-1,0),0.03*cm,colors.black),
     ]))
     
     subheader_style = styles['Heading3']
     subheader_style.fontSize = 13
     subheader_style.alignment = 1
-    flowables.append(Paragraph("<b>Sales Summary</b>",subheader_style))
+    flowables.append(Paragraph(f"<b>{report_title}</b>",subheader_style))
     flowables.append(report_table)
 
     # Top Products Sold Table
-    products_data = [['Category','Product','Sold','Revenue (RM)']] + data
-
-    products_table = Table(products_data, colWidths=[available_width*0.25, available_width*0.5, available_width*0.1, available_width*0.15])
+    products_table = Table(data, colWidths=data_col)
     products_table.setStyle(TableStyle([
         # ('VALIGN',(1,1),(-1,-1),'MIDDLE'),
         ('ALIGN',(0,0),(-1,-1),'CENTER'),
@@ -294,7 +360,7 @@ def generate_report(title,report_type,period,user,report_detail,data):
         ('GRID',(0,1),(-1,-1),0.01*cm,colors.lightslategrey),
         ('GRID',(0,0),(-1,0),0.03*cm,colors.black),
     ]))
-    flowables.append(Paragraph("<b>Top Products Sold</b>",subheader_style))
+    flowables.append(Paragraph(f"<b>{data_title}</b>",subheader_style))
     flowables.append(products_table)
     
     # Wrapper function to pass additional parameters to add_header_footer
@@ -310,8 +376,8 @@ def generate_report(title,report_type,period,user,report_detail,data):
 
     return response
     
-def print_pdf(title,report_type,period,user,report_detail,data):
-    response = generate_report(title,report_type,period,user,report_detail,data)
+def print_pdf(title,report_type,period,user,report_title,report_col,report_detail,data_title,data_col,data):
+    response = generate_report(title,report_type,period,user,report_title,report_col,report_detail,data_title,data_col,data)
     if os.name == 'nt':  # For Windows
         buffer = response.content
         with open("temp.pdf", "wb") as f:
