@@ -1,0 +1,44 @@
+{% extends "reports/best_selling.html" %}
+{% load static %}
+{% block detail %}
+
+    <link rel = "stylesheet" href="{% static 'css/product_detail.css' %}">
+        <div id="product-detail-box">
+            <h2>Product Name</h2>
+            <div class="product-detail">
+                <div class="product-detail mthSale">
+                    <h3>Sales (This Month)</h3>
+                    <h3>MAY</h3>
+                    <h3>200</h3>
+                </div>
+                <div class="product-detail prevSale">
+                    <h3>Sales (Prev Month)</h3>
+                    <div class="dropbtn">
+                        <div class="dropdown-button">
+                            <h3> APR <img src="assets/arrow-down.png" class="logo dropdown"></h3>
+                        </div>
+                        <div class="dropdown-content">
+                            <ul class="dropdown-content">
+                                <li class="dropdown-content"><a href="#">JAN</a></li>
+                                <li class="dropdown-content"><a href="#">FEB</a></li>
+                                <li class="dropdown-content"><a href="#">MAR</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <h3>10</h3>
+                </div>
+                <div class="product-detail supplier">
+                    <h3>Supplier</h3>
+                    <h3>JBroook</h3>
+                </div>
+                <div class="product-detail price">
+                    <h3>Selling Price</h3>
+                    <h3>5.00</h3>
+                </div>
+                <div class="product-detail graph">
+                    <h2>Graph of Sales by Month</h2>
+                    <div id="graph"></div>
+                </div>
+            </div>
+        </div>
+{% endblock detail %}

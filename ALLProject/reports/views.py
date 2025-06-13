@@ -146,7 +146,7 @@ def ManagerReportView(request):
     # print(total_transacts)
     
 
-
+    # Transaction Report
     if 'sales_report' in request.POST:
         print("Printing Report")
         title = "Sales Report"
@@ -202,6 +202,7 @@ def ManagerReportView(request):
 
         return HttpResponseRedirect(reverse('report'))
     
+    # Best Product
     if 'product_report' in request.POST:
         print("Printing Product Report")
         nxt_mnth = today.replace(day=28) + timedelta(days=today.day)
@@ -257,6 +258,7 @@ def ManagerReportView(request):
         print_pdf(title,report_type,period,user,report_title,report_col,report_data,data_title,data_col,new_product_data)
         return HttpResponseRedirect(reverse('report'))
     
+    # Inventory Report
     if 'stock_report' in request.POST:
         print("Printing Inventory Report")
 
@@ -306,9 +308,6 @@ def ManagerReportView(request):
 
         inventory_data = [["Product","Last Restock On","Quantity","Status"]] + list(data.values() for data in product_data) + no_new_restock
 
-        # print("Product Data: ",product_data)
-        # print("Product Data: ",product_data.values())
-        # print("Product Data: ",list(data.values() for data in product_data))
         print_pdf(title,report_type,period,user,report_title,report_col,report_data,data_title,data_col,inventory_data)
         return HttpResponseRedirect(reverse('report'))
 
@@ -329,6 +328,59 @@ def ManagerReportView(request):
         }
     return HttpResponse(template.render(context,request))
     
+# View More Page (STOCK)
+# View More Page (BEST PRODUCT)
+def viewMoreBestProduct(request):
+    template = loader.get_template('reports/partials/product_detail.html')
+
+    today = datetime.now()
+    
+    top_product_data = CartItem.objects.filter(cart_id__timeStamp__month = today.month).values(
+        'product__category__name',
+        'product__name',
+        'product__supplier',
+        'product__image',
+        'product__price'
+    ).annotate(quantity=Sum('quantity')).annotate(revenue=Sum('total_cost')).order_by('-quantity')
+    i = 0
+    new_product_data = []
+    # print("Old Product Data: ",top_product_data)
+    # top_product_data = list(top_product_data)
+
+    all_products = Product.objects.values(
+        'name',
+        'image',
+        'supplier',
+        'price',
+        'category__name',
+        )
+
+    for product in top_product_data:
+        i+=1
+        new_product = [str(i), product['product__category__name'], product['product__name'],product['product__supplier'], product['quantity'], product['revenue'], f"{settings.MEDIA_URL}{product['product__image']}",product['product__price']]
+        # print("New Product: ",new_product)
+        new_product_data.append(new_product)
+
+    print(new_product_data)
+
+    new_product_list = []
+    no_new_restock = []
+    for product in all_products:
+        for data in top_product_data:
+            if product['name'] == data['product__name']:
+                # print(product['name'])
+                new_product_list.append(product['name'])
+
+    for product in all_products:
+        if product['name'] not in new_product_list:
+            i+=1
+            new_product_data.append([str(i), product['category__name'], product['name'],product['supplier'], 0, "0.00", f"{settings.MEDIA_URL}{product['image']}",product['price']])
+    print("Product with no new restock: ",new_product_data)
+
+    context = {
+        'product_rank': new_product_data
+    }
+    return HttpResponse(template.render(context,request))
 
 
 # Report Creation
