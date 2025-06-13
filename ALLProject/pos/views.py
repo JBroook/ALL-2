@@ -5,6 +5,9 @@ from django.urls import reverse
 from .models import Product,CartItem,Cart,Payment,Employee
 from .forms import ItemCodeForm, QuantityForm, CheckOutForm, ClearCartItems, ClearLastCartItem
 from django.core.exceptions import ObjectDoesNotExist
+from django.shortcuts import render, redirect
+from django.db.models import F, ExpressionWrapper, IntegerField, Sum
+import datetime
 
 # Create your views here.
 def cashierPOSView(request):
@@ -206,6 +209,93 @@ def cashierPOSView(request):
     return HttpResponse(template.render(context,request))
 
 def cashierHistoryView(request):
-    template = loader.get_template('pos/view_history.html')
-    context = {}
-    return HttpResponse(template.render(context,request))
+    payments = Payment.objects.order_by('-timeStamp').annotate(
+        items_sold=Sum('cart__cartitem__quantity')
+    )
+
+    payments_by_date = {}
+
+    for payment in payments:
+        i_date = payment.timeStamp.date()
+        if i_date not in payments_by_date:
+            payments_by_date[i_date] = []
+
+        payments_by_date[i_date].append(payment)
+
+    return render(
+        request,
+        'pos/view_history.html',
+        context={
+            'all_payments' : payments_by_date
+        }
+    )
+
+def date_filter_view(request):
+    return render(
+        request,
+        'partials/date_filter.html'
+    )
+
+def cashierHistoryPartialView(request, type):
+    payments = Payment.objects.order_by('-timeStamp').annotate(
+        items_sold=Sum('cart__cartitem__quantity')
+    )
+
+    payments_by_date = {}
+
+    specific = request.GET.get('specific')
+
+    upper_bound = datetime.date.today()
+    lower_bound = datetime.date.today() - datetime.timedelta(days=100)
+
+    if type=='selection':
+        match specific:
+            case 'today':
+                upper_bound = datetime.date.today()
+                lower_bound = datetime.date.today()
+            case 'week':
+                upper_bound = datetime.date.today()
+                lower_bound = datetime.date.today() - datetime.timedelta(days=7)
+            case 'month':
+                upper_bound = datetime.date.today()
+                lower_bound = datetime.date.today() - datetime.timedelta(days=30)
+    elif type=='custom':
+        start_date = request.GET.get('start')
+        end_date = request.GET.get('end')
+        upper_bound = datetime.datetime.strptime(end_date, "%Y-%m-%d").date()
+        lower_bound = datetime.datetime.strptime(start_date, "%Y-%m-%d").date()
+    elif type=='payment':
+        payments = Payment.objects.filter(payment_method=specific).order_by('-timeStamp').annotate(
+            items_sold=Sum('cart__cartitem__quantity')
+        )
+
+        payments_by_date = {}
+
+
+    for payment in payments:
+        i_date = payment.timeStamp.date()
+
+        print("Lower:",lower_bound)
+        print("Date:",i_date)
+        print("Upper:",upper_bound)
+        if not (lower_bound <= i_date <= upper_bound):
+            continue
+
+        if i_date not in payments_by_date:
+            payments_by_date[i_date] = []
+
+        payments_by_date[i_date].append(payment)
+
+    return render(
+        request,
+        'partials/history_partial.html',
+        context={
+            'all_payments' : payments_by_date
+        }
+    )
+
+def payment_detail_view(request, payment_id):
+    return render(
+        request,
+        'pos/view_history.html',
+    )

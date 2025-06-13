@@ -65,3 +65,23 @@ class RestockForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.label_suffix = ""
         self.product_id = kwargs.get('product_id')
+
+class CategoryForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = '__all__'
+        labels = {
+            'name' : 'Name'
+        }
+
+        widgets = {
+            'name' : forms.TextInput(
+                attrs={
+                    'placeholder' : 'e.g. Accessories',
+                    'class' : 'form-control'
+                })
+        }
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.label_suffix = ""

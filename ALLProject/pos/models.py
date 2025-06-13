@@ -15,6 +15,7 @@ class Payment(models.Model):
     timeStamp = models.DateTimeField(auto_now_add=True)
 
 class Cart(models.Model):
+    payment = models.ForeignKey(Payment, on_delete=models.CASCADE)
     product = models.ManyToManyField(Product,through='CartItem')
     total_cost = models.FloatField(default=0.00)
     payment_status = models.BooleanField(null=True)
@@ -22,6 +23,9 @@ class Cart(models.Model):
 
     def get_cart_total(self):
         return sum(item.get_product_price() for item in self.cartitem_set.all())
+    
+    def get_total_items(self):
+        return sum(item.quantity for item in self.cartitem_set.all())
 
 class CartItem(models.Model):
     cart = models.ForeignKey(Cart,on_delete=models.CASCADE)

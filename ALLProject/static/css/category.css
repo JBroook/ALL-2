@@ -1,0 +1,382 @@
+body, html {
+    font-family: "Mukta Mahee", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+    margin: 0;
+    background-color: #F0ECDD;
+}
+
+h1 {
+    margin-block-start: 0;
+    padding-top: 1%;
+    padding-left: 8%; /* padding 18% when nav opened */
+}
+
+@keyframes lowStockWarning {
+    0% {
+        background-color: #F0D38B;
+    }
+    30% {
+        background-color: #F0D38B;
+    }
+    100% {
+        background-color: #FFF;
+    }
+}
+@keyframes zeroStockWarning {
+    0% {
+        color: #FFF;
+        background-color: #E8656A;
+    }
+    30% {
+        color: #FFF;
+        background-color: #E8656A;
+    }
+    100% {
+        color: #000;
+        background-color: #FFF;
+    }
+}
+
+#dashboard {
+    font-family: "Sansation", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    
+    width: 100%;
+    height: 10vh;
+
+    margin-block-start: 0%;
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    
+    background-color: white;
+    box-shadow: 4px 2px 4px gray;
+}
+
+#main-content {
+    position: relative;
+    left: 8%;
+    top: 12vh;
+
+    width: 64%;
+    height: 82vh;
+    padding: 1%;
+    padding-right: 0.5%;
+    background-color: #FFF;
+    border-radius: 20px;
+}
+
+.table {
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+thead {
+    position: sticky;
+    z-index: 2;
+    top: 0;
+    background-color: #FFF;
+}
+tr {
+    position: relative;
+    text-align: center;
+    box-shadow: 0px 1px gray;
+}
+
+.header {
+    width: 3em;
+    height: 3em;
+    float: left;
+}
+
+.editBttn {
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    border-style: none;
+    
+    position: absolute; top:0; left:0;
+}
+.editImg {
+    width: 3vh;
+    height: 3vh;
+    visibility: hidden;
+    float: right;
+}
+.editBttn:hover{
+    .editImg{
+        visibility: visible;
+    }
+}
+
+#product1 {
+    animation: lowStockWarning 0.8s infinite alternate;
+}
+
+#product3 {
+    animation: zeroStockWarning 0.8s infinite alternate;
+}
+
+#crud-column {
+    position: absolute;
+    top: 10vh;
+    right: 0;
+
+    width: 25%;
+    height: 90%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.cat-logo {
+    padding-top: 5%;
+    width: 1em;
+    height: 1em;
+}
+
+ul {
+    text-align: right;
+    justify-self: end;
+}
+
+.filter-div {
+    width: 10em;
+    height: 3em;
+    margin: 1.5vh;
+    float: right;
+}
+
+.filter-choices {
+    width: 100%;
+    height: 100%;
+    
+    font-family: "Sansation", sans-serif;
+    font-weight: 600;
+    font-style: normal;
+
+    border-style: hidden;
+    border-radius: 10px;
+    background: #C3B299;
+}
+
+.filter-div:hover {
+    width: 12em;
+    .filter-choices {
+        color: #FFF;
+        background: #815355;
+    }
+}
+
+.editBtn-box {
+    width: 30%;
+    height: 6%;
+    position: absolute;
+    display: flex;
+    justify-self: anchor-center;
+    justify-content: space-between;
+    bottom: 3%;
+}
+
+.editBtn.add {
+    width: 40%;
+    background: #C3B299;
+    border-radius: 20px;
+    border-style: none;
+    
+    font-family: "Mukta Mahee", sans-serif;
+    font-weight: 800;
+    font-style: normal;
+    font-size: 1vw;
+}
+
+.editBtn.add:hover {
+    color: #FFF;
+    background: #815355;
+}
+
+.category-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: #FFFFFF;
+    border-radius: 1vw;
+    padding: 3vh 0 3vh 0;
+    margin-right: 1vw;
+}
+
+.category-container h2 {
+    margin: 0;
+    font-size: 2vw;
+}
+
+.category-container form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+}
+
+
+#crud-column p {
+    text-align: center;
+    padding: 0 1vw 0 1vw;
+}
+
+/* #actual-info {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+}
+
+#actual-info form{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.5vw 0 1.5vw;
+}*/
+
+.form-input {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form-control {
+    border: none;
+    background-color: #f8ece4;
+    border-radius: 3px;
+    width: 22vw;
+    height: 5vh;
+    margin-bottom: 2vh;
+    font-size: 2.5vh;
+    padding-left: 0.5vw;
+    font-family: "Mukta Mahee", sans-serif;
+}
+
+.form-label {
+    font-size: 20px;
+}
+
+#button-container {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 2vh;
+    padding-bottom: 2vh;
+}
+
+#button-container button {
+    width: 10vw;
+    height: fit-content;
+    background: #C3B299;
+    border-radius: 20px;
+    border-style: none;
+    font-family: "Mukta Mahee", sans-serif;
+    font-weight: 800;
+    font-size: 1vw;
+    font-style: normal;
+    padding: 0.5vh 0 0.5vh 0;
+    margin: 0 0.5vw 0 0.5vw;
+}
+
+#crud-column button:hover {
+    color: #FFF;
+    background: #815355;
+}
+
+.helptext {
+    font-size: 0.8vw;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    width: 100%;
+    margin-bottom: 1vh;
+}
+
+.form-field h3 {
+    margin: 0;
+    font-size: 1.5vw;
+}
+
+.form-field p {
+    margin-top: 0;
+    margin-bottom: 0.5vh;
+    word-break: break-all;
+    white-space: normal;
+}
+
+.info-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 1.5vw 0 1.5vw;
+}
+
+.info-field h3 {
+    margin: 0;
+    font-size: 1.5vw;
+}
+
+.info-field p{
+    border: none;
+    background-color: #f8ece4;
+    border-radius: 3px;
+    width: 20vw;
+    height: 5vh;
+    margin-top: 0;
+    margin-bottom: 2vh;
+    font-size: 2.5vh;
+    padding-left: 0.5vw;
+    font-family: "Mukta Mahee", sans-serif;
+    text-align: left;
+}
+
+.button-row {
+  display: flex;
+  justify-content: center;
+}
+
+.button-row button {
+  width: 162px;
+  height: 50px;
+  border: none;
+  border-radius: 40px;
+  background: #DBEBC0;
+  margin: 5px;
+  font-size: 20px;
+}
+
+.button-row button:hover {
+  background: #bdcaa6; 
+}
+
+#delete-button {
+  background: #E8656A;
+  color: white;
+}
+
+#delete-button:hover {
+  background: #c7575b; 
+}

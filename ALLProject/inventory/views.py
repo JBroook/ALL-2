@@ -2,8 +2,10 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from .models import Product, Category, Restock
-from .forms import ProductForm, RestockForm
+from .forms import ProductForm, RestockForm, CategoryForm
 from django.conf import settings
+from django.db.models import Count, Avg, Sum
+from django.urls import reverse
 
 import qrcode
 
@@ -129,19 +131,21 @@ def restock_order_view(request):
 
     return render(request, 'partials/restock_history.html',{'restocks':restocks, 'product_id' : product_id})
 
-def product_table_view(request):
-    products = Product.objects.all()
-    categories = Category.objects.all()
+def category_view(request):
+    categories = Category.objects.annotate(
+        product_types=Count("product"),
+        total_stock=Sum("product__quantity"),
+        average_price=Avg("product__price")
+    )
 
     return render(
         request, 
-        "inventory/product_table.html", 
+        "inventory/category.html", 
         {
-            'products': products,
             'categories' : categories
         })
 
-def product_table_partial_view(request):
+def category_partial_view(request):
     category_id = int(request.GET.get('category_id'))
     products = Product.objects.all()
 
@@ -151,7 +155,82 @@ def product_table_partial_view(request):
 
     return render(
         request, 
-        "partials/product_table_partial.html", 
+        "partials/category_partial.html", 
         {
             'products': products,
         })
+
+def category_form_view(request):
+    form = CategoryForm()
+
+    return render(
+        request,
+        'partials/category_form.html',
+        context={
+            'action' : 'Add',
+            'form' : form,
+            'redirect' : reverse('category_create')
+        }
+        )
+
+def category_create_view(request):
+    if request.method=="POST":
+        form = CategoryForm(request.POST)
+        if form.is_valid:
+            form.save()
+        
+    return redirect('category')
+
+def category_specific_view(request, category_id):
+    category = Category.objects.annotate(
+        product_types=Count("product"),
+        total_stock=Sum("product__quantity"),
+        average_price=Avg("product__price")
+    ).get(pk=category_id)
+
+    return render(
+        request,
+        'partials/category_specific.html',
+        context={
+            'category' : category
+        }
+    )
+
+def category_delete_view(request, category_id):
+    category = Category.objects.get(pk=category_id)
+
+    if request.method=="POST":
+        action_type = request.POST.get('action')
+        if action_type=="confirm":
+            category.delete()
+        
+        return redirect('category')
+
+    return render(
+        request,
+        'partials/category_delete.html',
+        context={
+            'category' : category
+        }
+    )
+
+def category_edit_view(request, category_id):
+    category = Category.objects.get(pk=category_id)
+    form = CategoryForm(instance=category)
+
+    if request.method=="POST":
+        form = CategoryForm(request.POST, instance=category)
+        if form.is_valid:
+            form.save()
+
+        return redirect('category')
+        
+    return render(
+        request,
+        'partials/category_form.html',
+        context={
+            'action' : 'Edit',
+            'form' : form,
+            'redirect' : reverse('category_edit', args=[category_id])
+        }
+    )

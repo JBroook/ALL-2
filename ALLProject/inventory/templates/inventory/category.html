@@ -1,16 +1,16 @@
  {% load static %}
 <html>
     <!-- <link rel = "stylesheet" href="{% static 'manager/inventory.css' %}"> -->
-    <link rel="stylesheet" href={% static "css/product_table.css"%}>
+    <link rel="stylesheet" href={% static "css/category.css"%}>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Mukta+Mahee:wght@200;300;400;500;600;700;800&family=Sansation:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
 
-    <script src={% static "js/product_table_partial.js"%}></script>
+    <script src={% static "js/category.js"%}></script>
 
     <head>
         <div id="dashboard">
-            <h1>Inventory</h1>
+            <h1>Category</h1>
         </div>
     </head>
 
@@ -18,26 +18,26 @@
         <div id="main-content">
             <div class="table">
                 <table>
-                    <!-- Table Header-->
                     <thead>
                         <tr>
-                            <th><img src="{% static "images/up-and-down-arrow.png"%}" class="header"><p> Product Name</p></th>
-                            <th><img src="{% static "images/up-and-down-arrow.png"%}" class="header"><p> Stock</p></th>
-                            <th><img src="{% static "images/up-and-down-arrow.png"%}" class="header"><p> Last Stocked</p></th>
-                            <th><img src="{% static "images/up-and-down-arrow.png"%}" class="header"><p> Supplier</p></th>
-                            <th><img src="{% static "images/up-and-down-arrow.png"%}" class="header"><p> Supplier Contact</p></th>
+                            <th><p> Name</p></th>
+                            <th><p> Products</p></th>
+                            <th><p> Total Stock</p></th>
+                            <th><p> Average Price (RM)</p></th>
                         </tr>
                     </thead>
                     
-                    <!-- Sample Data -->
                      <tbody id="product-table-body">
-                    {% include "partials/product_table_partial.html"%}  
+                    {% include "partials/category_partial.html"%}  
                      </tbody>
                 </table>
             </div>
         </div>
-        <div id="filter-column">
-            <h1><img src={% static "images/adjust.png"%} class="cat-logo"> Category</h1>
+        <div id="crud-column">
+            <div class="category-container">
+                <p>Select a category to view more details, or click "Add Category" to add a new category.</p>
+            </div>
+            {% comment %} <h1><img src={% static "images/adjust.png"%} class="cat-logo"> Category</h1>
 
             <!-- Filter Choices -->
              <ul>
@@ -51,7 +51,11 @@
                         </button>
                     </div>
                 {% endfor %}
-             </ul>
+             </ul> {% endcomment %}
+        </div>
+
+        <div class="editBtn-box">
+            <button type="button" class="editBtn add" onclick="add_category()"> Add Category </button>
         </div>
     </body>
 </html>

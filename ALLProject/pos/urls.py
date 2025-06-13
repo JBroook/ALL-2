@@ -5,5 +5,8 @@ from . import views
 appname = 'pos'
 urlpatterns = [
     path('sales/', views.cashierPOSView, name="sales"),
-    path('history/',views.cashierHistoryView, name="history")
+    path('history/',views.cashierHistoryView, name="history"),
+    path('history_partial/<str:type>/',views.cashierHistoryPartialView, name="history_partial"),
+    path('date_filter/',views.date_filter_view, name="date_filter"),
+    path('details/<int:payment_id>/',views.payment_detail_view, name="payment_details"),
 ]

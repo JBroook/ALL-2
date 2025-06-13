@@ -1,0 +1,17 @@
+{%load static %}
+
+{% for category in categories%}
+    <tr onclick="view_category({{category.id}})">
+        <td><p>{{category.name}}</p></td>
+        <td><p>{{category.product_types}}</p></td>
+        <td><p>{{category.total_stock}}</p></td>
+        <td><p>{{category.average_price|floatformat:2}}</p></td>
+        {% comment %} <td><p>{{category.name}}</p></td>
+        <td><p>{{category.name}}</p></td>  {% endcomment %}
+        {% comment %} <td>
+            <button type="button" class="editBttn" >
+                <img src="{% static "images/edit.png"%}" alt="edit" class="editImg">
+            </button>
+        </td> {% endcomment %}
+    </tr>
+{% endfor %}
