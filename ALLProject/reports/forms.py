@@ -10,3 +10,7 @@ class printSales(forms.Form):
 class printBestProduct(forms.Form):
     product_report = forms.BooleanField(required=False, 
                                     widget=forms.HiddenInput(attrs={'id':'sales_report','value':'True'}))
+    
+class printInventory(forms.Form):
+    stock_report = forms.BooleanField(required=False, 
+                                    widget=forms.HiddenInput(attrs={'id':'stock_report','value':'True'}))

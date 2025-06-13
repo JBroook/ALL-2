@@ -5,7 +5,11 @@
     <div class="container stocks">
         <div id="stocks">
             <h2 class="boxTitle"> Stocks </h2>
-            <button class="prints stocks"> Print </button>
+            <form action="" method="post" id="stock_report">
+                {% csrf_token %}
+                {{stock_report}}
+                <button type="submit" class="prints stocks"> Print </button>
+            </form>
 
             <div id="stocks-table-box">
                 <table id="stocks-table">

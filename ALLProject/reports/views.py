@@ -4,9 +4,9 @@ from django.template import loader
 from django.shortcuts import render
 from django.contrib import messages
 from django.conf import settings
-from django.db.models import F, Count, Sum
+from django.db.models import F, Count, Sum, Case, When, Value, Max
 from .models import Payment, Product, CartItem, Restock, Category
-from .forms import printSales, printBestProduct
+from .forms import printSales, printBestProduct, printInventory
 from datetime import datetime,date,timedelta
 
 from reportlab.pdfbase import pdfmetrics
@@ -26,6 +26,7 @@ def ManagerReportView(request):
     template = loader.get_template('reports/partials/sales_transactions.html')
     sales_report = printSales()
     product_report = printBestProduct()
+    stock_report = printInventory()
 
     if 'day_month' not in request.session:
         request.session['day_month'] = "day"
@@ -42,7 +43,8 @@ def ManagerReportView(request):
         for sold in all_cart_items:
             if sold['product_id'] == item['id']:
                 total_product_sold += sold['quantity']
-        best_product.append({'product': item['name'], 'quantity_sold' : total_product_sold, 'image': f"{settings.MEDIA_URL}{item['image']}" if item['image'] else ''})
+        if total_product_sold != 0:
+            best_product.append({'product': item['name'], 'quantity_sold' : total_product_sold, 'image': f"{settings.MEDIA_URL}{item['image']}" if item['image'] else ''})
         total_product_sold = 0
     
     best_product.sort(key=lambda x:x['quantity_sold'])
@@ -142,6 +144,8 @@ def ManagerReportView(request):
     # for items in transacts_mth:
     #     print(items)
     # print(total_transacts)
+    
+
 
     if 'sales_report' in request.POST:
         print("Printing Report")
@@ -150,6 +154,7 @@ def ManagerReportView(request):
 
         width, height = A4
         available_width = width-(1.5*cm*2)
+        
         report_title = "Sales Summary"
         data_title = "Top Products Sold"
         report_col = [available_width*0.5, available_width*0.5]
@@ -157,44 +162,44 @@ def ManagerReportView(request):
 
         if total_transacts != 0:
             avg_transact_revenue = total_revenue / total_transacts
+        
+            #Total Revenue, Total Transaction Count, Average Revenue per transact, Total Products Sold
+            report_data = [
+                ['Metric','Value'],
+                ['Total Sales Revenue', f"{total_revenue}"],
+                ['Total Transactions', str(total_transacts)],
+                ['Average Sale Per Order', f'RM {avg_transact_revenue:.2f}'],
+                ['Total Products Sold', str(products_sold['sold'])]
+            ] 
+
+            #Category, Product Name, Quantity Sold, Revenue By Product
+            if request.session['day_month'] == 'day':
+                report_type = "Daily"
+                period = f"{this_month.capitalize()} {today.day} 2025"
+                top_product_data = CartItem.objects.filter(cart_id__timeStamp__day=today.day).values(
+                    'product__category__name',
+                    'product__name'
+                ).annotate(quantity=Sum('quantity')).annotate(revenue=Sum('total_cost')).order_by('-quantity')
+
+            elif request.session['day_month'] == 'month':
+                nxt_mnth = today.replace(day=28) + timedelta(days=today.day)
+                last_day = nxt_mnth - timedelta(days=nxt_mnth.day)
+
+                report_type = "Monthly"
+                period = f"{this_month.capitalize()} 1 2025 - {this_month.capitalize()} {last_day.day} 2025"
+                top_product_data = CartItem.objects.filter(cart_id__timeStamp__month=today.month).values(
+                    'product__category__name',
+                    'product__name'
+                ).annotate(quantity=Sum('quantity')).annotate(revenue=Sum('total_cost')).order_by('-quantity')
+                
+            top_product_data = [['Category','Product','Sold','Revenue(RM)']] + list(product.values() for product in top_product_data)
+            
+            print(top_product_data)
+            print_pdf(title,report_type,period,user,report_title,report_col,report_data,data_title,data_col,top_product_data)
         else:
             avg_transact_revenue = 0
-            # messages.error(request,"ERROR: There are no transactions done today")
-            # raise LookupError("ERROR: There are no transactions done today")
+            messages.error(request,"ERROR: There are no transactions done today")
 
-        #Total Revenue, Total Transaction Count, Average Revenue per transact, Total Products Sold
-        report_data = [
-            ['Metric','Value'],
-            ['Total Sales Revenue', f"{total_revenue}"],
-            ['Total Transactions', str(total_transacts)],
-            ['Average Sale Per Order', f'RM {avg_transact_revenue:.2f}'],
-            ['Total Products Sold', str(products_sold['sold'])]
-        ] 
-
-        #Category, Product Name, Quantity Sold, Revenue By Product
-        if request.session['day_month'] == 'day':
-            report_type = "Daily"
-            period = str(today)
-            top_product_data = CartItem.objects.filter(cart_id__timeStamp__day=today.day).values(
-                'product__category__name',
-                'product__name'
-            ).annotate(quantity=Sum('quantity')).annotate(revenue=Sum('total_cost')).order_by('-quantity')
-
-        elif request.session['day_month'] == 'month':
-            nxt_mnth = today.replace(day=28) + timedelta(days=today.day)
-            last_day = nxt_mnth - timedelta(days=nxt_mnth.day)
-
-            report_type = "Monthly"
-            period = f"{this_month.capitalize()} 1 2025 - {this_month.capitalize()} {last_day.day} 2025"
-            top_product_data = CartItem.objects.filter(cart_id__timeStamp__month=today.month).values(
-                'product__category__name',
-                'product__name'
-            ).annotate(quantity=Sum('quantity')).annotate(revenue=Sum('total_cost')).order_by('-quantity')
-            
-        top_product_data = ['Category','Product','Sold','Revenue(RM)'] + list(product.values() for product in top_product_data)
-        
-        # print(list(product.values() for product in top_product_data))
-        print_pdf(title,report_type,period,user,report_title,report_col,report_data,data_title,data_col,list(product.values() for product in top_product_data))
         return HttpResponseRedirect(reverse('report'))
     
     if 'product_report' in request.POST:
@@ -216,13 +221,13 @@ def ManagerReportView(request):
 
         # Category Name, Quantity, Revenue, Total Sold
         report_data = [
-            ['Category Name','Quantity Sold','Revenue(RM)']
+            ['Category Name','Quantity Sold','Revenue (RM)']
         ]
-        cat_data = CartItem.objects.filter(cart_id__timeStamp__year=today.year).values(
+        cat_data = CartItem.objects.filter(cart_id__timeStamp__month = today.month).values(
             'product__category__name'
             ).annotate(quantity=Sum('quantity')).annotate(revenue=Sum('total_cost')).order_by('-quantity')
         
-        products_sold = CartItem.objects.filter(cart_id__timeStamp__year = today.year).aggregate(
+        products_sold = CartItem.objects.filter(cart_id__timeStamp__month = today.month).aggregate(
             sold=Sum('quantity'),
             revenue=Sum('total_cost')
             )
@@ -232,7 +237,7 @@ def ManagerReportView(request):
         # print("Report Data: ",report_data)
             
         # Top Products, Category Name, Quantity, Revenue
-        top_product_data = CartItem.objects.filter(cart_id__timeStamp__year=today.year).values(
+        top_product_data = CartItem.objects.filter(cart_id__timeStamp__month = today.month).values(
             'product__category__name',
             'product__name'
         ).annotate(quantity=Sum('quantity')).annotate(revenue=Sum('total_cost')).order_by('-quantity')
@@ -252,10 +257,66 @@ def ManagerReportView(request):
         print_pdf(title,report_type,period,user,report_title,report_col,report_data,data_title,data_col,new_product_data)
         return HttpResponseRedirect(reverse('report'))
     
+    if 'stock_report' in request.POST:
+        print("Printing Inventory Report")
+
+        nxt_mnth = today.replace(day=28) + timedelta(days=today.day)
+        last_day = nxt_mnth - timedelta(days=nxt_mnth.day)
+        
+        title = "Inventory Report"
+        report_type = "Daily"
+        period = f"{this_month.capitalize()} {today.day} 2025"
+        user = f"Manager Name - {this_month.capitalize()} {today.day} {today.year}"
+
+        width, height = A4
+        available_width = width-(1.5*cm*2)
+        report_title = "Inventory"
+        data_title = "Current Inventory Stock"
+        report_col = [available_width*0.5, available_width*0.5]
+        data_col = [available_width*0.45, available_width*0.25, available_width*0.15, available_width*0.15]
+
+        # Inventory Value, Total Products in inventory
+        inventory_val = Product.objects.all().aggregate(values=Sum(F('quantity')*F('price')))
+        total_products = Product.objects.all().aggregate(total=Sum('quantity'))
+        report_data = [["Metric","Value"], ["Inventory Value",f"RM {str(inventory_val['values'])}"], ["Total Products",f"{str(total_products['total'])} Products"]]
+
+        print("Inventory Value: ",inventory_val)
+        print("Total Products: ",total_products)
+
+        # Product Name, Last Restock On (Ordered by restock date), Quantity, Status
+        product_data = Restock.objects.values(
+            'product__name'
+        ).annotate(date=Max('date')).annotate(quantity=F('product__quantity')).annotate(status=Case(
+            When(product__quantity__lte=F('product__alert_threshold'),then=Value('Low Stock')),
+            When(product__quantity__gt=F('product__alert_threshold'),then=Value('Normal')),
+        )).order_by('date')
+
+        new_product_list = []
+        no_new_restock = []
+        for product in all_products:
+            for data in product_data:
+                if product['name'] == data['product__name']:
+                    # print(product['name'])
+                    new_product_list.append(product['name'])
+
+        for product in all_products:
+            if product['name'] not in new_product_list:
+                no_new_restock.append([product['name'],product['timeStamp'].strftime("%Y-%m-%d"),product['quantity'],"Normal" if product['quantity']>product['alert_threshold'] else "Low Stock"])
+        # print("Product with no nre restock: ",no_new_restock)
+
+        inventory_data = [["Product","Last Restock On","Quantity","Status"]] + list(data.values() for data in product_data) + no_new_restock
+
+        # print("Product Data: ",product_data)
+        # print("Product Data: ",product_data.values())
+        # print("Product Data: ",list(data.values() for data in product_data))
+        print_pdf(title,report_type,period,user,report_title,report_col,report_data,data_title,data_col,inventory_data)
+        return HttpResponseRedirect(reverse('report'))
+
     # print(request.session['day_month'])
     context = {
         'sales_report': sales_report,
         'product_report': product_report,
+        'stock_report': stock_report,
         'month': this_month,
         'best_product' : best_product,
         'category_sale' : category_sale_only,
@@ -378,9 +439,12 @@ def generate_report(title,report_type,period,user,report_title,report_col,report
     
 def print_pdf(title,report_type,period,user,report_title,report_col,report_detail,data_title,data_col,data):
     response = generate_report(title,report_type,period,user,report_title,report_col,report_detail,data_title,data_col,data)
+    
+    if os.name == 'posix':  # For Linux/macOS
+        os.system(f"{title}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf")
     if os.name == 'nt':  # For Windows
         buffer = response.content
-        with open("temp.pdf", "wb") as f:
+        with open(f"{title}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf", "wb") as f:
             f.write(buffer)
-        os.startfile("temp.pdf", "print")
+        os.startfile(f"{title}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf", "print")
     return response
