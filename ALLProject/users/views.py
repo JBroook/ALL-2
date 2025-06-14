@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .models import Employee
 from .forms import EmployeeForm, UserForm, UserEditForm
 from django.db.models import Q
+from django.urls import reverse
 
 # Create your views here.
 def user_list_view(request):
@@ -132,3 +133,51 @@ def user_delete_view(request, employee_id):
                 'employee':employee
             }
         )
+
+def home_view(request):
+    options = [
+        {
+            'title' : 'Inventory',
+            'description' : 'Add, view, edit and restock products',
+            'image' : 'images/purple-shipping.png',
+            'url' : reverse('product_list')
+        },
+        {
+            'title' : 'Category',
+            'description' : 'View and manage categories for products',
+            'image' : 'images/purple-category.png',
+            'url' : reverse('category')
+        },
+        {
+            'title' : 'Sales Report',
+            'description' : 'View detailed analyses of performance and generate reports',
+            'image' : 'images/purple-report.png',
+            'url' : reverse('user_list')
+        },
+        {
+            'title' : 'Users',
+            'description' : 'Manage existing users or add new employees',
+            'image' : 'images/purple-users.png',
+            'url' : reverse('user_list')
+        },
+        {
+            'title' : 'Item Scanning',
+            'description' : 'Start scanning items for customers',
+            'image' : 'images/purple-barcode.png',
+            'url' : reverse('sales')
+        },
+        {
+            'title' : 'Sales History',
+            'description' : 'View all previous sales and transactiond details',
+            'image' : 'images/purple-history.png',
+            'url' : reverse('history')
+        }
+    ]
+
+    return render(
+        request,
+        'users/home.html',
+        context={
+            'options' : options
+        }
+    )

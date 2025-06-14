@@ -210,7 +210,7 @@ def cashierPOSView(request):
 
 def cashierHistoryView(request):
     payments = Payment.objects.order_by('-timeStamp').annotate(
-        items_sold=Sum('cart__cartitem__quantity')
+        items_sold=Sum('cart__cart_items__quantity')
     )
 
     payments_by_date = {}
@@ -238,7 +238,7 @@ def date_filter_view(request):
 
 def cashierHistoryPartialView(request, type):
     payments = Payment.objects.order_by('-timeStamp').annotate(
-        items_sold=Sum('cart__cartitem__quantity')
+        items_sold=Sum('cart__cart_items__quantity')
     )
 
     payments_by_date = {}
@@ -266,7 +266,7 @@ def cashierHistoryPartialView(request, type):
         lower_bound = datetime.datetime.strptime(start_date, "%Y-%m-%d").date()
     elif type=='payment':
         payments = Payment.objects.filter(payment_method=specific).order_by('-timeStamp').annotate(
-            items_sold=Sum('cart__cartitem__quantity')
+            items_sold=Sum('cart__cart_items__quantity')
         )
 
         payments_by_date = {}
@@ -295,7 +295,16 @@ def cashierHistoryPartialView(request, type):
     )
 
 def payment_detail_view(request, payment_id):
+    payment = Payment.objects.get(pk=payment_id)
+    cart = Cart.objects.get(payment=payment)
+    cart_items = cart.cart_items.all()
+
     return render(
         request,
-        'pos/view_history.html',
+        'pos/payment_details.html',
+        context={
+            'payment' : payment,
+            'subtotal' : cart.get_cart_total(),
+            'cart_items' : cart_items
+        }
     )

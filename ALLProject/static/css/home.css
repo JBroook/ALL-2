@@ -1,0 +1,138 @@
+body, html {
+    font-size: 1vw;
+    margin: 0;
+    background-color: #F0ECDD;
+    display: flex;
+}
+
+body {
+    margin-top: 10vh;
+    font-family: "Mukta Mahee", sans-serif;
+}
+
+h1 {
+    margin-block-start: 0;
+    padding-top: 1%;
+    padding-left: 8%; /* padding 18% when nav opened */
+}
+h4 {
+    font-weight: 600;
+    font-style: normal;
+    margin: 0;
+}
+h3 {
+    font-size: 2em;
+}
+p {
+    font-size: 1.2em;
+}
+
+#dashboard {
+    font-family: "Sansation", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    
+    width: 100%;
+    height: 10vh;
+
+    margin-block-start: 0%;
+    margin-left: auto;
+    margin-right: auto;
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    
+    background-color: white;
+    box-shadow: 4px 2px 4px gray;
+}
+
+.logo-container {
+    width: 50vw;
+    height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+#main-logo {
+    width: 35vw;
+    height: auto;
+}
+
+.large-container {
+    width: 50vw;
+    height: 90vh;
+}
+
+.option-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    overflow-y: scroll;
+}
+
+.option {
+    background-color: white;
+    border-radius: 2vw;
+    width: 33vw;
+    /* height: 25vh; */
+    aspect-ratio: 3 / 1;
+    height: auto;
+    margin-bottom: 5vh;
+    flex-shrink: 0;
+    display: flex;
+}
+
+.right-side {
+    width: 20vw;
+    padding-bottom: 2vh;
+}
+
+.left-side {
+    width: 12vw;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.left-side img{
+    width: 7vw;
+    height: auto;
+}
+
+#first-item {
+    margin-top: 8vh;
+}
+
+.text {
+    margin-top: 2vh;
+    width: 80%;
+}
+
+.text h3, p{
+    margin: 0;
+}
+
+.button-bar {
+    width: 100%;
+    margin-top: 7%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.button-bar button{
+    border-radius: 2vw;
+    border-style: none;
+    font-size: 1.5em;
+    font-family: "Mukta Mahee", sans-serif;
+    width: 50%;
+    background-color: #CDE7A0;
+}
+
+.button-bar button:hover{
+    background-color: #adc387;
+}

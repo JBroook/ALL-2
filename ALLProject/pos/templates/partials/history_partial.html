@@ -2,7 +2,7 @@
     <div class="day">
         <h4 class="day title">{{date | date:"d M Y"}}</h4>
         {%for payment in payments%}
-            <div class="day transactions">
+            <div class="day transactions" onclick="window.location.href='{% url 'payment_details' payment.id%}'">
                 <h3>{{payment.timeStamp | date:"d M Y, h:i a"}}</h3>
                 <h3>{{payment.id}}</h3>
                 <h3>Purchased {{payment.items_sold}} Items</h3>

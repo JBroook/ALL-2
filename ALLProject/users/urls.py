@@ -12,4 +12,5 @@ urlpatterns = [
     path('user_edit_form/<int:employee_id>/', views.user_edit_form_view, name='user_edit_form'),
     path('user_edit/<int:employee_id>/', views.user_edit_view, name='user_edit'),
     path('user_delete/<int:employee_id>/', views.user_delete_view, name='user_delete'),
+    path('home/', views.home_view, name='home'),
 ]
