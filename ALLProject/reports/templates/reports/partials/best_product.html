@@ -1,0 +1,40 @@
+{% extends "reports/sales.html" %}
+{% load static %}
+{% block content %}
+    <link rel = "stylesheet" href="{% static 'css/best_product.css' %}">
+    <div class="container product">
+        <div id="best-product">
+            <h2 class="boxTitle">Best Selling Product (Monthly)</h2>
+            <form action="" method="post" id="product_report">
+                {% csrf_token %}
+                {{product_report}}
+                <button type="submit" class="prints best-product"> Print </button>
+            </form>
+            
+            <ul id="show-product">
+                {% for items in best_product %}
+                    <div class="show-product">
+                        <div class="product-img-box"><img src="{{items.image}}" alt="Product Image" class="product-img"></div>
+                        <h4 class="product-details">{{ items.product }}</h4>
+                        <h3 class="product-details">{{ items.quantity_sold }} units sold</h3>
+                    </div>
+                {% endfor %}
+                <div class="show-product">
+                    <div class="product-img"></div>
+                </div>
+                <div class="show-product">
+                    <div class="product-img"></div>
+                </div>
+            </ul>
+        </div>
+
+        <div class="view-more">
+            <form action="" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="view_More" value="best_product">
+                <button type="submit" class="viewMoreBttn"> View More </button>
+            </form>
+        </div>
+    </div>
+    {% block category_chart %}{% endblock category_chart %}
+{% endblock content %}

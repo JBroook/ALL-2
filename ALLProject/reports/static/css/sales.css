@@ -1,0 +1,103 @@
+body, html {
+    font-size: 1vw;
+    margin: 0;
+    background-color: #F0ECDD;
+}
+
+h1 {
+    margin-block-start: 0;
+    padding-top: 1%;
+    padding-left: 8%; 
+}
+
+#dashboard {
+    font-family: "Sansation", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    
+    width: 100%;
+    height: 10vh;
+
+    margin-block-start: 0%;
+    margin-left: auto;
+    margin-right: auto;
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    
+    background-color: white;
+    box-shadow: 4px 2px 4px gray;
+}
+
+.boxTitle {
+    font-family: "Mukta Mahee", sans-serif;
+    font-weight: 600;
+    font-style: normal;
+    font-size: 2vw;
+    
+    padding-left: 4%;
+    margin: 0;
+    width: auto;
+}
+
+.prints {
+    position: relative;
+    left: 42%;
+
+    width: 7rem;
+    height: 2em;
+    border-radius: 10px;
+    border-style: none;
+    background: rgba(163, 214, 217, 0.50);
+    
+    font-family: "Mukta Mahee", sans-serif;
+    font-size: unset;
+    font-weight: 700;
+    font-style: normal;
+}
+
+.container {
+    position: absolute;
+    width: 92.5%;
+    height: 50%;
+    left: 7%;
+}
+
+
+.view-more {
+    width: 3.5%;
+    writing-mode: vertical-lr;
+    align-self: center;
+}
+
+.viewMoreBttn {
+    width: 100%;
+    height: 100%;
+    background-color: #523249;
+    border-top-right-radius: 10px;
+    border-end-end-radius: 10px;
+
+    color: #FFF;
+    font-family: "Mukta Mahee", sans-serif;
+    font-weight: 600;
+    font-style: normal;
+    font-size: 1vw;
+}
+
+.view-more:hover {
+    width: 4.5%;
+    height: 40%;
+    .viewMoreBttn {
+        font-size: 1.5vw;
+    }
+}
+
+.prints.best-product {
+    position: absolute;
+    top: 3%;
+    left: 35%;
+}
+
+.prints:hover {
+    background: rgb(142, 222, 226);
+}

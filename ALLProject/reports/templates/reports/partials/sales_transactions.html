@@ -1,0 +1,102 @@
+{% extends "reports/partials/show_restock.html" %}
+{% load static %}
+{% block transactions %}
+    <link rel = "stylesheet" href="{% static 'css/sales_transactions.css' %}">
+    <script src="{% static "js/alert.js" %}"></script>
+
+    <div id="transaction-box">
+        <h2 class="boxTitle">Transactions</h2>
+        {% if month_or_day == "month" %}
+            <form action="" method="post" style="margin:0;">
+                {% csrf_token %}
+                <input type="hidden" name="change-monthly" value=0>
+                <button type="submit" class="transac-switch">
+                    <p class="periods monthly">Monthly</p>
+                    <p class="periods daily">Daily</p>
+                </button>
+            </form>
+        {% else %}
+            <form action="" method="post" style="margin:0;">
+                {% csrf_token %}
+                <input type="hidden" name="change-monthly" value=1>
+                <button type="submit" class="transac-switch">
+                    <p class="periods changed-monthly">Monthly</p>
+                    <p class="periods changed-daily">Daily</p>
+                </button>
+            </form>
+        {% endif %}
+
+        <div id="transac-details">
+            <table class="transac-table">
+                <thead class="transac-table">
+                    <tr>
+                        <th> Transaction ID </th>
+                        <th> Payment Method </th>
+                        <th> Timestamp </th>
+                        <th> Amount </th>
+                    </tr>
+                </thead>
+                <tbody class="transac-table">
+                    {% if transacts %}
+                        {% for items in transacts %}
+                            <tr style="height:10%;">
+                                <td>{{items.id}}</td>
+                                <td>{{items.payment_method}}</td>
+                                <td>{{items.timeStamp}}</td>
+                                <td>RM {{items.total_cost|floatformat:2}}</td>
+                            </tr>
+                        {% endfor %}
+                        <tr>
+                            <td></td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="4">No Transaction Made Today</td>
+                        </tr>
+                    {% endif %}
+                    
+                </tbody>
+            </table>
+        </div>
+        
+        <div id="transac-total-box">
+            <h3 id="transac-total"> Total: </h3>
+            <h3 id="revenue">RM {{total_revenue}}</h3>
+        </div>
+        <form action="" method="post" id="sales_report">
+            {% csrf_token %}
+            {{sales_report}}
+            <button type="submit" class="prints" id="transac-print"> Print Monthly/Daily Sales </button>
+        </form>
+    </div>
+    
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags == 'error' %}
+                <div id="error-container">
+                    <div class="dimmer-error"></div>
+
+                    <div id="error-box">
+                        <button type="button" id="close-error">X</button>
+
+                        <p id="error-title">ERROR / ALERT</p>
+                        <p id="error-msg">{{ message }}</p>
+                    </div>
+                </div>
+
+            {% elif message.tags == 'success' %}
+                <div id="success-container">
+                    <div class="dimmer-success"></div>
+
+                    <div id="success-box">
+                        <button type="button" id="close-success">X</button>
+
+                        <p id="success-title">UPDATE SUCCESS</p>
+                        <p id="success-msg">{{ message }}</p>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+{% endblock transactions %}

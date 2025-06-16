@@ -1,0 +1,80 @@
+{% extends "reports/partials/sales_category.html" %}
+{% load static %}
+{% block bar_chart %}
+    <link rel = "stylesheet" href="{% static 'css/sales_chart.css' %}">
+    {% if month %}
+        <style>
+            #sales-box td.{{ month }} {
+                background-color: burlywood !important;
+            }
+        </style>
+    {% endif %}
+    
+    <div id="sales-box">
+        <h2 class="boxTitle">Sales</h2>
+
+        <table class="charts-css column hide-data show-labels">
+            <!--January-->
+            <tr style="--size: {{ all_monthly_sales.0 }}">
+                <th scope="row"> Jan </th>
+                <td class="january"><span class="tooltip">Revenue: RM{{sales_per_month.0|floatformat:2}}</span></td>
+            </tr>
+            <!--February-->
+            <tr style="--size: {{ all_monthly_sales.1 }}">
+                <th scope="row"> Feb </th>
+                <td class="february"><span class="tooltip">Revenue: RM{{sales_per_month.1|floatformat:2}}</span></td>
+            </tr>
+            <!--March-->
+            <tr style="--size: {{ all_monthly_sales.2 }}">
+                <th scope="row"> Mar </th>
+                <td class="march"><span class="tooltip">Revenue: RM{{sales_per_month.2|floatformat:2}}</span></td>
+            </tr>
+            <!--April-->
+            <tr style="--size: {{ all_monthly_sales.3 }}">
+                <th scope="row"> Apr </th>
+                <td class="april"><span class="tooltip">Revenue: RM{{sales_per_month.3|floatformat:2}}</span></td>
+            </tr>
+            <!--May-->
+            <tr style="--size: {{ all_monthly_sales.4 }}">
+            <th scope="row"> May </th>
+                <td class="may"><span class="tooltip">Revenue: RM{{sales_per_month.4|floatformat:2}}</span></td>
+            </tr>
+            <!--June-->
+            <tr style="--size: {{ all_monthly_sales.5 }}">
+                <th scope="row"> Jun </th>
+                <td class="june"><span class="tooltip">Revenue: RM{{sales_per_month.5|floatformat:2}}</span></td>
+            </tr>
+            <!--July-->
+            <tr style="--size: {{ all_monthly_sales.6 }}">
+                <th scope="row"> Jul </th>
+                <td class="july"><span class="tooltip">Revenue: RM{{sales_per_month.6|floatformat:2}}</span></td>
+            </tr>
+            <!--August-->
+            <tr style="--size: {{ all_monthly_sales.7 }}">
+                <th scope="row"> Aug </th>
+                <td class="august"><span class="tooltip">Revenue: RM{{sales_per_month.7|floatformat:2}}</span></td>
+            </tr>
+            <!--September-->
+            <tr style="--size: {{ all_monthly_sales.8 }}">
+                <th scope="row"> Sep </th>
+                <td class="september"><span class="tooltip">Revenue: RM{{sales_per_month.8|floatformat:2}}</span></td>
+            </tr>
+            <!--October-->
+            <tr style="--size: {{ all_monthly_sales.9 }}">
+                <th scope="row"> Oct </th>
+                <td class="october"><span class="tooltip">Revenue: RM{{sales_per_month.9|floatformat:2}}</span></td>
+            </tr>
+            <!--November-->
+            <tr style="--size: {{ all_monthly_sales.10 }}">
+                <th scope="row"> Nov </th>
+                <td class="november"><span class="tooltip">Revenue: RM{{sales_per_month.10|floatformat:2}}</span></td>
+            </tr>
+            <!--December-->
+            <tr style="--size: {{ all_monthly_sales.11 }}">
+                <th scope="row"> Dec </th>
+                <td class="december"><span class="tooltip">Revenue: RM{{sales_per_month.11|floatformat:2}}</span></td>
+            </tr>
+        </table>
+    </div>
+    {% block stocks %}{% endblock stocks %}
+{% endblock bar_chart %}

@@ -3,20 +3,7 @@ from inventory.models import Product
 from users.models import Employee
 
 # Create your models here.
-class Payment(models.Model):
-    employeeID = models.ForeignKey(Employee, on_delete=models.CASCADE)
-    payment_method = models.CharField(max_length=12,null=False)
-    tax = models.FloatField(default=0.00)
-    discount = models.FloatField(default=0.00)
-    total_cost = models.FloatField(default=0.00,null=False)
-    card_info = models.CharField(max_length=16, null=True)
-    expiry = models.CharField(max_length=5,null=True)
-    cvv = models.CharField(max_length=4,null=True)
-    timeStamp = models.DateTimeField(auto_now_add=True)
-
 class Cart(models.Model):
-    payment = models.ForeignKey(Payment, on_delete=models.CASCADE)
-    product = models.ManyToManyField(Product,through='CartItem')
     total_cost = models.FloatField(default=0.00)
     payment_status = models.BooleanField(null=True)
     timeStamp = models.DateTimeField(auto_now_add=True)
@@ -35,3 +22,15 @@ class CartItem(models.Model):
 
     def get_product_total(self):
         return self.product.price * self.quantity
+    
+class Payment(models.Model):
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    employeeID = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    payment_method = models.CharField(max_length=12,null=False)
+    tax = models.FloatField(default=0.00)
+    discount = models.FloatField(default=0.00)
+    total_cost = models.FloatField(default=0.00,null=False)
+    card_info = models.CharField(max_length=16, null=True)
+    expiry = models.CharField(max_length=5,null=True)
+    cvv = models.CharField(max_length=4,null=True)
+    timeStamp = models.DateTimeField(auto_now_add=True)

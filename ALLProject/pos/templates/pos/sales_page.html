@@ -3,7 +3,6 @@
 {% load static %}
 {% block content %}
     <link rel="stylesheet" href="{% static "css/sales_page.css" %}">
-    <script src="{% static "js/addProduct.js" %}"></script>
     
     <body>
         <div class="input-box">
@@ -16,8 +15,18 @@
                         <h1 class="boxTitle add">Add Product</h1>
                         {% csrf_token %}
                         {{ item_code_form.as_p}}
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function() {
+                                // Show product-detail-box cash when Enter Code button is clicked
+                                document.getElementById('enterCode').addEventListener('click', function() {
+                                    document.querySelector('.details-box.default').style.visibility = 'hidden';            
+                                    document.querySelector('.details-box.addItem').style.visibility = 'visible';
+                                    document.querySelector('.details-box.quantity').style.visibility = 'hidden';
+                                });
+                            })
+                        </script>
                         <div class="buttons add">
-                            <button type="button" class="close-product-box" id="close-addItem"><img src="{% static 'assets/back-arrow.png' %}" alt="back-arrow" id="close-product"></button>
+                            <button type="button" class="close-product-box" id="close-addItem"><img src="{% static 'images/back-arrow.png' %}" alt="back-arrow" id="close-product"></button>
                             <button type="submit" id="addItemBttn">Add</button>
                         </div>
                     </form>
@@ -26,23 +35,16 @@
                 <div class="details-box quantity">
                     {% if show_quantity %}
                         <script>
-                            document.querySelector('.details-box.default').style.visibility = 'hidden';
-                            document.querySelector('.details-box.addItem').style.visibility = 'hidden';
-                            document.querySelector('.details-box.quantity').style.visibility = 'visible';
+                            document.addEventListener('DOMContentLoaded', function() {
+                                document.querySelector('.details-box.default').style.visibility = 'hidden';
+                                document.querySelector('.details-box.addItem').style.visibility = 'hidden';
+                                document.querySelector('.details-box.quantity').style.visibility = 'visible';
+                            })
                         </script>
                     {% else %}
-                        {% if success_message %}
-                            <script>
-                                resetToDefault(); // Show default box after successful quantity submission    
-                            </script>
-                        {% else %}
-                            <script>
-                                // Keep default state unless addItem is explicitly shown
-                                document.querySelector('.details-box.default').style.visibility = 'visible';
-                                document.querySelector('.details-box.addItem').style.visibility = 'hidden';
-                                document.querySelector('.details-box.quantity').style.visibility = 'hidden';
-                            </script>
-                        {% endif %}
+                        <script>
+                            resetToDefault(); 
+                        </script>
                     {% endif %}
 
                     <h3 class="boxTitle">{{ product.name }}</h3>
@@ -71,7 +73,7 @@
                         </div>
                     
                         <div class="buttons confirm">
-                            <button type="button" class="close-product-box" id="close-quantity"><img src="{% static 'assets/back-arrow.png' %}" alt="back-arrow" id="close-product"></button>
+                            <button type="button" class="close-product-box" id="close-quantity"><img src="{% static 'images/back-arrow.png' %}" alt="back-arrow" id="close-product"></button>
                             <input type="submit" id="confirmBttn">
                         </div>
                     </form>

@@ -1,0 +1,59 @@
+{% extends "reports/partials/sales_chart.html" %}
+{% load static %}
+{% block stocks %}
+    <link rel = "stylesheet" href="{% static 'css/show_restock.css' %}">
+    <div class="container stocks">
+        <div id="stocks">
+            <h2 class="boxTitle"> Stocks </h2>
+            <form action="" method="post" id="stock_report">
+                {% csrf_token %}
+                {{stock_report}}
+                <button type="submit" class="prints stocks"> Print </button>
+            </form>
+
+            <div id="stocks-table-box">
+                <table id="stocks-table">
+                    <thead class="stocks-table">
+                        <tr id="header">
+                            <th> Supplier </th>
+                            <th> Product Name </th>
+                            {% comment %} <th> Ordered On </th> {% endcomment %}
+                            {% comment %} <th> ETA </th> {% endcomment %}
+                             <th> Restocked On </th>
+                            <th> Unit Cost </th>
+                            <th> Current Stock </th>
+                            <th> Units Ordered </th>
+                            <th> Total Cost </th>
+                        </tr>
+                    </thead>
+                    <tbody class="stocks-table">
+                        {% if all_restock %}
+                            {% for items in all_restock %}
+                                <tr class="stocks-table">
+                                    <td>{{ items.0 }}</td>
+                                    <td>{{ items.1 }}</td>
+                                    {% comment %} <td>02/05/2025</td> {% endcomment %}
+                                    <td>{{ items.2 }}</td>
+                                    <td>{{ items.3|floatformat:2 }}</td>
+                                    <td>{{ items.4 }}</td>
+                                    <td>{{ items.5 }}</td>
+                                    <td>{{ items.6|floatformat:2 }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                        <tr></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="view-more">
+            <form action="" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="view_More" value="stock">
+                <button type="submit" class="viewMoreBttn"> View More </button>
+            </form>
+        </div>
+    </div>
+    {% block transactions %}{% endblock transactions %}
+{% endblock stocks %}

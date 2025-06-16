@@ -1,0 +1,41 @@
+
+#sales-box {
+    position: absolute;
+    top: 12vh;
+    left: 7%;
+
+    width: 38%;
+    height: 34%;
+    
+    background-color: rgb(255, 255, 245);
+    border-radius: 20px;
+}
+
+#sales-box .column {
+    margin: auto;
+    width: 90%;
+    height: 90%;
+    padding-bottom: 5%;
+}
+
+#sales-box tbody{
+    height: 80%;
+}
+
+#sales-box tr {
+    padding: 1%;
+}
+
+#sales-box td {
+    border-radius: 20px;
+    background-color: darkseagreen;
+    font-family: "Mukta Mahee", sans-serif;
+    font-weight: 150;
+    font-style: normal;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.charts-css .tooltip {
+    bottom: 120%;
+}

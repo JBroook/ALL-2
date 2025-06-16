@@ -126,13 +126,18 @@ def cashierPOSView(request):
             if checkout_form.is_valid():
                 print("valid form")
                 payment_method = checkout_form.cleaned_data['payment_method']
+                if payment_method == "cash":
+                    payment_method = "Cash"
+                elif payment_method == "debit_card":
+                    payment_method = "Debit/Credit Card"
                 print("Payment Method: ", payment_method)
                 if request.session['cart']:
                     if payment_method == "cash" and checkout_form.cleaned_data['cashPaid'] < cart_cost:
                         messages.error(request, "ERROR: Cash amount is lower than cost of products")
                     else:
                         try:
-                            change = cart_cost-checkout_form.cleaned_data['cashPaid']
+                            change = cart_cost-checkout_form.cleaned_data['cashPaid'] if checkout_form.cleaned_data['cashPaid'] else 0
+
                             # Create Cart Record
                             new_cart = Cart.objects.create(
                                 total_cost=0.00,
@@ -156,23 +161,25 @@ def cashierPOSView(request):
                             card_cvv = checkout_form.cleaned_data['cvv']
 
                             # Create and encrypt payment data
-                            Payment.objects.create(
+                            paid = Payment.objects.create(
+                                cart = new_cart,
                                 employeeID = Employee.objects.get(id=2),
                                 payment_method = payment_method,
                                 tax = 0.00,
                                 discount = 0.00,
-                                total_cost = cart_cost,
+                                total_cost = float(f"{cart_cost:.2f}"),
                                 card_info = card_number,
                                 expiry = card_expiry,
                                 cvv = card_cvv,
                             )
+                            paid.save()
 
                             new_cart.total_cost = cart_cost
                             new_cart.save()
 
-                            if payment_method == 'debit_card':
+                            if payment_method == 'Debit/Credit Card':
                                 messages.success(request, "Checkout Successful. Data saved.")
-                            elif payment_method == 'cash':
+                            elif payment_method == 'Cash':
                                 messages.success(request, f"Checkout Successful. \nPlease return Change: RM {change*-1:.2f}")
 
                             # Clear Cart in session

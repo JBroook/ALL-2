@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="{% static "css/sales_cart.css" %}">
     <script src="{% static "js/checkout.js" %}"></script>
     <script src="{% static "js/alert.js" %}"></script>
+    <script src="{% static "js/addProduct.js" %}"></script>
 
     <div class="cartbox">
         <h3 class="boxTitle">Cart</h3>
@@ -36,15 +37,15 @@
         </table>
         <div class="container">
             <div class="keyboardBox">
-                <button type="button" class="keyboard" value="1">1</button>
-                <button type="button" class="keyboard" value="2">2</button>
-                <button type="button" class="keyboard" value="3">3</button>
-                <button type="button" class="keyboard" value="4">4</button>
-                <button type="button" class="keyboard" value="5">5</button>
-                <button type="button" class="keyboard" value="6">6</button>
-                <button type="button" class="keyboard" value="7">7</button>
-                <button type="button" class="keyboard" value="8">8</button>                
-                <button type="button" class="keyboard" value="9">9</button>
+                <button type="button" class="keyboard keyboard-cart" value="1">1</button>
+                <button type="button" class="keyboard keyboard-cart" value="2">2</button>
+                <button type="button" class="keyboard keyboard-cart" value="3">3</button>
+                <button type="button" class="keyboard keyboard-cart" value="4">4</button>
+                <button type="button" class="keyboard keyboard-cart" value="5">5</button>
+                <button type="button" class="keyboard keyboard-cart" value="6">6</button>
+                <button type="button" class="keyboard keyboard-cart" value="7">7</button>
+                <button type="button" class="keyboard keyboard-cart" value="8">8</button>                
+                <button type="button" class="keyboard keyboard-cart" value="9">9</button>
                 <form action="" method="post" id="clear_cart_form">
                     {% csrf_token %}
                     {{ clear_cart_form }}
@@ -91,7 +92,7 @@
             {{ checkout_form.payment_method }}
 
             <div class="payment-box cash">
-                <button type="button" id="close-box"><img src="{% static 'assets/back-arrow.png' %}" alt="back-arrow" id="close"></button>
+                <button type="button" id="close-box"><img src="{% static 'images/back-arrow.png' %}" alt="back-arrow" id="close"></button>
                 <h2 class="boxTitle">Payment Method</h2>
                 <div class="payment-button">
                     <button type="button" class="cashBttn" onclick="changePayment('cashBttn')"
@@ -123,7 +124,6 @@
                             <div style="display: flex;">
                                 <h3 id="cash-value">RM   </h3>
                                 {{ checkout_form.cashPaid }}
-                                {% comment %} <input type="text" name="paid" id="cash-paid"> {% endcomment %}
                             </div>                            
                         </div>
                         <button type="submit" class="donePayment-bttn" id="doneCash-Payment" data-payment="cash">DONE PAYMENT</button>
@@ -146,7 +146,7 @@
             </div>
 
             <div class="payment-box card">
-                <button type="button" id="close-box"><img src="{% static 'assets/back-arrow.png' %}" alt="back-arrow" id="close"></button>
+                <button type="button" id="close-box"><img src="{% static 'images/back-arrow.png' %}" alt="back-arrow" id="close"></button>
                 <h2 class="boxTitle">Payment Method</h2>
                 <div class="payment-button">
                     <button type="button" class="cashBttn" onclick="changePayment('cashBttn')"
@@ -175,16 +175,12 @@
                         </div>
                         <div id="card-input-box">
                             <div class="card-input first">
-                                <img src="{% static 'assets/credit-card.png' %}" alt="card.png" id="bank-icon">
+                                <img src="{% static 'images/credit-card.png' %}" alt="card.png" id="bank-icon">
                                 {{ checkout_form.card_number }}
-                                {% comment %} <input type="text" name="card_number" class="card-info" id="cardNo" placeholder="Card Number" 
-                                maxlength="16"> {% endcomment %}
                             </div>
                             <div class="card-input sec">
                                 {{ checkout_form.expiry }}
                                 {{ checkout_form.cvv }}
-                                {% comment %} <input type="text" name="expiry" class="card-info sec expiry" id="cardExp" placeholder="MM/YY" maxlength="5">
-                                <input type="text" name="cvv" class="card-info sec cvv" id="cardCVV" placeholder="Security Num" maxlength="4"> {% endcomment %}
                             </div>
                         </div>
                         <button type="submit" class="donePayment-bttn" id="doneCard-Payment" data-payment="debit_card">DONE PAYMENT</button>
