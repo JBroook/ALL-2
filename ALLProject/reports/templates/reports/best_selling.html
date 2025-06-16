@@ -17,18 +17,49 @@
             <table class="products">
                 <thead class="products">
                     <tr>
-                        <th class="products">Rank</th>
-                        <th class="products">Category</th>
-                        <th class="products">Product Name</th>
-                        <th class="products">Supplier</th>
-                        <th class="products">Total Sale</th>
-                        <th class="products">Revenue</th>
+                        <th class="products" style="width:10%;" 
+                        onclick="window.location.href='?sort_by=rank&order={% if sort_by == 'rank' and order == 'asc' %}desc{% else %}asc{% endif %}{% if chosen %}&chosen={{ chosen }}{% endif %}';" style='cursor: pointer;'>
+                            <div class='header-container'>
+                                <p class="header-text"> Rank </p>
+                                <img src="{% static "images/up-and-down-arrow.png" %}" alt="" class="filter">
+                            </div>
+                        </th>
+                        <th class="products" style="width:15%;" onclick="window.location.href='?sort_by=category&order={% if sort_by == 'category' and order == 'asc' %}desc{% else %}asc{% endif %}{% if chosen %}&chosen={{ chosen }}{% endif %}';" style='cursor: pointer;'>
+                            <div class='header-container'>
+                                <p class="header-text"> Category </p>
+                                <img src="{% static "images/up-and-down-arrow.png" %}" alt="" class="filter">
+                            </div>
+                        </th>
+                        <th class="products" style="width:30%;" onclick="window.location.href='?sort_by=name&order={% if sort_by == 'name' and order == 'asc' %}desc{% else %}asc{% endif %}{% if chosen %}&chosen={{ chosen }}{% endif %}';" style='cursor: pointer;'>
+                            <div class='header-container'>
+                                <p class="header-text"> Product Name </p>
+                                <img src="{% static "images/up-and-down-arrow.png" %}" alt="" class="filter">
+                            </div>
+                        </th>
+                        <th class="products" style="width:20%;" onclick="window.location.href='?sort_by=supplier&order={% if sort_by == 'supplier' and order == 'asc' %}desc{% else %}asc{% endif %}{% if chosen %}&chosen={{ chosen }}{% endif %}';" style='cursor: pointer;'>
+                            <div class='header-container'>
+                                <p class="header-text"> Supplier </p>
+                                <img src="{% static "images/up-and-down-arrow.png" %}" alt="" class="filter">
+                            </div>
+                        </th>
+                        <th class="products" style="width:15%;" onclick="window.location.href='?sort_by=sale&order={% if sort_by == 'sale' and order == 'asc' %}desc{% else %}asc{% endif %}{% if chosen %}&chosen={{ chosen }}{% endif %}';" style='cursor: pointer;'>
+                            <div class='header-container'>
+                                <p class="header-text"> Total Sale </p>
+                                <img src="{% static "images/up-and-down-arrow.png" %}" alt="" class="filter">
+                            </div>
+                        </th>
+                        <th class="products" style="width:10%;" onclick="window.location.href='?sort_by=revenue&order={% if sort_by == 'revenue' and order == 'asc' %}desc{% else %}asc{% endif %}{% if chosen %}&chosen={{ chosen }}{% endif %}';" style='cursor: pointer;'>
+                            <div class='header-container'>
+                                <p class="header-text"> Revenue </p>
+                                <img src="{% static "images/up-and-down-arrow.png" %}" alt="" class="filter">
+                            </div>
+                        </th>
                     </tr>
                 </thead>
                 <tbody class="products">
                     {% if product_rank %}
                         {% for product in product_rank %}
-                            <tr class="products data">
+                            <tr class="products data" onclick="window.location.href='?chosen={{product.2}}';" style='cursor: pointer;'>
                                 <td>{{ product.0 }}</td>
                                 <td>{{ product.1 }}</td>
                                 <td>{{ product.2 }}</td>

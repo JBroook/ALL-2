@@ -158,7 +158,8 @@ def cashierPOSView(request):
                             card_cvv = checkout_form.cleaned_data['cvv']
 
                             # Create and encrypt payment data
-                            Payment.objects.create(
+                            paid = Payment.objects.create(
+                                cart = new_cart,
                                 employeeID = Employee.objects.get(id=2),
                                 payment_method = payment_method,
                                 tax = 0.00,
@@ -168,6 +169,7 @@ def cashierPOSView(request):
                                 expiry = card_expiry,
                                 cvv = card_cvv,
                             )
+                            paid.save()
 
                             new_cart.total_cost = cart_cost
                             new_cart.save()

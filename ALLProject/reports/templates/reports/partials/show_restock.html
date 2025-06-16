@@ -48,7 +48,11 @@
         </div>
 
         <div class="view-more">
-            <button class="viewMoreBttn"> View More </button>
+            <form action="" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="view_More" value="stock">
+                <button type="submit" class="viewMoreBttn"> View More </button>
+            </form>
         </div>
     </div>
     {% block transactions %}{% endblock transactions %}

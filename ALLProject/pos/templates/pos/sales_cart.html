@@ -92,7 +92,7 @@
             {{ checkout_form.payment_method }}
 
             <div class="payment-box cash">
-                <button type="button" id="close-box"><img src="{% static 'assets/back-arrow.png' %}" alt="back-arrow" id="close"></button>
+                <button type="button" id="close-box"><img src="{% static 'images/back-arrow.png' %}" alt="back-arrow" id="close"></button>
                 <h2 class="boxTitle">Payment Method</h2>
                 <div class="payment-button">
                     <button type="button" class="cashBttn" onclick="changePayment('cashBttn')"
@@ -146,7 +146,7 @@
             </div>
 
             <div class="payment-box card">
-                <button type="button" id="close-box"><img src="{% static 'assets/back-arrow.png' %}" alt="back-arrow" id="close"></button>
+                <button type="button" id="close-box"><img src="{% static 'images/back-arrow.png' %}" alt="back-arrow" id="close"></button>
                 <h2 class="boxTitle">Payment Method</h2>
                 <div class="payment-button">
                     <button type="button" class="cashBttn" onclick="changePayment('cashBttn')"
@@ -175,7 +175,7 @@
                         </div>
                         <div id="card-input-box">
                             <div class="card-input first">
-                                <img src="{% static 'assets/credit-card.png' %}" alt="card.png" id="bank-icon">
+                                <img src="{% static 'images/credit-card.png' %}" alt="card.png" id="bank-icon">
                                 {{ checkout_form.card_number }}
                             </div>
                             <div class="card-input sec">

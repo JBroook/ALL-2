@@ -29,7 +29,11 @@
         </div>
 
         <div class="view-more">
-            <button class="viewMoreBttn"> View More </button>
+            <form action="" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="view_More" value="best_product">
+                <button type="submit" class="viewMoreBttn"> View More </button>
+            </form>
         </div>
     </div>
     {% block category_chart %}{% endblock category_chart %}

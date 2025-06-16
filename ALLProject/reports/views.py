@@ -1,10 +1,11 @@
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.template import loader
-from django.shortcuts import render
+from django.shortcuts import redirect
 from django.contrib import messages
 from django.conf import settings
-from django.db.models import F, Count, Sum, Case, When, Value, Max
+from django.db.models import F, Count, Sum, Case, When, Value, Max, FloatField, IntegerField
+from django.db.models.functions import Coalesce
 from .models import Payment, Product, CartItem, Restock, Category
 from .forms import printSales, printBestProduct, printInventory
 from datetime import datetime,date,timedelta
@@ -32,6 +33,13 @@ def ManagerReportView(request):
         request.session['day_month'] = "day"
     print(request.POST)
     print(request.session['day_month'])
+
+    # Redirect for view more
+    if 'view_More' in request.POST:
+        if request.POST['view_More'] == "stock":
+            return redirect('/inventory/product_list')
+        elif request.POST['view_More'] == "best_product":
+            return redirect('/report/best-product')
 
     # Get Best Selling Products
     all_products = Product.objects.all().values()
@@ -62,7 +70,7 @@ def ManagerReportView(request):
     # print(total_sold)
     # print(category_sale)
 
-    # Sales made for each months within the year
+    # Sales made for each months within the year (Sales Graph & Sales Category)
     today = datetime.now()
     this_month = today.strftime("%B").lower()
 
@@ -328,43 +336,118 @@ def ManagerReportView(request):
         }
     return HttpResponse(template.render(context,request))
     
-# View More Page (STOCK)
+
+
 # View More Page (BEST PRODUCT)
 def viewMoreBestProduct(request):
     template = loader.get_template('reports/partials/product_detail.html')
-
-    today = datetime.now()
+    product_name = request.GET.get("chosen")
+    month_name = request.GET.get("prev-month")
+    filter_data = request.GET.get("sort_by")
+    order = request.GET.get("order")
+    chosen_product = None
+    all_monthly_sales = []
+    product_holder = None
+    chosen_month_sale = 0
+    # print("Chosen: ",product_name)
+    print("filter by: ",filter_data)
+    print("ordered: ",order)
     
-    top_product_data = CartItem.objects.filter(cart_id__timeStamp__month = today.month).values(
-        'product__category__name',
-        'product__name',
-        'product__supplier',
-        'product__image',
-        'product__price'
-    ).annotate(quantity=Sum('quantity')).annotate(revenue=Sum('total_cost')).order_by('-quantity')
-    i = 0
-    new_product_data = []
-    # print("Old Product Data: ",top_product_data)
-    # top_product_data = list(top_product_data)
+    # Useful Data
+    today = datetime.now()
+    this_month = today.strftime('%b')
+    chosen_month = today.month - 1
+    all_prev_month = []
+    for i in range(1,today.month):
+        all_prev_month.append(datetime(today.year,i,1).strftime("%b"))
+    # print(all_prev_month)
+    
 
+    # Fetch product data from rank
+    # Product Name, Sales(this month), Sales(last month), supplier, selling price
+    if product_name:
+        # Holder for if product has not been bought
+        product_holder = Product.objects.filter(name=product_name).values()
+        # print("Product Hold: ",product_holder,'\n')
+
+        chosen_product = CartItem.objects.filter(cart_id__timeStamp__month = today.month, product_id__name=product_name).values(
+            'product_id__name',
+            'product_id__supplier',
+            'product_id__price'
+        ).annotate(quantity=Sum('quantity'))
+        # print("Chosen Value: ",chosen_product)
+
+        # Product Chart        
+        total_yearly_sales = CartItem.objects.filter(cart_id__timeStamp__year = today.year, product_id__name=product_name).aggregate(sold=Sum('quantity'))['sold'] or 0
+        # print(total_yearly_sales)
+
+        for i in range (1,13):
+            monthly_sales = CartItem.objects.filter(cart_id__timeStamp__month = i,
+                                                    cart_id__timeStamp__year = today.year,
+                                                    product_id__name=product_name,
+                                                    ).aggregate(
+                                                        sold=Coalesce(
+                                                            Sum('quantity'),
+                                                            Value(0, output_field=IntegerField())
+                                                        ),
+                                                        revenue=Coalesce(
+                                                            Sum('total_cost'),
+                                                            Value(0.0, output_field=FloatField())
+                                                        )
+                                                    )
+            percentage = (monthly_sales['sold'] / total_yearly_sales) if total_yearly_sales > 0 and monthly_sales['sold'] > 0 else 0.0
+            monthly_sales['percentage'] = percentage
+            monthly_sales['no'] = str(datetime(today.year,i,1).strftime("%b"))
+
+            if monthly_sales:
+                all_monthly_sales.append(monthly_sales)
+            else:
+                all_monthly_sales.append({'sold': 0,'revenue':0.00,'percentage':0.00,'no':str(datetime(today.year,i,1).strftime("%b"))})
+
+            if month_name:
+                if i == datetime.strptime(month_name,'%b').month:
+                    if monthly_sales is not None:
+                        # print("Monthly sales: ",monthly_sales['sold'])
+                        chosen_month_sale = monthly_sales['sold']
+                    else:
+                        chosen_month_sale = str(0)
+
+            elif i == chosen_month:
+                if monthly_sales is not None:
+                    # print("Monthly sales: ",monthly_sales['sold'])
+                    chosen_month_sale = monthly_sales['sold']
+                else:
+                    chosen_month_sale = str(0)
+                
+        # print("Monthly Sales: ",all_monthly_sales)
+        # print("chosen_month_sale: ",chosen_month_sale)
+    
     all_products = Product.objects.values(
         'name',
         'image',
         'supplier',
-        'price',
         'category__name',
-        )
+        ).order_by('name')
+
+    top_product_data = CartItem.objects.filter(cart_id__timeStamp__month = today.month).values(
+        'product__category__name',
+        'product__name',
+        'product__supplier',
+        'product__image'
+    ).annotate(quantity=Sum('quantity')).annotate(revenue=Sum('total_cost')).order_by('-quantity')
+    i = 0
+    new_product_data = []
+    # print("Old Product Data: ",top_product_data)
 
     for product in top_product_data:
         i+=1
-        new_product = [str(i), product['product__category__name'], product['product__name'],product['product__supplier'], product['quantity'], product['revenue'], f"{settings.MEDIA_URL}{product['product__image']}",product['product__price']]
+        new_product = [str(i), product['product__category__name'], product['product__name'],product['product__supplier'], product['quantity'], product['revenue'], f"{settings.MEDIA_URL}{product['product__image']}"]
         # print("New Product: ",new_product)
         new_product_data.append(new_product)
 
-    print(new_product_data)
+    # print(new_product_data)
 
     new_product_list = []
-    no_new_restock = []
     for product in all_products:
         for data in top_product_data:
             if product['name'] == data['product__name']:
@@ -374,13 +457,46 @@ def viewMoreBestProduct(request):
     for product in all_products:
         if product['name'] not in new_product_list:
             i+=1
-            new_product_data.append([str(i), product['category__name'], product['name'],product['supplier'], 0, "0.00", f"{settings.MEDIA_URL}{product['image']}",product['price']])
-    print("Product with no new restock: ",new_product_data)
+            new_product_data.append([str(i), product['category__name'], product['name'],product['supplier'], 0, "0.00", f"{settings.MEDIA_URL}{product['image']}"])
+    # print("Product with no new restock: ",new_product_data)
+
+    if filter_data:
+        if filter_data == "rank":
+            new_product_data.sort(key=lambda x:x[0]) if order == "asc" else new_product_data.sort(key=lambda x:x[0], reverse=True)
+        elif filter_data == "category":
+            new_product_data.sort(key=lambda x:x[1]) if order == "asc" else new_product_data.sort(key=lambda x:x[1], reverse=True)
+        elif filter_data == "name":
+            new_product_data.sort(key=lambda x:x[2]) if order == "asc" else new_product_data.sort(key=lambda x:x[2], reverse=True)
+        elif filter_data == "supplier":
+            new_product_data.sort(key=lambda x:x[3]) if order == "asc" else new_product_data.sort(key=lambda x:x[3], reverse=True)
+        elif filter_data == "sale":
+            new_product_data.sort(key=lambda x:x[4]) if order == "asc" else new_product_data.sort(key=lambda x:x[4], reverse=True)
+        elif filter_data == "revenue":
+            new_product_data.sort(key=lambda x:x[5]) if order == "asc" else new_product_data.sort(key=lambda x:x[5], reverse=True)
+
 
     context = {
-        'product_rank': new_product_data
+        'product_rank': new_product_data,
+        'this_month': this_month,
+        'all_prev_month': all_prev_month,
+        'chosen_product': chosen_product,
+        'chosen_month_sale': chosen_month_sale,
+        'product_holder': product_holder,
+        'all_monthly_sales' : all_monthly_sales,
+        'sort_by': filter_data,
+        'order': order,
     }
+
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        return JsonResponse({'chosen_month_sale':chosen_month_sale})
+
     return HttpResponse(template.render(context,request))
+
+
+
+
+
+
 
 
 # Report Creation

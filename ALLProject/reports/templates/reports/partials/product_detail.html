@@ -1,44 +1,226 @@
 {% extends "reports/best_selling.html" %}
 {% load static %}
 {% block detail %}
+    <link rel ="stylesheet" href="{% static 'css/product_detail.css' %}">
+    <link rel="stylesheet" href="https://unpkg.com/charts.css/dist/charts.min.css">
+    <script src="{% static "js/prevMonth.js" %}"></script>    
 
-    <link rel = "stylesheet" href="{% static 'css/product_detail.css' %}">
+    {% if product_holder %}
+        <style>
+            #graph td.{{ this_month }} {
+                background-color: burlywood !important;
+            }
+        </style>
+        <script>
+            document.getElementById('main-content').setAttribute("id", "main-content-opened");
+        </script>
+
         <div id="product-detail-box">
-            <h2>Product Name</h2>
-            <div class="product-detail">
-                <div class="product-detail mthSale">
-                    <h3>Sales (This Month)</h3>
-                    <h3>MAY</h3>
-                    <h3>200</h3>
-                </div>
-                <div class="product-detail prevSale">
-                    <h3>Sales (Prev Month)</h3>
-                    <div class="dropbtn">
-                        <div class="dropdown-button">
-                            <h3> APR <img src="assets/arrow-down.png" class="logo dropdown"></h3>
+            
+            <button type="button" class="close-product-box" id="close-detail"><img src="{% static 'images/back-arrow.png' %}" alt="back-arrow" id="close-product"></button>
+
+            {% for product in product_holder %}
+                <h2>{{product.name}}</h2>
+                <div class="product-detail">
+                    {% if chosen_product %}
+                        {% for month_sales in chosen_product %}
+                            <div class="product-detail mthSale">
+                                <h3>Sales (This Month)</h3>
+                                <h3>{{ this_month }}</h3>
+                                <h3>{{ month_sales.quantity }}</h3>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="product-detail mthSale">
+                            <h3>Sales (This Month)</h3>
+                            <h3>{{ this_month }}</h3>
+                            <h3>0</h3>
+                        </div>                                
+                    {% endif %}
+                    <div class="product-detail prevSale">
+                        <h3>Sales (Prev Month)</h3>
+                        <div class="dropbtn">
+                            {% if all_prev_month %}
+                                <div class="dropdown-button">
+                                    <h3 id="selected-month"> {{all_prev_month|last}}</h3>
+                                    <img src="{% static "images/arrow-down.png" %}" class="logo dropdown">
+                                </div>
+                                <div class="dropdown-content">
+                                    <ul class="dropdown-content">
+                                        {% for month in all_prev_month %}
+                                            {% for values in all_monthly_sales %}
+                                                {% if month == values.no %}
+                                                    <li class="dropdown-content">
+                                                        <button class="month-option" data-month="{{month}}" data-product="{{product_holder.0.name}}" style='cursor: pointer;'>
+                                                            {{ month }}
+                                                        </button>
+                                                    </li>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            {% else %}
+                                <div class="dropdown-button">
+                                    <h3 id="selected-month"> Dec </h3>
+                                    <img src="{% static "images/arrow-down.png" %}" class="logo dropdown">
+                                </div>
+                                <div class="dropdown-content">
+                                    <ul class="dropdown-content">
+                                        <li class="dropdown-content">
+                                            <button class="month-option" data-month="Dec" data-product="{{product_holder.0.name}}" style='cursor: pointer;'>
+                                                Dec
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            {% endif %}
                         </div>
-                        <div class="dropdown-content">
-                            <ul class="dropdown-content">
-                                <li class="dropdown-content"><a href="#">JAN</a></li>
-                                <li class="dropdown-content"><a href="#">FEB</a></li>
-                                <li class="dropdown-content"><a href="#">MAR</a></li>
-                            </ul>
+
+                        {% if chosen_month_sale %}
+                            <h3 id='prev-month-sales'>{{ chosen_month_sale }}</h3>
+                        {% elif chosen_month_sale == 0 %}
+                            <h3 id='prev-month-sales'>0</h3>
+                        {% endif %}
+                    </div>
+
+                    <div class="product-detail supplier">
+                        <h3>Supplier</h3>
+                        <h3>{{ product.supplier}}</h3>
+                    </div>
+                    <div class="product-detail price">
+                        <h3>Selling Price</h3>
+                        <h3>{{ product.price }}</h3>
+                    </div>
+                    <div class="product-detail graph">
+                        <h2>Graph of Sales by Month</h2>
+                        <div id="graph">
+                            <table class="charts-css column hide-data show-labels">
+                                <!--January-->
+                                <tr style="--size: {{ all_monthly_sales.0.percentage }}">
+                                    <th scope="row"> Jan </th>
+                                    <td class="Jan">
+                                        <span class="tooltip">
+                                            Sold: {{ all_monthly_sales.0.sold }} Products,
+                                            Revenue: RM{{all_monthly_sales.0.revenue|floatformat:2}}
+                                        </span>
+                                    </td>
+                                </tr>
+                                <!--February-->
+                                <tr style="--size: {{ all_monthly_sales.1.percentage }}">
+                                    <th scope="row"> Feb </th>
+                                    <td class="Feb">
+                                        <span class="tooltip">
+                                            Sold: {{ all_monthly_sales.1.sold }} Products,
+                                            Revenue: RM{{all_monthly_sales.1.revenue|floatformat:2}}
+                                        </span>
+                                    </td>
+                                </tr>
+                                <!--March-->
+                                <tr style="--size: {{ all_monthly_sales.2.percentage }}">
+                                    <th scope="row"> Mar </th>
+                                    <td class="Mar">
+                                        <span class="tooltip">
+                                            Sold: {{ all_monthly_sales.2.sold }} Products,
+                                            Revenue: RM{{all_monthly_sales.2.revenue|floatformat:2}}
+                                        </span>
+                                    </td>
+                                </tr>
+                                <!--April-->
+                                <tr style="--size: {{ all_monthly_sales.3.percentage }}">
+                                    <th scope="row"> Apr </th>
+                                    <td class="Apr">
+                                        <span class="tooltip">
+                                            Sold: {{ all_monthly_sales.3.sold }} Products,
+                                            Revenue: RM{{all_monthly_sales.3.revenue|floatformat:2}}
+                                        </span>
+                                    </td>
+                                </tr>
+                                <!--May-->
+                                <tr style="--size: {{ all_monthly_sales.4.percentage }}">
+                                <th scope="row"> May </th>
+                                    <td class="May">
+                                        <span class="tooltip">
+                                            Sold: {{ all_monthly_sales.4.sold }} Products,
+                                            Revenue: RM{{all_monthly_sales.4.revenue|floatformat:2}}
+                                        </span>
+                                    </td>
+                                </tr>
+                                <!--June-->
+                                <tr style="--size: {{ all_monthly_sales.5.percentage }}">
+                                    <th scope="row"> Jun </th>
+                                    <td class="Jun">
+                                        <span class="tooltip">
+                                            Sold: {{ all_monthly_sales.5.sold }} Products,
+                                            Revenue: RM{{all_monthly_sales.5.revenue|floatformat:2}}
+                                        </span>
+                                    </td>
+                                </tr>
+                                <!--July-->
+                                <tr style="--size: {{ all_monthly_sales.6.percentage }}">
+                                    <th scope="row"> Jul </th>
+                                    <td class="Jul">
+                                        <span class="tooltip">
+                                            Sold: {{ all_monthly_sales.6.sold }} Products,
+                                            Revenue: RM{{all_monthly_sales.6.revenue|floatformat:2}}
+                                        </span>
+                                    </td>
+                                </tr>
+                                <!--August-->
+                                <tr style="--size: {{ all_monthly_sales.7.percentage }}">
+                                    <th scope="row"> Aug </th>
+                                    <td class="Aug">
+                                        <span class="tooltip">
+                                            Sold: {{ all_monthly_sales.7.sold }} Products,
+                                            Revenue: RM{{all_monthly_sales.7.revenue|floatformat:2}}
+                                        </span>
+                                    </td>
+                                </tr>
+                                <!--September-->
+                                <tr style="--size: {{ all_monthly_sales.8.percentage }}">
+                                    <th scope="row"> Sep </th>
+                                    <td class="Sep">
+                                        <span class="tooltip">
+                                            Sold: {{ all_monthly_sales.8.sold }} Products,
+                                            Revenue: RM{{all_monthly_sales.8.revenue|floatformat:2}}
+                                        </span>
+                                    </td>
+                                </tr>
+                                <!--October-->
+                                <tr style="--size: {{ all_monthly_sales.9.percentage }}">
+                                    <th scope="row"> Oct </th>
+                                    <td class="october">
+                                        <span class="tooltip">
+                                            Sold: {{ all_monthly_sales.9.sold }} Products,
+                                            Revenue: RM{{all_monthly_sales.9.revenue|floatformat:2}}
+                                        </span>
+                                    </td>
+                                </tr>
+                                <!--November-->
+                                <tr style="--size: {{ all_monthly_sales.10.percentage }}">
+                                    <th scope="row"> Nov </th>
+                                    <td class="Nov">
+                                        <span class="tooltip">
+                                            Sold: {{ all_monthly_sales.10.sold }} Products,
+                                            Revenue: RM{{all_monthly_sales.10.revenue|floatformat:2}}
+                                        </span>
+                                    </td>
+                                </tr>
+                                <!--December-->
+                                <tr style="--size: {{ all_monthly_sales.11.percentage }}">
+                                    <th scope="row"> Dec </th>
+                                    <td class="Dec">
+                                        <span class="tooltip">
+                                            Sold: {{ all_monthly_sales.11.sold }} Products,
+                                            Revenue: RM{{all_monthly_sales.11.revenue|floatformat:2}}
+                                        </span>
+                                    </td>
+                                </tr>
+                            </table>
                         </div>
                     </div>
-                    <h3>10</h3>
                 </div>
-                <div class="product-detail supplier">
-                    <h3>Supplier</h3>
-                    <h3>JBroook</h3>
-                </div>
-                <div class="product-detail price">
-                    <h3>Selling Price</h3>
-                    <h3>5.00</h3>
-                </div>
-                <div class="product-detail graph">
-                    <h2>Graph of Sales by Month</h2>
-                    <div id="graph"></div>
-                </div>
-            </div>
+            {% endfor %}
         </div>
+    {% endif %}
 {% endblock detail %}
