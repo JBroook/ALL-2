@@ -138,46 +138,60 @@ def home_view(request):
     options = [
         {
             'title' : 'Inventory',
+            'roles' : ['admin', 'manager'],
             'description' : 'Add, view, edit and restock products',
             'image' : 'images/purple-shipping.png',
             'url' : reverse('product_list')
         },
         {
             'title' : 'Category',
+            'roles' : ['admin', 'manager'],
             'description' : 'View and manage categories for products',
             'image' : 'images/purple-category.png',
             'url' : reverse('category')
         },
         {
             'title' : 'Sales Report',
+            'roles' : ['manager'],
             'description' : 'View detailed analyses of performance and generate reports',
             'image' : 'images/purple-report.png',
             'url' : reverse('user_list')
         },
         {
             'title' : 'Users',
+            'roles' : ['manager'],
             'description' : 'Manage existing users or add new employees',
             'image' : 'images/purple-users.png',
             'url' : reverse('user_list')
         },
         {
             'title' : 'Item Scanning',
+            'roles' : ['cashier'],
             'description' : 'Start scanning items for customers',
             'image' : 'images/purple-barcode.png',
             'url' : reverse('sales')
         },
         {
             'title' : 'Sales History',
+            'roles' : ['cashier'],
             'description' : 'View all previous sales and transactiond details',
             'image' : 'images/purple-history.png',
             'url' : reverse('history')
         }
     ]
 
+    user_role = Employee.objects.get(user=request.user).role
+
+    filtered_options = []
+
+    for i in range(len(options)):
+        if user_role in options[i]['roles']:
+            filtered_options.append(options[i])
+
     return render(
         request,
         'users/home.html',
         context={
-            'options' : options
+            'options' : filtered_options
         }
     )

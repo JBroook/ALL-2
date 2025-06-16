@@ -1,0 +1,38 @@
+<div class="product-details">
+    <h2>{{chosen_product.name}}</h2>
+    <div class="all-data">
+        <div class="data">
+        <h3>Category</h3>
+        <h3>Stock</h3>
+        <h3>Supplier</h3>
+        <h3>Alert Notice</h3>
+        <h3>Price</h3>
+        </div>
+        <div class="v-separator"></div>
+        <div class="data">
+        <h3>{{chosen_product.category.name}}</h3>
+        <h3>{{chosen_product.quantity}}</h3>
+        <h3>{{chosen_product.supplier}}</h3>
+        <h3>{{chosen_product.alert_threshold}}</h3>
+        <h3>RM {{chosen_product.price | floatformat:2}}</h3>
+        </div>
+    </div>
+</div>
+
+<div class="qr-details">
+    {% if chosen_product is not None%}
+    <div id="qr-image">
+        <img src="{{chosen_product.qr_code.url}}" width="200" height="200" alt="QR code">
+    </div>
+    <div id="detail-buttons">
+        <button class="normal-button" onclick="edit_product({{chosen_product.id}})">
+        Edit</button>
+        <button class="normal-button" onclick="window.location.href='{% url 'product_print' chosen_product.id %}'">Print</button>
+        <button class="normal-button" onclick="window.location.href='{% url 'product_restock' chosen_product.id %}'">
+        Restock</button>
+        <button id="delete-button" onclick="delete_product({{chosen_product.id}})">Delete</button>
+    </div>
+    {% else%}
+    <div class="default-message"><h3>No QR information found</h3></div>
+    {%endif%}
+</div>

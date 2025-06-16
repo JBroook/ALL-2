@@ -2,10 +2,12 @@ from django import forms
 from .models import Product, Category, Restock
 
 class ProductForm(forms.ModelForm):
+    category = forms.ModelChoiceField(Category.objects.order_by('name'), required=True)
+    
     class Meta:
         model = Product
         fields = '__all__'
-        exclude = ['qr_code']
+        exclude = ['qr_code','category']
         labels = {
             'name' : "Name",
             'category' : "Category",
@@ -15,8 +17,6 @@ class ProductForm(forms.ModelForm):
             'image' : 'Image',
             'alert_threshold' : 'Alert Notice'
         }
-
-        category = forms.ModelChoiceField(queryset=Category.objects.all()),
 
         widgets = {
             'name' : forms.TextInput(
@@ -55,7 +55,7 @@ class RestockForm(forms.ModelForm):
             'date' : "Date Stocked"
         }
 
-        category = forms.ModelChoiceField(queryset=Category.objects.all()),
+        category = forms.ModelChoiceField(queryset=Category.objects.all().order_by("name")),
 
         widgets = {
             'date' : DateInput()

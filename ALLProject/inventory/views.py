@@ -6,46 +6,101 @@ from .forms import ProductForm, RestockForm, CategoryForm
 from django.conf import settings
 from django.db.models import Count, Avg, Sum
 from django.urls import reverse
+from pathlib import Path
 
 import qrcode
+import os
+from django.http import HttpResponse
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import A4
+from django.conf import settings
+from reportlab.lib.units import mm
 
 # Create your views here.
 @login_required(login_url="/accounts/login/")
 def product_list_view(request):
     products = Product.objects.all()
-    product_id = request.GET.get("add")
-    chosen_product = None
-    filter_category = request.POST.get('category')
-    default_category = "none"
+    categories = Category.objects.all().order_by("name")
 
-    if product_id:
-        chosen_product = Product.objects.get(pk=product_id)
-
-    if request.method=="POST":
-        if filter_category!="none":
-            try:
-                category_id = Category.objects.get(name=filter_category).id
-            except Category.DoesNotExist:
-                category_id = None
-            products = Product.objects.filter(category=category_id)
-            default_category = filter_category
-
-        availability = request.POST.get('availability')
-
-        if availability!="none":
-            if(availability=="low"):
-                products = Product.objects.filter(quantity__lte=10)
-            elif(availability=="zero"):
-                products = Product.objects.filter(quantity=0)
-    
     return render(
         request,
         'inventory/product_list.html',
         context={
-            'products':products,
-            'product_count':len(products),
-            'chosen_product': chosen_product,
-            'default_category': default_category
+            'products' : products,
+            'product_count': len(products),
+            'categories' : categories
+        }
+    )
+
+def product_list_partial_view(request):
+    products = Product.objects.all()
+    category = request.GET.get('category')
+    availability = request.GET.get('availability')
+
+    if category!='none':
+        products = products.filter(category__name=category)
+
+    if availability!='none':
+        info = {
+            'low':5,
+            'zero':0
+        }
+        products = products.filter(quantity__lte=info[availability])
+    
+    return render(
+        request,
+        'partials/product_list_partial.html',
+        context={
+            'products' : products
+        }
+    )
+
+# def product_list_view(request):
+#     products = Product.objects.all()
+#     product_id = request.GET.get("add")
+#     chosen_product = None
+#     filter_category = request.POST.get('category')
+#     default_category = "none"
+
+#     if product_id:
+#         chosen_product = Product.objects.get(pk=product_id)
+
+#     if request.method=="POST":
+#         if filter_category!="none":
+#             try:
+#                 category_id = Category.objects.get(name=filter_category).id
+#             except Category.DoesNotExist:
+#                 category_id = None
+#             products = Product.objects.filter(category=category_id)
+#             default_category = filter_category
+
+#         availability = request.POST.get('availability')
+
+#         if availability!="none":
+#             if(availability=="low"):
+#                 products = Product.objects.filter(quantity__lte=10)
+#             elif(availability=="zero"):
+#                 products = Product.objects.filter(quantity=0)
+    
+#     return render(
+#         request,
+#         'inventory/product_list.html',
+#         context={
+#             'products':products,
+#             'product_count':len(products),
+#             'chosen_product': chosen_product,
+#             'default_category': default_category
+#         }
+#     )
+
+def product_info_view(request, product_id):
+    product = Product.objects.get(pk=product_id)
+
+    return render(
+        request,
+        'partials/product_info.html',
+        context={
+            'chosen_product' : product
         }
     )
 
@@ -93,7 +148,9 @@ def product_delete_view(request, product_id):
     product = Product.objects.get(pk=product_id)
 
     if request.method=="POST":
-        product.delete()
+        action_type = request.POST.get('action')
+        if action_type=='confirm':
+            product.delete()
         return redirect("product_list")
     
     return render(request, "inventory/product_delete.html", context={"product":product})
@@ -136,7 +193,7 @@ def category_view(request):
         product_types=Count("product"),
         total_stock=Sum("product__quantity"),
         average_price=Avg("product__price")
-    )
+    ).order_by("name")
 
     return render(
         request, 
@@ -234,3 +291,21 @@ def category_edit_view(request, category_id):
             'redirect' : reverse('category_edit', args=[category_id])
         }
     )
+
+def product_print_view(request, product_id):
+    product = Product.objects.get(pk=product_id)
+    qr_code_path = Path(str(settings.BASE_DIR)+product.qr_code.url)
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="qr_code_{product.id}.pdf"'
+
+    p = canvas.Canvas(response, pagesize=A4)
+    width, height = A4
+    p.setFont("Helvetica-Bold", 14)
+    p.drawCentredString(width/2, height - 50, f"QR Code for Product: {product.name}")
+
+    p.drawImage(qr_code_path, x=width/2 - 25 * mm, y=height - 200, width=50 * mm, height=50 * mm)
+
+    p.showPage()
+    p.save()
+    return response
