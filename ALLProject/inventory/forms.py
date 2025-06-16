@@ -2,10 +2,12 @@ from django import forms
 from .models import Product, Category, Restock
 
 class ProductForm(forms.ModelForm):
+    category = forms.ModelChoiceField(Category.objects.order_by('name'), required=True)
+    
     class Meta:
         model = Product
         fields = '__all__'
-        exclude = ['qr_code']
+        exclude = ['qr_code','category']
         labels = {
             'name' : "Name",
             'category' : "Category",
@@ -15,8 +17,6 @@ class ProductForm(forms.ModelForm):
             'image' : 'Image',
             'alert_threshold' : 'Alert Notice'
         }
-
-        category = forms.ModelChoiceField(queryset=Category.objects.all()),
 
         widgets = {
             'name' : forms.TextInput(
@@ -55,7 +55,7 @@ class RestockForm(forms.ModelForm):
             'date' : "Date Stocked"
         }
 
-        category = forms.ModelChoiceField(queryset=Category.objects.all()),
+        category = forms.ModelChoiceField(queryset=Category.objects.all().order_by("name")),
 
         widgets = {
             'date' : DateInput()
@@ -65,3 +65,23 @@ class RestockForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.label_suffix = ""
         self.product_id = kwargs.get('product_id')
+
+class CategoryForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = '__all__'
+        labels = {
+            'name' : 'Name'
+        }
+
+        widgets = {
+            'name' : forms.TextInput(
+                attrs={
+                    'placeholder' : 'e.g. Accessories',
+                    'class' : 'form-control'
+                })
+        }
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.label_suffix = ""

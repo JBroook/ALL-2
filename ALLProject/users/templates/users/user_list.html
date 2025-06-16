@@ -7,6 +7,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Mukta+Mahee:wght@200;300;400;500;600;700;800&family=Sansation:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
 
+    <script src={% static 'js/user_list.js'%}></script>
+
     <head>
         <div id="dashboard">
             <h1>Users</h1>
@@ -15,90 +17,33 @@
 
     <body>
         <div id="search">
-            <img src="assets/search.png" alt="Magnifying-glass.png" class="logo">
-            <form action="submit" class="searchbar"><input type="search" name="Search" id="searchbar"></form>
+            <img src="{% static 'images/search.png'%}" alt="Magnifying glass" class="logo">
+            <form class="searchbar"><input type="search" name="Search" id="searchbar" oninput="search_users()"></form>
             <div style="width: 60%;"> </div>
             <div class="dropbtn">
                 <div class="dropdown-button">
-                    <h4> Roles <img src="assets/arrow-down.png" class="logo dropdown"></h4>
+                    <h4> Roles <img src="{% static 'images/arrow-down.png'%}" class="logo dropdown"></h4>
                 </div>
                 <div class="dropdown-content">
-                    <ul class="dropdown-content">
-                        <li class="dropdown-content"><a href="#">Admin</a></li>
-                        <li class="dropdown-content"><a href="#">Cashier</a></li>
+                    <ul>
+                        <li onclick="refresh_users('any')">Any</li>
+                        <li onclick="refresh_users('cashier')">Cashier</li>
+                        <li onclick="refresh_users('admin')">Admin</li>
+                        <li onclick="refresh_users('manager')">Manager</li>
                     </ul>
                 </div>
             </div>
         </div>
         <div id="main-content">
-            
             <div id="user-list">
-                <div class="user box">
-                    <div class="user role">
-                        <h3> Cashier </h3>
-                    </div>
-                    <div class="user username">
-                        <h3> Username </h3>
-                    </div>
-                </div>
-                <div class="user box">
-                    <div class="user role">
-                        <h3> Cashier </h3>
-                    </div>
-                    <div class="user username">
-                        <h3> Username </h3>
-                    </div>
-                </div>
-                <div class="user box">
-                    <div class="user role">
-                        <h3> Admin </h3>
-                    </div>
-                    <div class="user username">
-                        <h3> Username </h3>
-                    </div>
-                </div>
-                
-                <div class="user box">
-                    <div class="user role">
-                        <h3> Admin </h3>
-                    </div>
-                    <div class="user username">
-                        <h3> Username </h3>
-                    </div>
-                </div>
-                
-                <div class="user box">
-                    <div class="user role">
-                        <h3> Cashier </h3>
-                    </div>
-                    <div class="user username offline">
-                        <h3> Username </h3>
-                    </div>
-                </div>
+                {% include 'partials/user_list_partial.html' %}
             </div>
         </div>
-        <div class="adduser-box">
-            <button type="button" id="close-box"><img src="assets/back-arrow.png" alt="back-arrow" id="close"></button>
-            <h2 class="addUser title"> Add User </h2>
-            <form action="#" class="addUser">
-                <label for="username"> Username </label>
-                <input type="text" name="username" class="addUser username">
-                <label for="email"> Email </label>
-                <input type="email" name="email" class="addUser email">
-                <label for="role"> Role </label>
-                <select name="role" class="addUser role">
-                    <option value="admin">Admin</option>
-                    <option value="cashier">Cashier</option>
-                </select>
-                <label for="password"> Password </label>
-                <input type="password" name="password" class="addUser password">
-                <label for="confirm-password"> Confirm Password </label>
-                <input type="password" name="confirm-password" class="addUser confirm-password">
-                <input type="submit" value="Add User" class="addUser submit">
-            </form>
+        <div id="userinfo-box">
+            <h3>Select a user to view their information</h3>
         </div>
         <div class="editBtn-box">
-            <button type="button" class="editBtn add"> Add User </button>
-            <button type="button" class="editBtn del"> Delete User </button>
+            <button type="button" class="editBtn add" onclick="add_user()"> Add User </button>
+            {% comment %} <button type="button" class="editBtn del"> Delete User </button> {% endcomment %}
         </div>
     </body>

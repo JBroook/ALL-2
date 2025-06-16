@@ -62,7 +62,7 @@ h1,h3 {
 }
 
 .qr-barcode {
-    width: 20%;
+    width: fit-content;
     height: 20%;
 
     background-color: #F4F4F4;

@@ -7,9 +7,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel = "stylesheet" href="{% static 'css/product_list.css' %}">
+    <link rel = "stylesheet" href="{% static 'inventory/product_list.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Mukta+Mahee:wght@200;300;400;500;600;700;800&family=Sansation:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
     <title>Products</title>
+
+    <script src="{% static 'inventory/product_list.js' %}"> </script>
 </head>
 <body>
   <aside class="sidebar">
@@ -27,87 +29,41 @@
           <div class="list-filter">
             <form method="POST">
               {% csrf_token %}
-              <select name="category">
+              <select name="category" oninput="filter_products()" id="category-filter">
                 <option value="none">Category</option>
-                <option value="Electronics">Electronics</option>
-                <option value="Food">Food</option>
-                <option value="Beverage">Beverage</option>
+                {% for category in categories%}
+                  <option value="{{category.name}}">{{category.name}}</option>
+                {%endfor%}
               </select>
 
-              <select name="availability">
+              <select name="availability" oninput="filter_products()" id="availability-filter">
                 <option value="none">Availability</option>
                 <option value="low">Low stock</option>
                 <option value="zero">Zero stock</option>
               </select>
 
-              <button type="submit"><img src="{% static 'images/search 1.png' %}" width="40" height="40"></button>
+              <img src="{% static 'images/search 1.png' %}">
             </form>
           </div>
         </div>
 
-        <div class="list-body">
-          {% for product in products%}
-            <div class="product" style="background-image: url('{{product.image.url}}');">
-              <div class="product-stock">
-                <p>Stock: {{product.quantity}}</p>
-              </div>
-              <a class="fill-div" href="?add={{product.id}}"></a>
-              <div class="product-name">
-                <h3>{{product.name}}</h3>
-                <p>RM {{product.price| floatformat:2}}</p>
-              </div>
-            </div>
-          {% endfor%}
+        <div class="list-body" id="product-list-container">
+          {% include 'partials/product_list_partial.html'%}
         </div>
 
         <div id="add-product">
-          <a href="{%url 'product_create' %}">Add Product</a>
+          <button onclick="add_product()">Add Product</button>
         </div>
       </div>
     </section>
 
     <section>
-      <div class="details-tab">
+      <div class="details-tab" id="right-section">
         <div class="product-details">
-          {% if chosen_product is not None%}
-            <h2>{{chosen_product.name}}</h2>
-            <div class="all-data">
-              <div class="data">
-                <h3>Category</h3>
-                <h3>Stock</h3>
-                <h3>Supplier</h3>
-                <h3>Alert Notice</h3>
-                <h3>Price</h3>
-              </div>
-              <div class="v-separator"></div>
-              <div class="data">
-                <h3>{{chosen_product.category.name}}</h3>
-                <h3>{{chosen_product.quantity}}</h3>
-                <h3>{{chosen_product.supplier}}</h3>
-                <h3>{{chosen_product.alert_threshold}}</h3>
-                <h3>RM {{chosen_product.price | floatformat:2}}</h3>
-              </div>
-            </div>
-          {%else%}
             <div class="default-message"><h3>Select a product to view its information</h3></div>
-          {%endif%}
         </div>
         <div class="qr-details">
-          {% if chosen_product is not None%}
-            <div id="qr-image">
-              <img src="{{chosen_product.qr_code.url}}" width="200" height="200" alt="QR code">
-            </div>
-            <div id="detail-buttons">
-              <button class="normal-button" onclick="window.location.href='{% url 'product_update' chosen_product.id %}'">
-                Edit</button>
-              <button class="normal-button">Print</button>
-              <button class="normal-button" onclick="window.location.href='{% url 'product_restock' chosen_product.id %}'">
-                Restock</button>
-              <button id="delete-button" onclick="window.location.href='{% url 'product_delete' chosen_product.id %}'">Delete</button>
-            </div>
-          {% else%}
             <div class="default-message"><h3>No QR information found</h3></div>
-          {%endif%}
         </div>
       </div>
     </section>

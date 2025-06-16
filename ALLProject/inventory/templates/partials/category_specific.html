@@ -1,0 +1,25 @@
+<div class='category-container'>
+    <h2>{{category.name}}</h2>
+
+    <div class="info-container">
+        <div class="info-field">
+            <h3>Total Products</h3>
+            <p>{{category.product_types}}</p>
+        </div>
+        
+        <div class="info-field">
+            <h3>Total Stock</h3>
+            <p>{{category.total_stock}}</p>
+        </div>
+        
+        <div class="info-field">
+            <h3>Average Price</h3>
+            <p>{{category.average_price|floatformat:2}}</p>
+        </div>
+    </div>
+
+    <div id="button-container">
+        <button onclick="edit_category({{category.id}})">Edit</button>
+        <button onclick="delete_category({{category.id}})">Delete</button>
+    </div>
+</div>

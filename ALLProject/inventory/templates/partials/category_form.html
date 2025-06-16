@@ -1,0 +1,14 @@
+<div class='category-container'>
+    <h2>{{action}} Category</h2>
+    <form action="{{redirect}}" method="POST">
+        {% csrf_token %}
+        <div class="form-field">
+            <h3>{{form.name.label}}</h3>
+            {{form.name}}
+        </div>
+
+        <div id="button-container">
+            <button type="submit">{{action}} Category</button>
+        </div>
+    </form>
+</div>

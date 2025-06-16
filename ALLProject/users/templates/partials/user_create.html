@@ -1,0 +1,22 @@
+<div id="actual-info">
+    <h2 class="title"> Add User </h2>
+    <form method="POST" action="{% url 'user_create'%}">
+        {% csrf_token %}
+        {% for field in user_form%}
+            <div class="form-field">
+                <h3>{{field.label}}</h3>
+                <p>{{field.help_text}}</p>
+                {{field}}
+            </div>
+        {% endfor %}
+
+        <div class="form-field">
+            <h3>{{employee_form.role.label}}</h3>
+            {{employee_form.role}}
+        </div>
+
+        <div id="button-container">
+            <button type="submit">Add User</button>
+        </div>
+    </form>
+</div>

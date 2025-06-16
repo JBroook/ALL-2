@@ -1,0 +1,13 @@
+<div class="category-container">
+    <h2>Delete {{category.name}}?</h2>
+    <p>Do you want to delete this category? <strong>All products of this category will be deleted.</strong></p>
+    <div class="button-row">
+        <form method="POST" action="{% url 'category_delete' category.id%}">
+            {%csrf_token%}
+            <div class="button-row">
+                <button type="submit" name="action" value="cancel">Cancel</button>
+                <button id="delete-button" type="submit" name="action" value="confirm">Confirm</button>
+            </div>
+        </form>
+    </div>
+</div>

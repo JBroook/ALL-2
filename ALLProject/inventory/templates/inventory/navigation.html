@@ -6,12 +6,12 @@
     
     <body>
         <div class="navigation-column" id="navcolumn">
-            <!-- Admin View-->
-            <a class="nav products"><img src="{% static 'images/shipping.png' %}" class="logo products"><p class="navfull products"> Products</p></a>
-            <a class="nav inventory"><img src="{% static 'images/report.png' %}" class="logo inventory"><p class="navfull inventory"> Inventory</p></a>
+            {% comment %} <!-- Admin View-->
+            <a class="nav products" src="{% url 'product_list' %}"><img src="{% static 'images/shipping.png' %}" class="logo products"><p class="navfull products"> Products</p></a>
+            <a class="nav inventory" ><img src="{% static 'images/report.png' %}" class="logo inventory"><p class="navfull inventory"> Inventory</p></a>
             
             <!-- Logout -->
-            <a class="nav"><img src="{% static 'images/logout.png' %}" class="logo"><p class="navfull"> Logout</p></a>
+            <a class="nav"><img src="{% static 'images/logout.png' %}" class="logo"><p class="navfull"> Logout</p></a> {% endcomment %}
         </div>
     </body>
 </html>

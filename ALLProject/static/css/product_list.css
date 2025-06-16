@@ -156,7 +156,7 @@ a.fill-div {
   justify-content: center;
 }
 
-#add-product a {
+#add-product button {
   width: 184px;
   height: 40px;
   border-radius: 15px;
@@ -170,7 +170,7 @@ a.fill-div {
   text-decoration: none;
 }
 
-#add-product a:hover {
+#add-product button:hover {
   background: #99ad78; 
 }
 

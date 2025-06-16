@@ -9,10 +9,13 @@ class Cart(models.Model):
     timeStamp = models.DateTimeField(auto_now_add=True)
 
     def get_cart_total(self):
-        return sum(item.get_product_price() for item in self.cartitem_set.all())
+        return sum(item.get_product_total() for item in self.cart_items.all())
+    
+    def get_total_items(self):
+        return sum(item.quantity for item in self.cart_items.all())
 
 class CartItem(models.Model):
-    cart = models.ForeignKey(Cart,on_delete=models.CASCADE)
+    cart = models.ForeignKey(Cart,on_delete=models.CASCADE, related_name='cart_items')
     product = models.ForeignKey(Product,on_delete=models.PROTECT)
     quantity = models.PositiveIntegerField(default=1,null=False)
     total_cost = models.FloatField(default=0.00)

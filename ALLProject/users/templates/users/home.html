@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+    <!-- <link rel = "stylesheet" href="{% static 'manager/inventory.css' %}"> -->
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mukta+Mahee:wght@200;300;400;500;600;700;800&family=Sansation:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
+
+    {% comment %} <script src={% static 'js/user_list.js'%}></script> {% endcomment %}
+
+    <head>
+        <div id="dashboard">
+            <h1>Home</h1>
+        </div>
+    </head>
+
+    <body>
+        <main>
+            <div class="logo-container">
+                <img src="{% static 'images/warehub-logo.png' %}" id="main-logo" alt="WareHub logo">
+            </div>
+        </main>
+        <main>
+            <div class="large-container">
+                <div class="option-container">
+                    {% for option in options%}
+                        <div class="option" {% if forloop.counter == 1%} id="first-item" {%endif%}>
+                            <div class="left-side">
+                                <img src="{% static option.image%}">
+                            </div>
+                            <div class="right-side">
+                                <div class="text">
+                                    <h3>{{option.title}}</h3>
+                                    <p>{{option.description}}</p>
+                                </div>
+                                <div class="button-bar">
+                                    <button onclick="window.location.href='{{option.url}}'">Go</button> 
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </main>
+    </body>
