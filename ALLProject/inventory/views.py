@@ -115,6 +115,7 @@ def product_create_view(request):
             image = qrcode.make("Pooop")
             filename = f"{new_product.name}_{new_product.id}_qr.png"
             image.save(str(settings.BASE_DIR)+'/media/qr/'+ filename)
+            new_product.category = form.cleaned_data['category']
 
             new_product.qr_code = '/qr/'+ filename
 

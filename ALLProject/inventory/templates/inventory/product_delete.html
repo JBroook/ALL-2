@@ -5,7 +5,7 @@
         <form method="POST" action="{% url 'product_delete' product.id%}">
             {%csrf_token%}
             <button name="action" value="cancel">Cancel</button>
-            <button id="delete-button" type="submit" name="action" value="confirm">Confirm</button>
+            <button id="confirm-delete-button" type="submit" name="action" value="confirm">Confirm</button>
         </form>
     </div>
 </div>
