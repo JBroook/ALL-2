@@ -1,18 +1,14 @@
-{% extends "inventory/base.html" %}
+<!DOCTYPE html>
 {% load static %}
-
-{% block head%} 
-    {{ block.super }}
+<html>
+    <!-- <link rel = "stylesheet" href="{% static 'manager/inventory.css' %}"> -->
     <link rel="stylesheet" href="{% static 'css/user_list.css' %}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Mukta+Mahee:wght@200;300;400;500;600;700;800&family=Sansation:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
 
     <script src={% static 'js/user_list.js'%}></script>
-{% endblock%}
 
-{% block content %}
-<html>
     <head>
         <div id="dashboard">
             <h1>Users</h1>
@@ -51,5 +47,3 @@
             {% comment %} <button type="button" class="editBtn del"> Delete User </button> {% endcomment %}
         </div>
     </body>
-</html>
-{%endblock%}

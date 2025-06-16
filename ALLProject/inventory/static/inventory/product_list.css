@@ -167,7 +167,7 @@ a.fill-div {
 #add-product {
   position: sticky;
   bottom: 10;
-  margin: 1.5vw auto;
+  margin: 20px auto;
   display: flex;
   justify-content: center;
 }
@@ -175,7 +175,7 @@ a.fill-div {
 #add-product button {
   width: 12vw;
   height: 6vh;
-  border-radius: 1vw;
+  border-radius: 15px;
   border: 1px solid #699027;
   background: #CDE7A1;  
   font-size: 1vw;
@@ -208,7 +208,6 @@ a.fill-div {
 
 .default-message h3 {
   color: gray;
-  font-size: 1.2vw;
 }
 
 .product-details {
@@ -217,8 +216,8 @@ a.fill-div {
   width: 30vw;
   height: 50vh;
   background-color: white;
-  border-radius: 1.25vw;
-  margin: 1.25vw;
+  border-radius: 5%;
+  margin: 20px;
   box-shadow: 0px 1px 5px #828282;
 }
 
@@ -226,7 +225,7 @@ a.fill-div {
   display: flex;
   justify-content: flex-start;
   height: 90%;
-  margin-left: 1.25vw;
+  margin-left: 40px;
 }
 
 .data {
@@ -252,8 +251,8 @@ a.fill-div {
   width: 30vw;
   height: 40vh;
   background-color: white;
-  border-radius: 1.2vw;
-  margin: 0px 1.2vw 1.2vw 1.2vw;
+  border-radius: 5%;
+  margin: 0px 20px 20px 20px;
   box-shadow: 0px 1px 5px #828282;
   display: flex;
   justify-content: space-evenly;
@@ -420,23 +419,18 @@ form {
 .delete-container {
   display: flex;
   flex-flow: column;
-  width: 30vw;
-  height: 40vh;
+  width: 460px;
+  height: 340px;
   background-color: white;
-  border-radius: 1.5vw;
-  margin: 1.2vw;
+  border-radius: 5%;
+  margin: 20px;
   box-shadow: 0px 1px 5px #828282;
   align-items: center;
   justify-content: space-around;
 }
 
-.delete-container h2{
-  font-size: 2vw;
-}
-
 .delete-container p {
   text-align: center;
-  font-size: 1vw;
 }
 
 .button-row {
@@ -445,27 +439,27 @@ form {
 }
 
 .button-row button {
-  width: 10vw;
-  height: 8vh;
+  width: 162px;
+  height: 50px;
   border: none;
-  border-radius: 2vw;
+  border-radius: 40px;
   background: #DBEBC0;
   margin: 5px;
-  font-size: 1.2vw;
+  font-size: 20px;
 }
 
 .button-row button:hover {
   background: #bdcaa6; 
 }
 
-#confirm-delete-button {
+/* #delete-button {
   background: #E8656A;
   color: white;
 }
 
-#confirm-delete-button:hover {
+#delete-button:hover {
   background: #c7575b; 
-}
+} */
 
 .stock-alert {
   z-index: 1;

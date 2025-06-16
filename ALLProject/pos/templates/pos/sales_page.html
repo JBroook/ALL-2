@@ -1,13 +1,14 @@
-{% extends "inventory/base.html" %}
+{% extends "pos/navigation.html" %}
+<!DOCTYPE html>
 {% load static %}
-
 {% block content %}
     <link rel="stylesheet" href="{% static "css/sales_page.css" %}">
     
-    <div class="input-box">
-        <button type="button" class="input-bttn scan">Scan Item</button>
-        <div class="product-detail">
-            <div class="details-box default"></div>
+    <body>
+        <div class="input-box">
+            <button type="button" class="input-bttn scan">Scan Item</button>
+            <div class="product-detail">
+                <div class="details-box default"></div>
 
                 <div class="details-box addItem">
                     <form action="" method="post" id="item_code_form">
@@ -31,15 +32,8 @@
                     </form>
                 </div>
 
-            <div class="details-box quantity">
-                {% if show_quantity %}
-                    <script>
-                        document.querySelector('.details-box.default').style.visibility = 'hidden';
-                        document.querySelector('.details-box.addItem').style.visibility = 'hidden';
-                        document.querySelector('.details-box.quantity').style.visibility = 'visible';
-                    </script>
-                {% else %}
-                    {% if success_message %}
+                <div class="details-box quantity">
+                    {% if show_quantity %}
                         <script>
                             document.addEventListener('DOMContentLoaded', function() {
                                 document.querySelector('.details-box.default').style.visibility = 'hidden';
@@ -52,7 +46,6 @@
                             resetToDefault(); 
                         </script>
                     {% endif %}
-                {% endif %}
 
                     <h3 class="boxTitle">{{ product.name }}</h3>
                     <div class="details">
@@ -85,37 +78,12 @@
                         </div>
                     </form>
                 </div>
-                <div class="details">
-                    <h3>Category</h3>
-                    <h4>{{ product.category }}</h4>
-                </div>
-                <div class="details">
-                    <h3>Current Stock</h3>
-                    {% for message in messages %}
-                        {% if message.tags == 'info' %}
-                            <h4>{{ message }}</h4>
-                        {% endif %}
-                    {% endfor %}
-                </div>
-                
-                <form action="" method="post" id="quantity_form">
-                    {% csrf_token %}
-                    <div id="enterQuantity">
-                        <input type="hidden" name="item_code" value="{{ item_code }}">
-                        {{ quantity_form }}
-                    </div>
-                
-                    <div class="buttons confirm">
-                        <button type="button" class="close-product-box" id="close-quantity"><img src="{% static 'assets/back-arrow.png' %}" alt="back-arrow" id="close-product"></button>
-                        <input type="submit" id="confirmBttn">
-                    </div>
-                </form>
-            </div>
-        </div> 
+            </div> 
 
-        <button type="button" class="input-bttn code" id="enterCode">Enter Code</button>
-        <button type="button" class="input-bttn manager">Call Manager</button>
-    </div>
-    
-    {% block cart %}{% endblock %}
+            <button type="button" class="input-bttn code" id="enterCode">Enter Code</button>
+            <button type="button" class="input-bttn manager">Call Manager</button>
+        </div>
+        
+        {% block cart %}{% endblock %}
+    </body>
 {% endblock %}

@@ -2,7 +2,6 @@ body, html {
     font-size: 1vw;
     margin: 0;
     background-color: #F0ECDD;
-    font-family: "Mukta Mahee", sans-serif;
 }
 
 h1 {
@@ -523,4 +522,3 @@ input.addUser {
 #delete-button:hover {
   background: #c7575b; 
 }
-
