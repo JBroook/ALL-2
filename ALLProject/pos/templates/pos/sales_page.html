@@ -1,87 +1,88 @@
-{% extends "pos/navigation.html" %}
-<!DOCTYPE html>
+{% extends "inventory/base.html" %}
 {% load static %}
+
 {% block content %}
     <link rel="stylesheet" href="{% static "css/sales_page.css" %}">
     <script src="{% static "js/addProduct.js" %}"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mukta+Mahee:wght@200;300;400;500;600;700;800&family=Sansation:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
     
-    <body>
-        <div class="input-box">
-            <button type="button" class="input-bttn scan">Scan Item</button>
-            <div class="product-detail">
-                <div class="details-box default"></div>
+    <div class="input-box">
+        <button type="button" class="input-bttn scan">Scan Item</button>
+        <div class="product-detail">
+            <div class="details-box default"></div>
 
-                <div class="details-box addItem">
-                    <form action="" method="post" id="item_code_form">
-                        <h1 class="boxTitle add">Add Product</h1>
-                        {% csrf_token %}
-                        {{ item_code_form.as_p}}
-                        <div class="buttons add">
-                            <button type="button" class="close-product-box" id="close-addItem"><img src="{% static 'assets/back-arrow.png' %}" alt="back-arrow" id="close-product"></button>
-                            <button type="submit" id="addItemBttn">Add</button>
-                        </div>
-                    </form>
-                </div>
+            <div class="details-box addItem">
+                <form action="" method="post" id="item_code_form">
+                    <h1 class="boxTitle add">Add Product</h1>
+                    {% csrf_token %}
+                    {{ item_code_form.as_p}}
+                    <div class="buttons add">
+                        <button type="button" class="close-product-box" id="close-addItem"><img src="{% static 'assets/back-arrow.png' %}" alt="back-arrow" id="close-product"></button>
+                        <button type="submit" id="addItemBttn">Add</button>
+                    </div>
+                </form>
+            </div>
 
-                <div class="details-box quantity">
-                    {% if show_quantity %}
+            <div class="details-box quantity">
+                {% if show_quantity %}
+                    <script>
+                        document.querySelector('.details-box.default').style.visibility = 'hidden';
+                        document.querySelector('.details-box.addItem').style.visibility = 'hidden';
+                        document.querySelector('.details-box.quantity').style.visibility = 'visible';
+                    </script>
+                {% else %}
+                    {% if success_message %}
                         <script>
-                            document.querySelector('.details-box.default').style.visibility = 'hidden';
-                            document.querySelector('.details-box.addItem').style.visibility = 'hidden';
-                            document.querySelector('.details-box.quantity').style.visibility = 'visible';
+                            resetToDefault(); // Show default box after successful quantity submission    
                         </script>
                     {% else %}
-                        {% if success_message %}
-                            <script>
-                                resetToDefault(); // Show default box after successful quantity submission    
-                            </script>
-                        {% else %}
-                            <script>
-                                // Keep default state unless addItem is explicitly shown
-                                document.querySelector('.details-box.default').style.visibility = 'visible';
-                                document.querySelector('.details-box.addItem').style.visibility = 'hidden';
-                                document.querySelector('.details-box.quantity').style.visibility = 'hidden';
-                            </script>
-                        {% endif %}
+                        <script>
+                            // Keep default state unless addItem is explicitly shown
+                            document.querySelector('.details-box.default').style.visibility = 'visible';
+                            document.querySelector('.details-box.addItem').style.visibility = 'hidden';
+                            document.querySelector('.details-box.quantity').style.visibility = 'hidden';
+                        </script>
                     {% endif %}
+                {% endif %}
 
-                    <h3 class="boxTitle">{{ product.name }}</h3>
-                    <div class="details">
-                        <h3>Product Code</h3>
-                        <h4>{{product.id}}</h4>
-                    </div>
-                    <div class="details">
-                        <h3>Category</h3>
-                        <h4>{{ product.category }}</h4>
-                    </div>
-                    <div class="details">
-                        <h3>Current Stock</h3>
-                        {% for message in messages %}
-                            {% if message.tags == 'info' %}
-                                <h4>{{ message }}</h4>
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                    
-                    <form action="" method="post" id="quantity_form">
-                        {% csrf_token %}
-                        <div id="enterQuantity">
-                            <input type="hidden" name="item_code" value="{{ item_code }}">
-                            {{ quantity_form }}
-                        </div>
-                    
-                        <div class="buttons confirm">
-                            <button type="button" class="close-product-box" id="close-quantity"><img src="{% static 'assets/back-arrow.png' %}" alt="back-arrow" id="close-product"></button>
-                            <input type="submit" id="confirmBttn">
-                        </div>
-                    </form>
+                <h3 class="boxTitle">{{ product.name }}</h3>
+                <div class="details">
+                    <h3>Product Code</h3>
+                    <h4>{{product.id}}</h4>
                 </div>
-            </div> 
+                <div class="details">
+                    <h3>Category</h3>
+                    <h4>{{ product.category }}</h4>
+                </div>
+                <div class="details">
+                    <h3>Current Stock</h3>
+                    {% for message in messages %}
+                        {% if message.tags == 'info' %}
+                            <h4>{{ message }}</h4>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                
+                <form action="" method="post" id="quantity_form">
+                    {% csrf_token %}
+                    <div id="enterQuantity">
+                        <input type="hidden" name="item_code" value="{{ item_code }}">
+                        {{ quantity_form }}
+                    </div>
+                
+                    <div class="buttons confirm">
+                        <button type="button" class="close-product-box" id="close-quantity"><img src="{% static 'assets/back-arrow.png' %}" alt="back-arrow" id="close-product"></button>
+                        <input type="submit" id="confirmBttn">
+                    </div>
+                </form>
+            </div>
+        </div> 
 
-            <button type="button" class="input-bttn code" id="enterCode">Enter Code</button>
-            <button type="button" class="input-bttn manager">Call Manager</button>
-        </div>
-        
-        {% block cart %}{% endblock %}
-    </body>
+        <button type="button" class="input-bttn code" id="enterCode">Enter Code</button>
+        <button type="button" class="input-bttn manager">Call Manager</button>
+    </div>
+    
+    {% block cart %}{% endblock %}
 {% endblock %}

@@ -1,0 +1,65 @@
+{% load static %}
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <link rel="stylesheet" href="{% static 'css/navigation.css'%}">
+        {% block head%} {% endblock%}
+    </head>
+    
+    <body>
+        <div id="navcolumn-container">
+            <div id="navcolumn">
+                <a class="nav-item" href="{% url 'home' %}">
+                    <img src="{% static 'images/shipping.png' %}" class="nav-logo">
+                    <div class="nav-title"><p>Home</p></div>
+                </a> 
+                {% if user_role == 'cashier'%}
+                    <a class="nav-item" href="{% url 'sales' %}">
+                        <img src="{% static 'images/shipping.png' %}" class="nav-logo">
+                        <p class="nav-title">Start Scanning</p>
+                    </a>
+                    <a class="nav-item" href="{% url 'history' %}">
+                        <img src="{% static 'images/shipping.png' %}" class="nav-logo">
+                        <p class="nav-title">Sales History</p>
+                    </a>
+                {% elif user_role == 'admin' or user_role == 'manager'%}
+                    <a class="nav-item" href="{% url 'product_list' %}">
+                        <img src="{% static 'images/shipping.png' %}" class="nav-logo">
+                        <p class="nav-title">Inventory</p>
+                    </a>
+                    <a class="nav-item" href="{% url 'category' %}">
+                        <img src="{% static 'images/shipping.png' %}" class="nav-logo">
+                        <p class="nav-title">Category</p>
+                    </a>
+                {%endif%}
+                {% if user_role == 'manager'%}
+                    <a class="nav-item" href="{% url 'user_list' %}">
+                        <img src="{% static 'images/shipping.png' %}" class="nav-logo">
+                        <p class="nav-title">Sales Report</p>
+                    </a>
+                    <a class="nav-item" href="{% url 'user_list' %}">
+                        <img src="{% static 'images/shipping.png' %}" class="nav-logo">
+                        <p class="nav-title">Users</p>
+                    </a>
+                {%endif%}
+                <a class="nav-item" href="{% url 'user_list' %}">
+                    <img src="{% static 'images/logout.png' %}" class="nav-logo">
+                    <p class="nav-title">Logout</p>
+                </a>
+                {% comment %} <a class="nav home" src="{% url 'home' %}"><img src="{% static 'images/shipping.png' %}" class="logo products"><p class="navfull products"> Home</p></a> {% endcomment %}
+                {% comment %} {% if user_role == 'admin' or user_role == 'Manager'%}
+                    <a class="nav products" src="{% url 'product_list' %}"><img src="{% static 'images/shipping.png' %}" class="logo products"><p class="navfull products"> Products</p></a>
+                {% endif%} {% endcomment %}
+                {% comment %} <!-- Admin View-->
+                <a class="nav products" src="{% url 'product_list' %}"><img src="{% static 'images/shipping.png' %}" class="logo products"><p class="navfull products"> Products</p></a>
+                <a class="nav inventory" ><img src="{% static 'images/report.png' %}" class="logo inventory"><p class="navfull inventory"> Inventory</p></a>
+                
+                <!-- Logout -->
+                <a class="nav"><img src="{% static 'images/logout.png' %}" class="logo"><p class="navfull"> Logout</p></a> {% endcomment %}
+            </div>
+        </div>
+
+        {% block content%} {%endblock%}
+    </body>
+</html>
