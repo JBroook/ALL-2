@@ -198,3 +198,4 @@ cython_debug/
 ALLProject/db.sqlite3
 ALLProject/db.sqlite3
 *.sqlite3
+/ALLProject/media

@@ -21,6 +21,15 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log("Closed quantity");
         });
     }
+
+    //enter item code
+    document.querySelectorAll('.keyboard.keyboard-cart').forEach(button => {
+        button.addEventListener('click', function() {
+            const code_input = document.getElementById('itemCode')
+            code_input.value = code_input.value+button.value
+
+        });
+    });
 });
 
 function resetDefault(){
