@@ -1,5 +1,6 @@
 from django.db import models
 import datetime
+from django.utils import timezone
 
 # Create your models here.
 class Category(models.Model):
@@ -24,7 +25,7 @@ class Product(models.Model):
     
 class Restock(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    date = models.DateField(verbose_name='Date', default=datetime.datetime.now())
+    date = models.DateField(verbose_name='Date', default=timezone.now)
     units = models.IntegerField(verbose_name='Stock Added')
     cpu = models.FloatField(verbose_name='Cost Per Unit')
     
