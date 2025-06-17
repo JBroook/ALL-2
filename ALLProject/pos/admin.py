@@ -3,19 +3,15 @@ from . import models
 
 # Register your models here.
 class CartAdmin(admin.ModelAdmin):
-    list_display = ('cart_ID', 'no_of_product', 'total_cost')
+    list_display = ('cart_ID', 'total_cost')
 
     def cart_ID(self, obj):
         return obj.id
-
-    def no_of_product(self, obj):
-        return obj.product.count()
     
     def total_cost(self,obj):
         return obj.total_cost
 
     cart_ID.short_description = 'Cart ID'
-    no_of_product.short_description = 'Types of Products Bought'
     total_cost.short_description = 'Amount Paid'
 
 class CartItemAdmin(admin.ModelAdmin):
@@ -39,7 +35,10 @@ class CartItemAdmin(admin.ModelAdmin):
     total_cost.short_description = 'Total Cost'
 
 class PaymentAdmin(admin.ModelAdmin):
-    list_display = ('payment_method','total_cost')
+    list_display = ('payment_method','cart','total_cost')
+
+    def cart(self,obj):
+        return obj.cart_id
 
     def payment_method(self,obj):
         return obj.payment_method

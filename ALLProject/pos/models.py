@@ -24,7 +24,7 @@ class CartItem(models.Model):
         return self.product.price * self.quantity
     
 class Payment(models.Model):
-    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, null=False)
     employeeID = models.ForeignKey(Employee, on_delete=models.CASCADE)
     payment_method = models.CharField(max_length=12,null=False)
     tax = models.FloatField(default=0.00)
