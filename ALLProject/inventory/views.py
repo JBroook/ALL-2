@@ -117,6 +117,7 @@ def product_create_view(request):
             image.save(str(settings.BASE_DIR)+'/media/qr/'+ filename)
 
             new_product.qr_code = '/qr/'+ filename
+            new_product.category = form.cleaned_data['category']
 
             new_product.save()
             form.save_m2m()
