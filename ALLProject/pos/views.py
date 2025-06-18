@@ -6,7 +6,7 @@ from .models import Product,CartItem,Cart,Payment,Employee
 from .forms import ItemCodeForm, QuantityForm, CheckOutForm, ClearCartItems, ClearLastCartItem
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, redirect
-from django.db.models import F, ExpressionWrapper, IntegerField, Sum
+from django.db.models import Sum
 import datetime
 
 # Create your views here.

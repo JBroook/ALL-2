@@ -3,14 +3,21 @@
 {% load static %}
 {% block content %}
     <link rel="stylesheet" href="{% static "css/sales_page.css" %}">
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     
     <body>
-        <div class="input-box">
-            <button type="button" class="input-bttn scan">Scan Item</button>
-            <div class="product-detail">
-                <div class="details-box default"></div>
+        <div id="scanner-div">
+            <div id="reader" width="600px"></div>
+            <button type="button" onclick="show_scanner(false)">Close</button>
+        </div>
 
-                <div class="details-box addItem">
+        <div class="input-box">
+            <button type="button" class="input-bttn scan" onclick="show_scanner(true)">Scan Item</button>
+            <div class="product-detail" id="product-detail-tab">
+                <div class="details-box default">
+                </div>
+
+                <div class="details-box addItem" id="add-item-box">
                     <form action="" method="post" id="item_code_form">
                         <h1 class="boxTitle add">Add Product</h1>
                         {% csrf_token %}
@@ -32,7 +39,7 @@
                     </form>
                 </div>
 
-                <div class="details-box quantity">
+                <div class="details-box quantity" id="quantity-item-box">
                     {% if show_quantity %}
                         <script>
                             document.addEventListener('DOMContentLoaded', function() {
