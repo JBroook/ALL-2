@@ -318,6 +318,8 @@ def ManagerReportView(request):
 
         print_pdf(title,report_type,period,user,report_title,report_col,report_data,data_title,data_col,inventory_data)
         return HttpResponseRedirect(reverse('report'))
+    
+    page = "nav-report"
 
     # print(request.session['day_month'])
     context = {
@@ -333,6 +335,7 @@ def ManagerReportView(request):
         'transacts' : show_transacts,
         'total_revenue' : total_revenue,
         'month_or_day' : request.session['day_month'],
+        'page': page
         }
     return HttpResponse(template.render(context,request))
     
@@ -474,6 +477,7 @@ def viewMoreBestProduct(request):
         elif filter_data == "revenue":
             new_product_data.sort(key=lambda x:x[5]) if order == "asc" else new_product_data.sort(key=lambda x:x[5], reverse=True)
 
+    page = "nav-report"
 
     context = {
         'product_rank': new_product_data,
@@ -485,6 +489,7 @@ def viewMoreBestProduct(request):
         'all_monthly_sales' : all_monthly_sales,
         'sort_by': filter_data,
         'order': order,
+        'page': page,
     }
 
     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':

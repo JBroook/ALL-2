@@ -10,7 +10,7 @@ h1,h4 {
     margin: 0;
     margin-bottom: 1%;
     padding-top: 1%;
-    padding-left: 1%; /* padding 18% when nav opened */
+    padding-left: 2%; /* padding 18% when nav opened */
 }
 h3 {
     font-family: "Mukta Mahee", sans-serif;

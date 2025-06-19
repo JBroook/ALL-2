@@ -1,0 +1,72 @@
+{% block nav %}
+{% load static %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mukta+Mahee:wght@200;300;400;500;600;700;800&family=Sansation:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
+
+    {% if page %}
+        <style>
+            .nav-logo.{{page}} {
+                width: 2.5em;
+                height: 2.5em;
+                filter: drop-shadow(4em 0 0px #654C5E);
+            }
+
+            .nav.{{page}} {
+                left: -4.25em;
+            }
+
+            .navfull.{{page}} {
+                font-size: large;
+                color: #654C5E;
+                {% comment %} left: 6em; {% endcomment %}
+            }
+            #navcolumn:hover {
+                overflow: hidden;
+                width: 9em;
+                .navfull {
+                    visibility: visible;
+                }
+                .nav {
+                    left: -6.5em;
+                }
+                .nav.{{page}} {
+                    left: -6.7em;
+                }
+                .nav-logo.{{page}} {
+                    left: -4.25em;
+                }
+            }
+        </style>
+    {% endif %}
+
+    <div class="navigation-column" id="navcolumn">
+        {% if user.is_authenticated %}
+            {% if user_role == 'manager' %}
+                <link rel="stylesheet" href="{% static "css/manager/navigation.css" %}">
+                <!-- Manager View -->
+                <a href="{% url 'report' %}"class="nav nav-report"><img src="{% static "images/report.png" %}" class="nav-logo nav-report"><p class="navfull nav-report"> Sales </p></a>
+                <a href="{% url 'user_list' %}"class="nav nav-users"><img src="{% static "images/users.png" %}" class="nav-logo nav-users"><p class="navfull nav-users"> Users </p></a>
+                <a href="{% url 'product_list' %}"class="nav nav-inventory"><img src="{% static "images/shipping.png" %}" class="nav-logo nav-inventory"><p class="navfull nav-inventory"> Inventory</p></a>
+                <a href="{% url 'category' %}"class="nav nav-category" ><img src="{% static 'images/category.png' %}" class="nav-logo nav-category"><p class="navfull nav-category"> Category </p></a>
+        
+            {% elif user_role == 'admin' %}
+                <link rel="stylesheet" href="{% static "css/navigation.css" %}">
+                <!-- Admin View-->
+                <a href="{% url 'product_list' %}"class="nav nav-inventory" src="{% url 'product_list' %}"><img src="{% static 'images/shipping.png' %}" class="nav-logo nav-inventory"><p class="navfull nav-inventory"> Inventory </p></a>
+                <a href="{% url 'category' %}"class="nav nav-category" ><img src="{% static 'images/category.png' %}" class="nav-logo nav-category"><p class="navfull nav-category"> Category </p></a>
+        
+            {% elif user_role == 'cashier' %}
+                <link rel="stylesheet" href="{% static "css/cashier/navigation.css" %}">
+                <!-- Cashier View -->
+                <a href="{% url 'sales' %}"class="nav nav-sale"><img src="{% static "images/shipping.png" %}" class="nav-logo nav-sale"><p class="navfull nav-sale"> Sale </p></a>
+                <a href="{% url 'history' %}"class="nav nav-history"><img src="{% static "images/file.png" %}" class="nav-logo nav-history"><p class="navfull nav-history"> History </p></a>
+
+            {% endif %}
+            
+            <!-- Logout -->
+            <a href="{% url 'login' %}"class="nav"><img src="{% static "images/logout.png" %}" class="nav-logo"><p class="navfull"> Logout</p></a>
+        {% endif %} 
+    </div>
+{% endblock nav %}
+{% block dashboard %}{% endblock dashboard %}

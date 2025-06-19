@@ -1,6 +1,6 @@
-<!DOCTYPE html>
+{% extends "users/navigation.html" %}
 {% load static %}
-<html>
+{% block dashboard %}
     <link rel = "stylesheet" href="{% static 'css/payment_details.css' %}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -8,65 +8,63 @@
     <script src="{% static 'js/history.js'%}"></script>
 
 
-    <body>
-        <div id="main-content">
-            <div id="dashboard">
-                <h1>Transaction Details</h1>
-                <div class="filter-bar">
-                    <div class="filter-option" id="date-filter-selection">
-                        <h3 class="filter-title" id="date-filter-title">{{payment.timeStamp}}</h3>
-                        {% comment %} <img src="{% static 'images/arrow-down.png' %}" class="logo dropdown"> {% endcomment %}
-                    </div>
+    <div id="main-content">
+        <div id="dashboard">
+            <h1>Transaction Details</h1>
+            <div class="filter-bar">
+                <div class="filter-option" id="date-filter-selection">
+                    <h3 class="filter-title" id="date-filter-title">{{payment.timeStamp}}</h3>
+                    {% comment %} <img src="{% static 'images/arrow-down.png' %}" class="logo dropdown"> {% endcomment %}
                 </div>
             </div>
-            
-            <div class="transact-detail">
-                <button type="button" id="close-box" onclick="window.history.back()"><img src="{% static 'images/back-arrow.png'%}" alt="back-arrow" id="close"></button>
-                <div class="container">
-                    <h3>Created on {{payment.timeStamp}}</h3>
-                    <h3>Receipt Number: {{payment.id}}</h3>
-                    <button type="button" id="print">Print</button>
-                    <div class="content-detail">
-                        <div class="box header">
-                            <h3 class="header">Item Code</h3>
-                            <h3 class="header">Product Name</h3>
-                            {% comment %} <h3 class="header">Amount</h3> {% endcomment %}
-                            <h3 class="header2">Unit Price</h3>
-                        </div>
-                        {% for cart_item in cart_items%}
-                            <div class="box item">
-                                <h4 class="item">{{cart_item.product.id}}</h4>
-                                <h4 class="item">{{cart_item.product.name}} x{{cart_item.quantity}}</h4>
-                                <h4 class="item2">RM{{cart_item.product.price|floatformat:2}}</h4>
-                            </div>
-                        {% endfor%}
+        </div>
+        
+        <div class="transact-detail">
+            <button type="button" id="close-box" onclick="window.history.back()"><img src="{% static 'images/back-arrow.png'%}" alt="back-arrow" id="close"></button>
+            <div class="container">
+                <h3>Created on {{payment.timeStamp}}</h3>
+                <h3>Receipt Number: {{payment.id}}</h3>
+                <button type="button" id="print">Print</button>
+                <div class="content-detail">
+                    <div class="box header">
+                        <h3 class="header">Item Code</h3>
+                        <h3 class="header">Product Name</h3>
+                        {% comment %} <h3 class="header">Amount</h3> {% endcomment %}
+                        <h3 class="header2">Unit Price</h3>
                     </div>
-                    <div class="included-box">
-                        <div class="included box subtotal">
-                            <h3 class="included title">SUB-TOTAL</h3>
-                            <h3 class="included value">{{subtotal}}</h3>
+                    {% for cart_item in cart_items%}
+                        <div class="box item">
+                            <h4 class="item">{{cart_item.product.id}}</h4>
+                            <h4 class="item">{{cart_item.product.name}} x{{cart_item.quantity}}</h4>
+                            <h4 class="item2">RM{{cart_item.product.price|floatformat:2}}</h4>
                         </div>
-                        <div class="included box discount">
-                            <h3 class="included title">Discount</h3>
-                            <h3 class="included value">-{{payment.discount}}</h3>
-                        </div>
-                        <div class="included box tax">
-                            <h3 class="included title">Tax</h3>
-                            <h3 class="included value">{{payment.tax}}</h3>
-                        </div>
+                    {% endfor%}
+                </div>
+                <div class="included-box">
+                    <div class="included box subtotal">
+                        <h3 class="included title">SUB-TOTAL</h3>
+                        <h3 class="included value">{{subtotal}}</h3>
                     </div>
-                    <div class="final-box">
-                        <div class="final box totalpay">
-                            <h3 class="final title">TOTAL TO PAY</h3>
-                            <h3 class="final value">{{payment.total_cost}}</h3>
-                        </div>
-                        <div class="final box payment-type">
-                            <h3 class="final title">{{payment.payment_method}}</h3>
-                            <h3 class="final value">{{payment.card_info}}</h3>
-                        </div>
+                    <div class="included box discount">
+                        <h3 class="included title">Discount</h3>
+                        <h3 class="included value">-{{payment.discount}}</h3>
+                    </div>
+                    <div class="included box tax">
+                        <h3 class="included title">Tax</h3>
+                        <h3 class="included value">{{payment.tax}}</h3>
+                    </div>
+                </div>
+                <div class="final-box">
+                    <div class="final box totalpay">
+                        <h3 class="final title">TOTAL TO PAY</h3>
+                        <h3 class="final value">{{payment.total_cost}}</h3>
+                    </div>
+                    <div class="final box payment-type">
+                        <h3 class="final title">{{payment.payment_method}}</h3>
+                        <h3 class="final value">{{payment.card_info}}</h3>
                     </div>
                 </div>
             </div>
         </div>
-    </body>
-</html>
+    </div>
+{% endblock dashboard %}

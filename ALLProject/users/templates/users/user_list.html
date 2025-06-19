@@ -1,7 +1,6 @@
-<!DOCTYPE html>
+{% extends 'users/navigation.html' %}
 {% load static %}
-<html>
-    <!-- <link rel = "stylesheet" href="{% static 'manager/inventory.css' %}"> -->
+{% block dashboard %}
     <link rel="stylesheet" href="{% static 'css/user_list.css' %}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -47,3 +46,4 @@
             {% comment %} <button type="button" class="editBtn del"> Delete User </button> {% endcomment %}
         </div>
     </body>
+{% endblock dashboard %}

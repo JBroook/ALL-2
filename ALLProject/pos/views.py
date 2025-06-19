@@ -198,6 +198,8 @@ def cashierPOSView(request):
                     print(checkout_form.errors)
                     messages.error(request, "ERROR: Cart is either empty or invalid checkout.")
                     return HttpResponseRedirect(reverse('sales'))
+                
+    page = "nav-sale"
 
     context = {
         'item_code_form' : item_code_form,
@@ -211,6 +213,7 @@ def cashierPOSView(request):
         'cart' : request.session.get('cart',[]),
         'cart_cost' : cart_cost,
         'show_quantity' : show_quantity,
+        'page': page
     }
     print(messages.get_messages)
     return HttpResponse(template.render(context,request))
@@ -229,11 +232,14 @@ def cashierHistoryView(request):
 
         payments_by_date[i_date].append(payment)
 
+    page = "nav-history"
+
     return render(
         request,
         'pos/view_history.html',
         context={
-            'all_payments' : payments_by_date
+            'all_payments' : payments_by_date,
+            "page": page
         }
     )
 
@@ -305,6 +311,7 @@ def payment_detail_view(request, payment_id):
     payment = Payment.objects.get(pk=payment_id)
     cart = Cart.objects.get(payment=payment)
     cart_items = cart.cart_items.all()
+    page = "nav-history"
 
     return render(
         request,
@@ -312,6 +319,7 @@ def payment_detail_view(request, payment_id):
         context={
             'payment' : payment,
             'subtotal' : cart.get_cart_total(),
-            'cart_items' : cart_items
+            'cart_items' : cart_items,
+            'page': page
         }
     )
