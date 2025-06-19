@@ -3,8 +3,12 @@ from .models import Employee
 from .forms import EmployeeForm, UserForm, UserEditForm
 from django.db.models import Q
 from django.urls import reverse
+from .decorators import role_required
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
+from django.contrib import messages
 
-# Create your views here.
+@role_required(['manager'])
 def user_list_view(request):
     employees = Employee.objects.all()
     roles = Employee.objects.values_list('role', flat=True)
@@ -134,64 +138,21 @@ def user_delete_view(request, employee_id):
             }
         )
 
+@login_required(login_url='/accounts/login')
 def home_view(request):
-    options = [
-        {
-            'title' : 'Inventory',
-            'roles' : ['admin', 'manager'],
-            'description' : 'Add, view, edit and restock products',
-            'image' : 'images/purple-shipping.png',
-            'url' : reverse('product_list')
-        },
-        {
-            'title' : 'Category',
-            'roles' : ['admin', 'manager'],
-            'description' : 'View and manage categories for products',
-            'image' : 'images/purple-category.png',
-            'url' : reverse('category')
-        },
-        {
-            'title' : 'Sales Report',
-            'roles' : ['manager'],
-            'description' : 'View detailed analyses of performance and generate reports',
-            'image' : 'images/purple-report.png',
-            'url' : reverse('user_list')
-        },
-        {
-            'title' : 'Users',
-            'roles' : ['manager'],
-            'description' : 'Manage existing users or add new employees',
-            'image' : 'images/purple-users.png',
-            'url' : reverse('user_list')
-        },
-        {
-            'title' : 'Item Scanning',
-            'roles' : ['cashier'],
-            'description' : 'Start scanning items for customers',
-            'image' : 'images/purple-barcode.png',
-            'url' : reverse('sales')
-        },
-        {
-            'title' : 'Sales History',
-            'roles' : ['cashier'],
-            'description' : 'View all previous sales and transactiond details',
-            'image' : 'images/purple-history.png',
-            'url' : reverse('history')
-        }
-    ]
-
-    user_role = Employee.objects.get(user=request.user).role
-
-    filtered_options = []
-
-    for i in range(len(options)):
-        if user_role in options[i]['roles']:
-            filtered_options.append(options[i])
+    employee = Employee.objects.get(user=request.user)
 
     return render(
         request,
         'users/home.html',
         context={
-            'options' : filtered_options
+            'options' : employee.get_role_options()
         }
     )
+
+def logout_view(request):
+    logout(request)
+    
+    messages.add_message(request, messages.SUCCESS, "Logout successful!")
+
+    return redirect("login")
