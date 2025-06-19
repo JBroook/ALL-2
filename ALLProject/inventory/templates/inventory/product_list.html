@@ -1,19 +1,17 @@
-{% extends 'inventory/navigation.html' %}
+{% extends 'users/navigation.html' %}
 
-{% block content %}
+{% block dashboard %}
 {% load static %}
 
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel = "stylesheet" href="{% static 'inventory/product_list.css' %}">
-    <link href="https://fonts.googleapis.com/css2?family=Mukta+Mahee:wght@200;300;400;500;600;700;800&family=Sansation:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
-    <title>Products</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel = "stylesheet" href="{% static 'inventory/product_list.css' %}">
+  <link href="https://fonts.googleapis.com/css2?family=Mukta+Mahee:wght@200;300;400;500;600;700;800&family=Sansation:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
+  <title>Products</title>
 
-    <script src="{% static 'inventory/product_list.js' %}"> </script>
-</head>
-<body>
+  <script src="{% static 'inventory/product_list.js' %}"> </script>
+
+
   <aside class="sidebar">
     
   </aside>
@@ -68,7 +66,5 @@
       </div>
     </section>
   </main>
-</body>
-</html>
 
 {% endblock%}

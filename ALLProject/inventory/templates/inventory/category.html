@@ -1,6 +1,6 @@
- {% load static %}
-<html>
-    <!-- <link rel = "stylesheet" href="{% static 'manager/inventory.css' %}"> -->
+{% extends 'users/navigation.html' %}
+{% load static %}
+{% block dashboard %}
     <link rel="stylesheet" href={% static "css/category.css"%}>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -59,3 +59,4 @@
         </div>
     </body>
 </html>
+{% endblock dashboard %}

@@ -8,13 +8,15 @@ from django.urls import reverse
 def user_list_view(request):
     employees = Employee.objects.all()
     roles = Employee.objects.values_list('role', flat=True)
+    page = "nav-users"
 
     return render(
         request, 
         'users/user_list.html',
         context={
             'employees' : employees,
-            'roles' : roles
+            'roles' : roles,
+            'page':page
         }
         )
 
@@ -22,14 +24,16 @@ def user_list_partial_view(request):
     selected_role = request.GET.get('role')
     selected_role = None if selected_role=='any' else selected_role
     employees = Employee.objects.all()
+    page = "nav-users"
 
     if selected_role:
        employees = Employee.objects.filter(role=selected_role)
 
-    return render(request,'partials/user_list_partial.html',context={'employees':employees})
+    return render(request,'partials/user_list_partial.html',context={'employees':employees,'page':page})
 
 def user_list_search_view(request):
     search_input = request.GET.get('input').strip().split()
+    page = "nav-users"
 
     if len(search_input)==2:
         employees = Employee.objects.filter(
@@ -42,12 +46,13 @@ def user_list_search_view(request):
         )
 
 
-    return render(request,'partials/user_list_partial.html',context={'employees':employees})
+    return render(request,'partials/user_list_partial.html',context={'employees':employees,'page':page})
 
 
 def user_create_form_view(request):
     employee_form = EmployeeForm()
     user_form = UserForm()
+    page = "nav-users"
 
     return render(
         request,
@@ -55,6 +60,7 @@ def user_create_form_view(request):
         context={
             'employee_form':employee_form,
             'user_form':user_form,
+            'page': page
             }
         )
 
@@ -92,6 +98,7 @@ def user_edit_form_view(request, employee_id):
     employee = Employee.objects.get(pk=employee_id)
     employee_form = EmployeeForm(instance=employee)
     user_form = UserEditForm(instance=employee.user)
+    page = "nav-users"
 
     return render(
         request,
@@ -99,24 +106,28 @@ def user_edit_form_view(request, employee_id):
         context={
             'employee_form':employee_form,
             'user_form':user_form,
-            'employee_id' : employee.id 
+            'employee_id' : employee.id,
+            'page': page
             }
         )
 
 def user_info_view(request, employee_id):
     employee = Employee.objects.get(pk=employee_id)
+    page = "nav-users"
 
     return render(
         request,
         'partials/user_info.html',
         context={
             'employee' : employee,
+            'page': page
         }
     )
 
 def user_delete_view(request, employee_id):
     employee = Employee.objects.get(pk=employee_id)
     user = employee.user
+    page = "nav-users"
 
     if request.method=="POST":
         action_type = request.POST.get('action')
@@ -130,26 +141,13 @@ def user_delete_view(request, employee_id):
             request,
             'partials/user_delete.html',
             context={
-                'employee':employee
+                'employee':employee,
+                'page': page
             }
         )
 
 def home_view(request):
     options = [
-        {
-            'title' : 'Inventory',
-            'roles' : ['admin', 'manager'],
-            'description' : 'Add, view, edit and restock products',
-            'image' : 'images/purple-shipping.png',
-            'url' : reverse('product_list')
-        },
-        {
-            'title' : 'Category',
-            'roles' : ['admin', 'manager'],
-            'description' : 'View and manage categories for products',
-            'image' : 'images/purple-category.png',
-            'url' : reverse('category')
-        },
         {
             'title' : 'Sales Report',
             'roles' : ['manager'],
@@ -163,6 +161,20 @@ def home_view(request):
             'description' : 'Manage existing users or add new employees',
             'image' : 'images/purple-users.png',
             'url' : reverse('user_list')
+        },
+        {
+            'title' : 'Inventory',
+            'roles' : ['admin', 'manager'],
+            'description' : 'Add, view, edit and restock products',
+            'image' : 'images/purple-shipping.png',
+            'url' : reverse('product_list')
+        },
+        {
+            'title' : 'Category',
+            'roles' : ['admin', 'manager'],
+            'description' : 'View and manage categories for products',
+            'image' : 'images/purple-category.png',
+            'url' : reverse('category')
         },
         {
             'title' : 'Item Scanning',

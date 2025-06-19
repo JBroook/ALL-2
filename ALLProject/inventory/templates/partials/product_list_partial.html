@@ -3,11 +3,11 @@
 {% for product in products%}
     <div class="product" onclick="show_product({{product.id}})">
         {%if product.quantity == 0 %}
-            <div class="stock-alert">
+            <div class="stock-alert empty">
                 <img src="{% static 'inventory/exclamation.png'%}"></img>
             </div>
         {%elif product.quantity <= 5%}
-            <div class="stock-alert">
+            <div class="stock-alert low">
                 <img src="{% static 'inventory/exclamation-yellow2.png'%}"></img>
             </div>
         {%endif%}

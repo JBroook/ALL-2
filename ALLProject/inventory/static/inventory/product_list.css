@@ -472,3 +472,11 @@ form {
 .stock-alert img{
   width: 2vw;
 }
+
+.stock-alert.low img {
+  filter: drop-shadow(0px 1px 5px rgb(175, 146, 0));
+}
+
+.stock-alert.empty img {
+  filter: drop-shadow(0px 1px 5px rgb(143, 0, 0));
+}
