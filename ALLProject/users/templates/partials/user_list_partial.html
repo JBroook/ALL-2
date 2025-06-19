@@ -1,10 +1,14 @@
-{% for employee in employees%}
-    <div class="user box" onclick="show_user({{employee.id}})">
-        <div class="user role">
-            <h3> {{employee.role}} </h3>
+{% if employees%}
+    {% for employee in employees%}
+        <div class="user box" onclick="show_user({{employee.id}})">
+            <div class="user role">
+                <h3> {{employee.role}} </h3>
+            </div>
+            <div class="user username">
+                <h3> {{employee.user.first_name}} {{employee.user.last_name}}</h3>
+            </div>
         </div>
-        <div class="user username">
-            <h3> {{employee.user.first_name}} {{employee.user.last_name}}</h3>
-        </div>
-    </div>
-{% endfor %}
+    {% endfor %}
+{% else%}
+    <h3>No users found with the name "{{search_input}}"</h3>
+{%endif%}

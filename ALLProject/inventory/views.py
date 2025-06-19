@@ -165,20 +165,20 @@ def category_view(request):
             'categories' : categories
         })
 
-def category_partial_view(request):
-    category_id = int(request.GET.get('category_id'))
-    products = Product.objects.all()
+# def category_partial_view(request):
+#     category_id = int(request.GET.get('category_id'))
+#     products = Product.objects.all()
 
-    if category_id != -1:
-        category = Category.objects.get(pk=category_id)
-        products = Product.objects.filter(category=category)
+#     if category_id != -1:
+#         category = Category.objects.get(pk=category_id)
+#         products = Product.objects.filter(category=category)
 
-    return render(
-        request, 
-        "partials/category_partial.html", 
-        {
-            'products': products,
-        })
+#     return render(
+#         request, 
+#         "partials/category_partial.html", 
+#         {
+#             'products': products,
+#         })
 
 def category_form_view(request):
     form = CategoryForm()

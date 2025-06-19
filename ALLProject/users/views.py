@@ -46,7 +46,13 @@ def user_list_search_view(request):
         )
 
 
-    return render(request,'partials/user_list_partial.html',context={'employees':employees})
+    return render(
+        request,
+        'partials/user_list_partial.html',
+        context={
+            'employees':employees,
+            'search_input': request.GET.get('input')
+            })
 
 
 def user_create_form_view(request):

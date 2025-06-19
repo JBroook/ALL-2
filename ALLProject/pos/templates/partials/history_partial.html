@@ -1,14 +1,26 @@
-{% for date, payments in all_payments.items %}
-    <div class="day">
-        <h4 class="day title">{{date | date:"d M Y"}}</h4>
-        {%for payment in payments%}
-            <div class="day transactions" onclick="window.location.href='{% url 'payment_details' payment.id%}'">
-                <h3>{{payment.timeStamp | date:"d M Y, h:i a"}}</h3>
-                <h3>{{payment.id}}</h3>
-                <h3>Purchased {{payment.items_sold}} Items</h3>
-                <h3>{{payment.payment_method}}</h3>
-                <h3>RM {{payment.total_cost | floatformat:2}}</h3>
-            </div>
-        {% endfor%}
+{%if all_payments%}
+    {% for date, payments in all_payments.items %}
+        <div class="day">
+            <h4 class="day title">{{date | date:"d M Y"}}</h4>
+            {%for payment in payments%}
+                <div class="day transactions" onclick="window.location.href='{% url 'payment_details' payment.id%}'">
+                    <h3>{{payment.timeStamp | date:"d M Y, h:i a"}}</h3>
+                    <h3>{{payment.id}}</h3>
+                    <h3>Purchased {{payment.items_sold}} Items</h3>
+                    <h3>{{payment.payment_method}}</h3>
+                    <h3>RM {{payment.total_cost | floatformat:2}}</h3>
+                </div>
+            {% endfor%}
+        </div>
+    {% endfor %}
+{%else%}
+    <div class="nothing-message">
+        <h3>
+        {% if nothing_message%}
+            {{nothing_message}}
+        {%else%}
+            No sales history found.
+        {% endif%}
+        </h3>
     </div>
-{% endfor %}
+{%endif%}
