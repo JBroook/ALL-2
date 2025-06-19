@@ -21,8 +21,10 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import cm
 from io import BytesIO
 import os
+from users.decorators import role_required
 
 # Create your views here.
+@role_required(['manager'])
 def ManagerReportView(request):
     template = loader.get_template('reports/partials/sales_transactions.html')
     sales_report = printSales()

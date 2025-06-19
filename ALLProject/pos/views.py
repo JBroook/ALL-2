@@ -250,6 +250,8 @@ def date_filter_view(request):
     )
 
 def cashierHistoryPartialView(request, type):
+    nothing_message = "No sales found matching these filters"
+
     payments = Payment.objects.order_by('-timeStamp').annotate(
         items_sold=Sum('cart__cart_items__quantity')
     )
@@ -266,21 +268,26 @@ def cashierHistoryPartialView(request, type):
             case 'today':
                 upper_bound = datetime.date.today()
                 lower_bound = datetime.date.today()
+                nothing_message = "No sales made today"
             case 'week':
                 upper_bound = datetime.date.today()
                 lower_bound = datetime.date.today() - datetime.timedelta(days=7)
+                nothing_message = "No sales made in the last 7 days"
             case 'month':
                 upper_bound = datetime.date.today()
                 lower_bound = datetime.date.today() - datetime.timedelta(days=30)
+                nothing_message = "No sales made in the past month"
     elif type=='custom':
         start_date = request.GET.get('start')
         end_date = request.GET.get('end')
         upper_bound = datetime.datetime.strptime(end_date, "%Y-%m-%d").date()
         lower_bound = datetime.datetime.strptime(start_date, "%Y-%m-%d").date()
+        nothing_message = f"No sales made between {lower_bound} and {upper_bound}"
     elif type=='payment':
         payments = Payment.objects.filter(payment_method=specific).order_by('-timeStamp').annotate(
             items_sold=Sum('cart__cart_items__quantity')
         )
+        nothing_message = f"No sales made with {specific}"
 
         payments_by_date = {}
 
@@ -303,7 +310,8 @@ def cashierHistoryPartialView(request, type):
         request,
         'partials/history_partial.html',
         context={
-            'all_payments' : payments_by_date
+            'all_payments' : payments_by_date,
+            'nothing_message' : nothing_message
         }
     )
 

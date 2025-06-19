@@ -62,4 +62,102 @@
         border-style: none;
         background: #815355;
     }
+
+    #messages-container {
+        width: 20vw;
+        height: 100%;
+        position: absolute;
+        z-index: 5;
+        right: 0%;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding-top: 5vh;
+    }
+
+    .message {
+        width: 90%;
+        height: 15vh;
+        background-color: #FFF7EB;
+        border-radius: 1vw;
+        box-shadow: 4px 2px 4px gray;
+    }
+
+    .success{
+        color: green;
+    }
+
+    .message p {
+        margin-left: 5%;
+        font-family: "Mukta Mahee" sans-serif;
+        font-size: 1.2vw;
+    }
+
+    /* .dimmer {
+        position: absolute;
+        left: 0;
+
+        width: 100%;
+        height: 100%;
+        
+        background: #000;
+        opacity: 0.5;
+        visibility: visible;
+    }
+
+    #success-box {
+        position: fixed;
+        align-self: anchor-center;
+        left: 30%;
+        z-index: 1;
+
+        width: 80vh;
+        height: 30vh;
+        background-color: #FFF7EB;
+        border-radius: 20px;
+    }
+
+    #close-success {
+        float: right;
+        margin-top: 10px;
+        margin-right: 10px;
+        width: 30px;
+        height: 30px;
+
+        background-color: #DAE0D3;
+        color: #000;
+        border-radius: 10px;
+        border-style: none;
+    }
+    #close-success:hover {
+        background-color: #a6af9c;
+    }
+
+    #success-title {
+        margin-top: 1%;
+        margin-bottom: 1%;
+        position: static;
+        text-align: center;
+        justify-self: center;
+        width: 95%;
+        font-weight: 500;
+        font-size: 1.5vw;
+        font-family: "Mukta Mahee" sans-serif;
+    }
+
+    #success-msg {
+        position: static;
+        text-align: center;
+        align-content: center;
+        justify-self: center;
+        width: 95%;
+        height: 75%;
+
+        font-family: "Mukta Mahee", sans-serif;
+        font-weight: 700;
+        font-size: 2vw;
+        color: #96c649;
+        letter-spacing: 2px;
+        line-height: 30px;
+    } */
 }

@@ -14,7 +14,6 @@ urlpatterns = [
     path('product_print/<int:product_id>/', views.product_print_view, name="product_print"),
     path('restock_order/', views.restock_order_view, name="restock_order"),
     path('category/', views.category_view, name="category"),
-    path('category_partial/', views.category_partial_view, name="category_partial"),
     path('category_form/', views.category_form_view, name="category_form"),
     path('category_create/', views.category_create_view, name="category_create"),
     path('category_specific/<int:category_id>/', views.category_specific_view, name="category_specific"),

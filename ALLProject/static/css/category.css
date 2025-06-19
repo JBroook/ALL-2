@@ -380,3 +380,18 @@ ul {
 #delete-button:hover {
   background: #c7575b; 
 }
+
+.nothing-message {
+    z-index: 10;
+    position: fixed;
+    top: 50%;
+    width: 64%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.nothing-message h3 {
+  color: gray;
+  font-size: 1.25vw;
+}

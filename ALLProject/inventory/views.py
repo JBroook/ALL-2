@@ -7,6 +7,7 @@ from django.conf import settings
 from django.db.models import Count, Avg, Sum
 from django.urls import reverse
 from pathlib import Path
+from users.decorators import role_required
 
 import qrcode
 import os
@@ -16,8 +17,7 @@ from reportlab.lib.pagesizes import A4
 from django.conf import settings
 from reportlab.lib.units import mm
 
-# Create your views here.
-@login_required(login_url="/accounts/login/")
+@role_required(['admin','manager'])
 def product_list_view(request):
     products = Product.objects.all()
     categories = Category.objects.all().order_by("name")
@@ -59,44 +59,6 @@ def product_list_partial_view(request):
             'page': page
         }
     )
-
-# def product_list_view(request):
-#     products = Product.objects.all()
-#     product_id = request.GET.get("add")
-#     chosen_product = None
-#     filter_category = request.POST.get('category')
-#     default_category = "none"
-
-#     if product_id:
-#         chosen_product = Product.objects.get(pk=product_id)
-
-#     if request.method=="POST":
-#         if filter_category!="none":
-#             try:
-#                 category_id = Category.objects.get(name=filter_category).id
-#             except Category.DoesNotExist:
-#                 category_id = None
-#             products = Product.objects.filter(category=category_id)
-#             default_category = filter_category
-
-#         availability = request.POST.get('availability')
-
-#         if availability!="none":
-#             if(availability=="low"):
-#                 products = Product.objects.filter(quantity__lte=10)
-#             elif(availability=="zero"):
-#                 products = Product.objects.filter(quantity=0)
-    
-#     return render(
-#         request,
-#         'inventory/product_list.html',
-#         context={
-#             'products':products,
-#             'product_count':len(products),
-#             'chosen_product': chosen_product,
-#             'default_category': default_category
-#         }
-#     )
 
 def product_info_view(request, product_id):
     product = Product.objects.get(pk=product_id)
@@ -206,6 +168,7 @@ def restock_order_view(request):
 
     return render(request, 'partials/restock_history.html',{'restocks':restocks, 'product_id' : product_id})
 
+@role_required(['admin','manager'])
 def category_view(request):
     categories = Category.objects.annotate(
         product_types=Count("product"),
@@ -223,23 +186,20 @@ def category_view(request):
             'page': page
         })
 
-def category_partial_view(request):
-    category_id = int(request.GET.get('category_id'))
-    products = Product.objects.all()
-        
-    page = "nav-category"
+# def category_partial_view(request):
+#     category_id = int(request.GET.get('category_id'))
+#     products = Product.objects.all()
 
-    if category_id != -1:
-        category = Category.objects.get(pk=category_id)
-        products = Product.objects.filter(category=category)
+#     if category_id != -1:
+#         category = Category.objects.get(pk=category_id)
+#         products = Product.objects.filter(category=category)
 
-    return render(
-        request, 
-        "partials/category_partial.html", 
-        {
-            'products': products,
-            'page': page
-        })
+#     return render(
+#         request, 
+#         "partials/category_partial.html", 
+#         {
+#             'products': products,
+#         })
 
 def category_form_view(request):
     form = CategoryForm()

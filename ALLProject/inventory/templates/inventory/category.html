@@ -37,21 +37,6 @@
             <div class="category-container">
                 <p>Select a category to view more details, or click "Add Category" to add a new category.</p>
             </div>
-            {% comment %} <h1><img src={% static "images/adjust.png"%} class="cat-logo"> Category</h1>
-
-            <!-- Filter Choices -->
-             <ul>
-                <div class="filter-div">
-                    <button type="button" class="filter-choices" onclick="refresh_table(-1)"> Show All </button>
-                </div>
-                {% for category in categories %}
-                    <div class="filter-div">
-                        <button type="button" class="filter-choices" onclick="refresh_table({{category.id}})"> 
-                            {{category.name}}
-                        </button>
-                    </div>
-                {% endfor %}
-             </ul> {% endcomment %}
         </div>
 
         <div class="editBtn-box">
