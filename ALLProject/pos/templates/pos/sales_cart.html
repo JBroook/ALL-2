@@ -36,7 +36,7 @@
             </tbody>
         </table>
         <div class="container">
-            <div class="keyboardBox">
+            <div class="keyboardBox" id="item-code">
                 <button type="button" class="keyboard keyboard-cart" value="1">1</button>
                 <button type="button" class="keyboard keyboard-cart" value="2">2</button>
                 <button type="button" class="keyboard keyboard-cart" value="3">3</button>
@@ -51,11 +51,11 @@
                     {{ clear_cart_form }}
                     <button type="submit" class="keyboard clear">Clear Cart</button>
                 </form>
-                <button type="button" class="keyboard" value="0">0</button>
+                <button type="button" class="keyboard keyboard-cart" value="0">0</button>
                 <form action="" method="post" id="clear_last_form">
                     {% csrf_token %}
                     {{ clear_last_form }}
-                    <button type="submit" class="keyboard cancel">Cancel</button>
+                    <button type="submit" class="keyboard cancel">Undo</button>
                 </form>
             </div>
             <div class="checkout-box">

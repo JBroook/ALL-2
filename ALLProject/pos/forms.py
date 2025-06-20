@@ -7,7 +7,7 @@ class ItemCodeForm(forms.Form):
 class QuantityForm(forms.Form):
     item_quantity = forms.IntegerField(min_value=1, label="Quantity :",
                                   widget=forms.NumberInput(
-                                      attrs={'id': 'quantity'}))
+                                      attrs={'id': 'quantity-input'}))
 
 class CheckOutForm(forms.Form):
     check_out = forms.CharField(required=False, widget=forms.HiddenInput(
