@@ -1,8 +1,7 @@
-{% extends 'inventory/navigation.html' %}
+{% extends 'users/navigation.html' %}
 
-{% block content %}
+{% block dashboard %}
 {% load static %}
-<html>
     <!-- <link rel = "stylesheet" href="{% static 'manager/inventory.css' %}"> -->
     <link rel="stylesheet" href="{% static 'css/product_restock.css'%}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,65 +14,62 @@
         });
     </script>
 
-    <body>
-        <div id="main-content">
-            <button type="button" id="close-box"  onclick="window.location.href='{% url 'product_list' %}'">
-                <img src="{% static 'images/back-arrow.png'%}" alt="back-arrow" id="close">
-            </button>
-            <div id="important-details">
-                <div class="product-box detail">
-                    <h1>{{product.name}}</h1>
-                    <h3>{{product.id}}</h3>
-                    <button type="button" class="qr-barcode">QR</button>
-                    <button type="button" class="qr-barcode">Barcode</button>
-                </div>
-                <div class="product-box qr">
-                    <img src="{{product.qr_code.url }}" alt="Product QR" id="qrCode">
-                </div>
-                <div class="product-box image">
-                    <img src="{{product.image.url}}" width="361" height="208" >
-                </div>
+    <div id="main-content">
+        <button type="button" id="close-box"  onclick="window.location.href='{% url 'product_list' %}'">
+            <img src="{% static 'images/back-arrow.png'%}" alt="back-arrow" id="close">
+        </button>
+        <div id="important-details">
+            <div class="product-box detail">
+                <h1>{{product.name}}</h1>
+                <h3>{{product.id}}</h3>
+                <button type="button" class="qr-barcode">QR</button>
+                <button type="button" class="qr-barcode">Barcode</button>
             </div>
-            <div id="detail-history">
-                <form class="detail-box" method="POST">
-                    {% csrf_token %}
-                    <div class="detail-box form">
-                        <div id="form-label">
-                            <h3 class="form-label">Stock (New)</h3>
-                            <h3 class="form-label">Last Batch</h3>
-                            <h3 class="form-label">Date Stocked</h3>
-                            <h3 class="form-label">Cost Per Unit</h3>
-                            <h3 class="form-label">Unit(s) in Batch</h3>
-                            <h3 class="form-label">Total Cost</h3>
-                        </div>
-                        <div id="stock-history">
-                            <div class="stock-history"><h3 id="h3-quantity">{{product.quantity}}</h3></div>
-                            <div class="stock-history"><h3>10</h3></div>
-                            <div class="stock-history">
-                                {{form.date}}
-                            </div>
-                            <div class="stock-history" oninput="refresh_numbers({{product.quantity}})">
-                                {{form.cpu}}
-                            </div>
-                            <div class="stock-history"  oninput="refresh_numbers({{product.quantity}})">
-                                {{form.units}}
-                            </div>
-                            <div class="stock-history"><h3 id="h3-total">RM </h3></div>
-                        </div>
+            <div class="product-box qr">
+                <img src="{{product.qr_code.url }}" alt="Product QR" id="qrCode">
+            </div>
+            <div class="product-box image">
+                <img src="{{product.image.url}}" width="361" height="208" >
+            </div>
+        </div>
+        <div id="detail-history">
+            <form class="detail-box" method="POST">
+                {% csrf_token %}
+                <div class="detail-box form">
+                    <div id="form-label">
+                        <h3 class="form-label">Stock (New)</h3>
+                        <h3 class="form-label">Last Batch</h3>
+                        <h3 class="form-label">Date Stocked</h3>
+                        <h3 class="form-label">Cost Per Unit</h3>
+                        <h3 class="form-label">Unit(s) in Batch</h3>
+                        <h3 class="form-label">Total Cost</h3>
                     </div>
-                    <button type="submit" id="updateBttn">Update Stock</button>
-                </form>
-                
-                <div class="detail-box history">
-                    <h2>Stock History</h2>
-                    <div id="select-history-box">
-                        {% comment %} <div class="hButton" onclick="refresh_history(false, {{product.id}})"><span class="hCard date">Latest</span></div>
-                        <div class="hButton" onclick="refresh_history(true, {{product.id}})"><span class="hCard date">Oldest</span></div> {% endcomment %}
-                        {% include "partials/restock_history.html"%}
+                    <div id="stock-history">
+                        <div class="stock-history"><h3 id="h3-quantity">{{product.quantity}}</h3></div>
+                        <div class="stock-history"><h3>10</h3></div>
+                        <div class="stock-history">
+                            {{form.date}}
+                        </div>
+                        <div class="stock-history" oninput="refresh_numbers({{product.quantity}})">
+                            {{form.cpu}}
+                        </div>
+                        <div class="stock-history"  oninput="refresh_numbers({{product.quantity}})">
+                            {{form.units}}
+                        </div>
+                        <div class="stock-history"><h3 id="h3-total">RM </h3></div>
                     </div>
+                </div>
+                <button type="submit" id="updateBttn">Update Stock</button>
+            </form>
+            
+            <div class="detail-box history">
+                <h2>Stock History</h2>
+                <div id="select-history-box">
+                    {% comment %} <div class="hButton" onclick="refresh_history(false, {{product.id}})"><span class="hCard date">Latest</span></div>
+                    <div class="hButton" onclick="refresh_history(true, {{product.id}})"><span class="hCard date">Oldest</span></div> {% endcomment %}
+                    {% include "partials/restock_history.html"%}
                 </div>
             </div>
         </div>
-    </body>
-</html>
+    </div>
 {% endblock %}

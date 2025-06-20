@@ -7,6 +7,7 @@ from django.conf import settings
 from django.db.models import Count, Avg, Sum
 from django.urls import reverse
 from pathlib import Path
+from users.decorators import role_required
 
 import qrcode
 import os
@@ -16,11 +17,11 @@ from reportlab.lib.pagesizes import A4
 from django.conf import settings
 from reportlab.lib.units import mm
 
-# Create your views here.
-@login_required(login_url="/accounts/login/")
+@role_required(['admin','manager'])
 def product_list_view(request):
     products = Product.objects.all()
     categories = Category.objects.all().order_by("name")
+    page = "nav-inventory"
 
     return render(
         request,
@@ -28,7 +29,8 @@ def product_list_view(request):
         context={
             'products' : products,
             'product_count': len(products),
-            'categories' : categories
+            'categories' : categories,
+            'page': page
         }
     )
 
@@ -46,33 +48,41 @@ def product_list_partial_view(request):
             'zero':0
         }
         products = products.filter(quantity__lte=info[availability])
+
+    page = "nav-inventory"
     
     return render(
         request,
         'partials/product_list_partial.html',
         context={
-            'products' : products
+            'products' : products,
+            'page': page
         }
     )
 
 def product_info_view(request, product_id):
     product = Product.objects.get(pk=product_id)
+        
+    page = "nav-inventory"
 
     return render(
         request,
         'partials/product_info.html',
         context={
-            'chosen_product' : product
+            'chosen_product' : product,
+            'page': page
         }
     )
 
 def product_create_view(request):
     form = ProductForm()
+    page = "nav-inventory"
 
     if request.method=="POST":
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
             new_product = form.save(commit=False)
+            new_product.category = form.cleaned_data["category"] 
             
             image = qrcode.make("Pooop")
             filename = f"{new_product.name}_{new_product.id}_qr.png"
@@ -88,12 +98,15 @@ def product_create_view(request):
 
     return render(request, "inventory/product_form.html", context={
         "form":form, 
-        "create": True
+        "create": True,
+        'page': page
     })
 
 def product_update_view(request, product_id):
     product = Product.objects.get(pk=product_id)
     form = ProductForm(instance=product)
+        
+    page = "nav-inventory"
 
     if request.method=="POST":
         form = ProductForm(request.POST, request.FILES, instance=Product.objects.get(pk=product_id))
@@ -105,10 +118,12 @@ def product_update_view(request, product_id):
         "form":form, 
         "create": False,
         "product": product,
+        'page': page
     })
 
 def product_delete_view(request, product_id):
     product = Product.objects.get(pk=product_id)
+    page = "nav-inventory"
 
     if request.method=="POST":
         action_type = request.POST.get('action')
@@ -116,12 +131,14 @@ def product_delete_view(request, product_id):
             product.delete()
         return redirect("product_list")
     
-    return render(request, "inventory/product_delete.html", context={"product":product})
+    return render(request, "inventory/product_delete.html", context={"product":product,'page':page})
 
 def product_restock_view(request, product_id):
     product = Product.objects.get(pk=product_id)
     form = RestockForm()
     restocks = Restock.objects.filter(product=product).order_by('-date').values()
+        
+    page = "nav-inventory"
 
     if request.method=="POST":
         form = RestockForm(request.POST)
@@ -139,7 +156,8 @@ def product_restock_view(request, product_id):
         context={
             "product" : product,
             "form" : form,
-            "restocks" : restocks
+            "restocks" : restocks,
+            'page': page
         }
         )
 
@@ -151,37 +169,42 @@ def restock_order_view(request):
 
     return render(request, 'partials/restock_history.html',{'restocks':restocks, 'product_id' : product_id})
 
+@role_required(['admin','manager'])
 def category_view(request):
     categories = Category.objects.annotate(
         product_types=Count("product"),
         total_stock=Sum("product__quantity"),
         average_price=Avg("product__price")
     ).order_by("name")
+        
+    page = "nav-category"
 
     return render(
         request, 
         "inventory/category.html", 
         {
-            'categories' : categories
+            'categories' : categories,
+            'page': page
         })
 
-def category_partial_view(request):
-    category_id = int(request.GET.get('category_id'))
-    products = Product.objects.all()
+# def category_partial_view(request):
+#     category_id = int(request.GET.get('category_id'))
+#     products = Product.objects.all()
 
-    if category_id != -1:
-        category = Category.objects.get(pk=category_id)
-        products = Product.objects.filter(category=category)
+#     if category_id != -1:
+#         category = Category.objects.get(pk=category_id)
+#         products = Product.objects.filter(category=category)
 
-    return render(
-        request, 
-        "partials/category_partial.html", 
-        {
-            'products': products,
-        })
+#     return render(
+#         request, 
+#         "partials/category_partial.html", 
+#         {
+#             'products': products,
+#         })
 
 def category_form_view(request):
     form = CategoryForm()
+    page = "nav-category"
 
     return render(
         request,
@@ -189,7 +212,8 @@ def category_form_view(request):
         context={
             'action' : 'Add',
             'form' : form,
-            'redirect' : reverse('category_create')
+            'redirect' : reverse('category_create'),
+            'page': page
         }
         )
 
@@ -207,17 +231,22 @@ def category_specific_view(request, category_id):
         total_stock=Sum("product__quantity"),
         average_price=Avg("product__price")
     ).get(pk=category_id)
+        
+    page = "nav-category"
 
     return render(
         request,
         'partials/category_specific.html',
         context={
-            'category' : category
+            'category' : category,
+            'page': page
         }
     )
 
 def category_delete_view(request, category_id):
     category = Category.objects.get(pk=category_id)
+        
+    page = "nav-category"
 
     if request.method=="POST":
         action_type = request.POST.get('action')
@@ -230,13 +259,15 @@ def category_delete_view(request, category_id):
         request,
         'partials/category_delete.html',
         context={
-            'category' : category
+            'category' : category,
+            'page': page
         }
     )
 
 def category_edit_view(request, category_id):
     category = Category.objects.get(pk=category_id)
     form = CategoryForm(instance=category)
+    page = "nav-category"
 
     if request.method=="POST":
         form = CategoryForm(request.POST, instance=category)
@@ -251,7 +282,8 @@ def category_edit_view(request, category_id):
         context={
             'action' : 'Edit',
             'form' : form,
-            'redirect' : reverse('category_edit', args=[category_id])
+            'redirect' : reverse('category_edit', args=[category_id]),
+            'page': page
         }
     )
 

@@ -1,13 +1,39 @@
-<!DOCTYPE html>
 {% load static %}
-<html>
-    <!-- <link rel = "stylesheet" href="{% static 'manager/inventory.css' %}"> -->
     <link rel="stylesheet" href="{% static 'css/home.css' %}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Mukta+Mahee:wght@200;300;400;500;600;700;800&family=Sansation:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
 
-    {% comment %} <script src={% static 'js/user_list.js'%}></script> {% endcomment %}
+    {% if options|length == 2 %}
+        <style>
+            #item-1 {
+                transform: translate(0%,0%) rotate(var(--rotate));
+            }
+            #item-2 {
+                transform: translate(100%,100%) rotate(var(--rotate));
+            }
+        </style>
+    {% elif options|length == 4 %}
+        <style>
+            #item-1 {
+                transform: translate(0vh,0vh) rotate(var(--rotate));
+            }
+            #item-2 {
+                transform: translate(0vh,-50vh) rotate(var(--rotate));
+            }
+            #item-3 {
+                transform: translate(-120%,-110%) rotate(var(--rotate));
+                z-index: 1;
+            }
+            .images .item#item-3 img, .images .item#item-4 img {
+                rotate: 180deg;
+            }
+            #item-4 {
+                transform: translate(100%,10%) rotate(var(--rotate));
+                z-index: 2;
+            }
+        </style>
+    {% endif %}
 
     <head>
         <div id="dashboard">
@@ -16,31 +42,35 @@
     </head>
 
     <body>
-        <main>
-            <div class="logo-container">
-                <img src="{% static 'images/warehub-logo.png' %}" id="main-logo" alt="WareHub logo">
-            </div>
-        </main>
-        <main>
-            <div class="large-container">
-                <div class="option-container">
+        <div id="slider-container">
+            <div class="slider">
+                <div class='content'>
                     {% for option in options%}
-                        <div class="option" {% if forloop.counter == 1%} id="first-item" {%endif%}>
-                            <div class="left-side">
-                                <img src="{% static option.image%}">
+                        <div {% if forloop.counter == 1%} class="item active" {% else %} class="item" {%endif%}>
+                            <div class="text">
+                                <h1>{{option.title}}</h1>
+                                <p class="des">{{option.description}}</p>
                             </div>
-                            <div class="right-side">
-                                <div class="text">
-                                    <h3>{{option.title}}</h3>
-                                    <p>{{option.description}}</p>
-                                </div>
-                                <div class="button-bar">
-                                    <button onclick="window.location.href='{{option.url}}'">Go</button> 
-                                </div>
+                            <div class="button-bar">
+                                <button onclick="window.location.href='{{option.url}}'">Go</button> 
                             </div>
                         </div>
                     {% endfor %}
                 </div>
+                <div class="images">
+                    {% for option in options %}
+                        <div {% if forloop.counter == 1%} class="item active" {% else %} class="item" {%endif%} id='item-{{forloop.counter}}' style="--i:{{forloop.counter}};">
+                            <img src="{% static option.image%}">
+                        </div>
+                    {% endfor %}
+                </div>
+                <button id="prev"><img src="{% static 'images/white-arrow-up.png'%}" alt="up arrow"></button>
+                <button id="next"><img src="{% static 'images/white-arrow-down.png'%}" alt="down arrow"></button>
             </div>
-        </main>
+        </div>
+        <div class="logo-container">
+            <img src="{% static 'images/warehub-logo.png' %}" id="main-logo" alt="WareHub logo">
+        </div>
     </body>
+    
+    <script src={% static 'js/home.js'%}></script>

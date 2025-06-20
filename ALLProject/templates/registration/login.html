@@ -3,6 +3,9 @@
 <html>
     <head>
     <link rel = "stylesheet" href="{% static 'css/index.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mukta+Mahee:wght@200;300;400;500;600;700;800&family=Sansation:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
     <title>{% block title %} 
         User Login
     {% endblock title %} </title>
@@ -29,5 +32,16 @@
                 {% comment %} <img src="" alt="inventory-checking.png">  {% endcomment %}
             </div>
         </div>
+
+        {% if messages %}
+            <div id="messages-container">
+            {% for message in messages %}
+                <div class="message">
+                    <p class="{{message.tags}}">{{message.tags|capfirst}}</p>
+                    <p>{{message}}</p>
+                </div>
+            {% endfor %}
+            </div>
+        {% endif %}
     </body>
 </html>
