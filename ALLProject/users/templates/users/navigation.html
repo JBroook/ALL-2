@@ -65,8 +65,69 @@
             {% endif %}
             
             <!-- Logout -->
-            <a href="{% url 'login' %}"class="nav"><img src="{% static "images/logout.png" %}" class="nav-logo"><p class="navfull"> Logout</p></a>
+            <a href="{% url 'user_logout' %}"class="nav"><img src="{% static "images/logout.png" %}" class="nav-logo"><p class="navfull"> Logout</p></a>
         {% endif %} 
     </div>
 {% endblock nav %}
 {% block dashboard %}{% endblock dashboard %}
+
+{% if messages %}
+    <style>
+        #messages-container {
+            width: 20vw;
+            height: fit-content;
+            position: fixed;
+            z-index: 5;
+            right: 0%;
+            top: 0%;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 5vh;
+        }
+
+        .message {
+            width: 90%;
+            aspect-ratio: 4/1;
+            background-color: #FFF7EB;
+            border-radius: 1vw;
+            box-shadow: 4px 2px 4px gray;
+            display: flex;
+            align-items: center;
+            padding-left: 1vw;
+            animation: cssAnimation 0s 3s forwards;
+            visibility: visible;
+        }
+
+        @keyframes cssAnimation {
+        to   { visibility: hidden; }
+        }
+
+        .success{
+            color: green;
+        }
+
+        .message img {
+            width: 2vw;
+        }
+
+        .message-text {
+            margin-left: 5%;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-weight: 300;
+            font-style: normal;
+            font-size: 1.2vw;
+        }
+    </style>
+
+    <div id="messages-container">
+    {% for message in messages %}
+        <div class="message">
+            <img {%if message.tags == "success"%} src="{% static 'images/green-checkmark.png' %}" 
+            {%else%} src="{% static 'images/exclamation.png' %}"  {%endif%}
+            alt="green checkmark"></img>
+            <p class="message-text">{{message}}</p>
+        </div>
+    {% endfor %}
+    </div>
+{% endif %}

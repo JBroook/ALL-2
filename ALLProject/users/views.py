@@ -2,11 +2,21 @@ from django.shortcuts import render, redirect
 from .models import Employee
 from .forms import EmployeeForm, UserForm, UserEditForm
 from django.db.models import Q
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from .decorators import role_required
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.contrib import messages
+from django.contrib.auth.views import LoginView
+
+class CustomLoginView(LoginView):
+    template_name = 'registration/login.html'
+    success_url = reverse_lazy('home')
+    
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, "Login successful!")
+        return response
 
 @role_required(['manager'])
 def user_list_view(request):
@@ -87,6 +97,9 @@ def user_create_view(request):
             new_employee = employee_form.save(commit=False)
             new_employee.user = new_user
             new_employee.save()
+            messages.add_message(request, messages.SUCCESS, "User added!")
+        else:
+            messages.add_message(request, messages.ERROR, "Failed!")
         
     return redirect('user_list')
 
@@ -100,8 +113,10 @@ def user_edit_view(request, employee_id):
         if user_form.is_valid():
             user_form.save()
         
-        if employee_form.is_valid():
-            employee.save()
+            if employee_form.is_valid():
+                employee.save()
+
+                messages.add_message(request, messages.SUCCESS, "User updated!")
         
     return redirect('user_list')
 
@@ -145,6 +160,7 @@ def user_delete_view(request, employee_id):
 
         if action_type=="confirm":
             user.delete()
+            messages.add_message(request, messages.SUCCESS, "User deleted!")
 
         return redirect('user_list')
     else:
@@ -174,4 +190,4 @@ def logout_view(request):
     
     messages.add_message(request, messages.SUCCESS, "Logout successful!")
 
-    return redirect("login")
+    return redirect("user_login")

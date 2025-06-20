@@ -37,8 +37,9 @@
             <div id="messages-container">
             {% for message in messages %}
                 <div class="message">
-                    <p class="{{message.tags}}">{{message.tags|capfirst}}</p>
-                    <p>{{message}}</p>
+                    {% comment %} <p class="{{message.tags}}">{{message.tags|capfirst}}</p> {% endcomment %}
+                    <img src="{% static 'images/green-checkmark.png' %}" alt="green checkmark"></img>
+                    <p class="message-text">{{message}}</p>
                 </div>
             {% endfor %}
             </div>

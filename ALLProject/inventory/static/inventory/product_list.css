@@ -195,6 +195,8 @@ a.fill-div {
   display: flex;
   flex-direction: column;
   position: fixed;
+  top: 0%;
+  z-index: 1;
   justify-content: center;
   height: 100%;
 }

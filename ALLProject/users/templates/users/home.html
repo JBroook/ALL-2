@@ -71,6 +71,18 @@
         <div class="logo-container">
             <img src="{% static 'images/warehub-logo.png' %}" id="main-logo" alt="WareHub logo">
         </div>
+
+        {% if messages %}
+            <div id="messages-container">
+            {% for message in messages %}
+                <div class="message">
+                    {% comment %} <p class="{{message.tags}}">{{message.tags|capfirst}}</p> {% endcomment %}
+                    <img src="{% static 'images/green-checkmark.png' %}" alt="green checkmark"></img>
+                    <p class="message-text">{{message}}</p>
+                </div>
+            {% endfor %}
+            </div>
+        {% endif %}
     </body>
     
     <script src={% static 'js/home.js'%}></script>

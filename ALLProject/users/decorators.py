@@ -8,7 +8,7 @@ def role_required(allowed_roles):
         @wraps(view_func)
         def _wrapped_view(request, *args, **kwargs):
             if not request.user.is_authenticated:
-                return redirect("login")
+                return redirect("user_login")
             
             user_role = Employee.objects.get(user=request.user).role
 

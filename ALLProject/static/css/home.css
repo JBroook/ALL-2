@@ -214,3 +214,50 @@ p {
     width: 4vh;
     height: 4vh;
 }
+
+#messages-container {
+    width: 20vw;
+    height: fit-content;
+    position: absolute;
+    z-index: 5;
+    right: 0%;
+    top: 0%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 5vh;
+    overflow: hidden;
+}
+
+.message {
+    width: 90%;
+    aspect-ratio: 4/1;
+    background-color: #FFF7EB;
+    border-radius: 1vw;
+    box-shadow: 4px 2px 4px gray;
+    display: flex;
+    align-items: center;
+    padding-left: 1vw;
+    animation: cssAnimation 0s 3s forwards;
+    visibility: visible;
+}
+
+@keyframes cssAnimation {
+  to   { visibility: hidden; }
+}
+
+.success{
+    color: green;
+}
+
+.message img {
+    width: 2vw;
+}
+
+.message-text {
+    margin-left: 5%;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: 300;
+    font-style: normal;
+    font-size: 1.2vw;
+}

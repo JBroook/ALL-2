@@ -8,6 +8,7 @@ from django.db.models import Count, Avg, Sum
 from django.urls import reverse
 from pathlib import Path
 from users.decorators import role_required
+from django.contrib import messages
 
 import qrcode
 import os
@@ -93,6 +94,8 @@ def product_create_view(request):
             new_product.save()
             form.save_m2m()
 
+        messages.add_message(request, messages.SUCCESS, "Product added!")
+        
         return redirect("product_list")
 
     return render(request, "inventory/product_form.html", context={
@@ -111,7 +114,12 @@ def product_update_view(request, product_id):
         form = ProductForm(request.POST, request.FILES, instance=Product.objects.get(pk=product_id))
         if form.is_valid():
             form.save()
-            return redirect("product_list")
+
+            messages.add_message(request, messages.SUCCESS, "Product updated!")
+        else:
+            messages.add_message(request, messages.ERROR, "Failed!")
+
+        return redirect("product_list")
 
     return render(request, "inventory/product_form.html", context={
         "form":form, 
@@ -127,7 +135,12 @@ def product_delete_view(request, product_id):
     if request.method=="POST":
         action_type = request.POST.get('action')
         if action_type=='confirm':
-            product.delete()
+            try:
+                product.delete()
+            except Exception as e:
+                messages.add_message(request, messages.ERROR, "Cannot delete!")
+            else:
+                messages.add_message(request, messages.SUCCESS, "Product deleted!")
         return redirect("product_list")
     
     return render(request, "inventory/product_delete.html", context={"product":product,'page':page})
@@ -147,6 +160,7 @@ def product_restock_view(request, product_id):
             product.quantity += restock.units
             product.save()
             restock.save()
+            messages.add_message(request, messages.SUCCESS, "Product restocked!")
             return redirect("product_list")
 
     return render(
@@ -221,7 +235,9 @@ def category_create_view(request):
         form = CategoryForm(request.POST)
         if form.is_valid:
             form.save()
-        
+            messages.add_message(request, messages.SUCCESS, "Category added!")
+        else:
+            messages.add_message(request, messages.ERROR, "Failed!")
     return redirect('category')
 
 def category_specific_view(request, category_id):
@@ -251,6 +267,7 @@ def category_delete_view(request, category_id):
         action_type = request.POST.get('action')
         if action_type=="confirm":
             category.delete()
+            messages.add_message(request, messages.SUCCESS, "Category deleted!")
         
         return redirect('category')
 
@@ -272,6 +289,9 @@ def category_edit_view(request, category_id):
         form = CategoryForm(request.POST, instance=category)
         if form.is_valid:
             form.save()
+            messages.add_message(request, messages.SUCCESS, "Category updated!")
+        else:
+            messages.add_message(request, messages.ERROR, "Failed!")
 
         return redirect('category')
         
