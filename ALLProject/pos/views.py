@@ -21,6 +21,7 @@ def cashierPOSView(request):
     actual_quantity = None
     show_quantity = False
     cart_cost = 0.00
+    item_code = request.POST.get('item_code') if request.method == 'POST' else None
 
     if 'cart' not in request.session:
         request.session['cart'] = []
@@ -35,28 +36,29 @@ def cashierPOSView(request):
     if request.method == 'POST':
         # Handle submission for item code
         if 'item_code' in request.POST:
-            #print("checking add product")
             item_code_form = ItemCodeForm(request.POST)
             if item_code_form.is_valid():
                 item_code = item_code_form.cleaned_data['item_code']
                 try:
                     product = Product.objects.get(id=item_code)
+
                     # if the same product exists in cart
                     actual_quantity = product.quantity
                     for items in request.session['cart']:
-                      if str(item_code) == str(items['item_code']):
-                        print("Item Found")
-                        actual_quantity -= items['quantity']
-                        print(actual_quantity)
+                        if str(item_code) == str(items['item_code']):
+                            print("Item Found")
+                            actual_quantity -= items['quantity']
+                            print(actual_quantity)
+                        
                     messages.info(request, actual_quantity)
                     show_quantity = True
+                    
                 except ObjectDoesNotExist:
                     messages.error(request, "ERROR: Product Not Found")
                     return HttpResponseRedirect(reverse('sales'))
-        
+                
         # Handle submission for product quantity
         if 'item_quantity' in request.POST:
-            #print("checking add quantity")
             quantity_form = QuantityForm(request.POST)
             item_code = request.POST.get('item_code')
             if quantity_form.is_valid() and item_code:
@@ -67,8 +69,8 @@ def cashierPOSView(request):
                     # Check if cart quantity is more than existing stock quantity
                     totalProduct = quantity
                     for items in request.session['cart']:
-                      if item_code == items['item_code']:
-                          totalProduct += items['quantity']
+                        if item_code == items['item_code']:
+                            totalProduct += items['quantity']
 
                     if totalProduct > product.quantity:
                         messages.error(request, "ERROR: Quantity exceeds available stock")
@@ -96,11 +98,12 @@ def cashierPOSView(request):
                         quantity = None
                         product = None
                         show_quantity = False
-                        return HttpResponseRedirect(reverse('sales'))
+                        HttpResponseRedirect(reverse('sales'))
                     
                 except ObjectDoesNotExist:
                     messages.error(request, "ERROR: Product Not Found")
                     return HttpResponseRedirect(reverse('sales'))
+                
 
         # Handles Cart Items Deletion
         if 'clear_cart' in request.POST:
@@ -121,83 +124,7 @@ def cashierPOSView(request):
         
         # Handles checkout submission
         if 'check_out' in request.POST:
-            checkout_form = CheckOutForm(request.POST)
-            print("Check-out")
-            if checkout_form.is_valid():
-                print("valid form")
-                payment_method = checkout_form.cleaned_data['payment_method']
-                if payment_method == "cash":
-                    payment_method = "Cash"
-                elif payment_method == "debit_card":
-                    payment_method = "Debit/Credit Card"
-                print("Payment Method: ", payment_method)
-                if request.session['cart']:
-                    if payment_method == "cash" and checkout_form.cleaned_data['cashPaid'] < cart_cost:
-                        messages.error(request, "ERROR: Cash amount is lower than cost of products")
-                    else:
-                        try:
-                            change = cart_cost-checkout_form.cleaned_data['cashPaid'] if checkout_form.cleaned_data['cashPaid'] else 0
-
-                            # Create Cart Record
-                            new_cart = Cart.objects.create(
-                                total_cost=0.00,
-                                payment_status=True)
-
-                            # Create CartItems inside Cart
-                            for items in request.session['cart']:
-                                product = Product.objects.get(id=items['item_code'])
-                                CartItem.objects.create(
-                                    cart = new_cart, 
-                                    product = product, 
-                                    quantity = items['quantity'], 
-                                    total_cost = items['total_price']
-                                )
-                                product.quantity -= items['quantity']
-                                product.save()
-
-                            # Payment Data
-                            card_number = checkout_form.cleaned_data['card_number']
-                            card_expiry = checkout_form.cleaned_data['expiry']
-                            card_cvv = checkout_form.cleaned_data['cvv']
-
-                            # Create and encrypt payment data
-                            paid = Payment.objects.create(
-                                cart = new_cart,
-                                employeeID = Employee.objects.get(id=2),
-                                payment_method = payment_method,
-                                tax = 0.00,
-                                discount = 0.00,
-                                total_cost = float(f"{cart_cost:.2f}"),
-                                card_info = card_number,
-                                expiry = card_expiry,
-                                cvv = card_cvv,
-                            )
-                            paid.save()
-
-                            new_cart.total_cost = cart_cost
-                            new_cart.save()
-
-                            if payment_method == 'Debit/Credit Card':
-                                messages.success(request, "Checkout Successful. Data saved.")
-                            elif payment_method == 'Cash':
-                                messages.success(request, f"Checkout Successful. \nPlease return Change: RM {change*-1:.2f}")
-
-                            # Clear Cart in session
-                            print("finish adding cart")
-                            request.session['cart'] = []
-                            for key in list(request.session.keys()):
-                                if not key.startswith("_"): # skip keys set by the django system
-                                    del request.session[key]
-                            request.session.modified = True
-                            return HttpResponseRedirect(reverse('sales'))
-                            
-                        except ObjectDoesNotExist:
-                            messages.error(request, "ERROR: One or more products in cart not found")
-                            return HttpResponseRedirect(reverse('sales'))
-                else:
-                    print(checkout_form.errors)
-                    messages.error(request, "ERROR: Cart is either empty or invalid checkout.")
-                    return HttpResponseRedirect(reverse('sales'))
+            checkout(request,cart_cost)
 
     context = {
         'item_code_form' : item_code_form,
@@ -207,13 +134,92 @@ def cashierPOSView(request):
         'clear_last_form' : clear_last_form,
         'product' : product,
         'actual_quantity' : actual_quantity if request.method == 'POST' else None,
-        'item_code' : request.POST.get('item_code') if request.method == 'POST' else None,
+        'item_code' : item_code,
         'cart' : request.session.get('cart',[]),
         'cart_cost' : cart_cost,
         'show_quantity' : show_quantity,
     }
     print(messages.get_messages)
     return HttpResponse(template.render(context,request))
+
+def checkout(request,cart_cost):
+    checkout_form = CheckOutForm(request.POST)
+    print("Check-out")
+    if checkout_form.is_valid():
+        print("valid form")
+        payment_method = checkout_form.cleaned_data['payment_method']
+        if payment_method == "cash":
+            payment_method = "Cash"
+        elif payment_method == "debit_card":
+            payment_method = "Debit/Credit Card"
+        print("Payment Method: ", payment_method)
+        if request.session['cart']:
+            if payment_method == "cash" and checkout_form.cleaned_data['cashPaid'] < cart_cost:
+                messages.error(request, "ERROR: Cash amount is lower than cost of products")
+            else:
+                try:
+                    change = cart_cost-checkout_form.cleaned_data['cashPaid'] if checkout_form.cleaned_data['cashPaid'] else 0
+
+                    # Create Cart Record
+                    new_cart = Cart.objects.create(
+                        total_cost=0.00,
+                        payment_status=True)
+
+                    # Create CartItems inside Cart
+                    for items in request.session['cart']:
+                        product = Product.objects.get(id=items['item_code'])
+                        CartItem.objects.create(
+                            cart = new_cart, 
+                            product = product, 
+                            quantity = items['quantity'], 
+                            total_cost = items['total_price']
+                        )
+                        product.quantity -= items['quantity']
+                        product.save()
+
+                    # Payment Data
+                    card_number = checkout_form.cleaned_data['card_number']
+                    card_expiry = checkout_form.cleaned_data['expiry']
+                    card_cvv = checkout_form.cleaned_data['cvv']
+
+                    # Create and encrypt payment data
+                    paid = Payment.objects.create(
+                        cart = new_cart,
+                        employeeID = Employee.objects.get(id=2),
+                        payment_method = payment_method,
+                        tax = 0.00,
+                        discount = 0.00,
+                        total_cost = float(f"{cart_cost:.2f}"),
+                        card_info = card_number,
+                        expiry = card_expiry,
+                        cvv = card_cvv,
+                    )
+                    paid.save()
+
+                    new_cart.total_cost = cart_cost
+                    new_cart.save()
+
+                    if payment_method == 'Debit/Credit Card':
+                        messages.success(request, "Checkout Successful. Data saved.")
+                    elif payment_method == 'Cash':
+                        messages.success(request, f"Checkout Successful. \nPlease return Change: RM {change*-1:.2f}")
+
+                    # Clear Cart in session
+                    print("finish adding cart")
+                    request.session['cart'] = []
+                    for key in list(request.session.keys()):
+                        if not key.startswith("_"): # skip keys set by the django system
+                            del request.session[key]
+                    request.session.modified = True
+                    return request.session['cart'], HttpResponseRedirect(reverse('sales'))
+                    
+                except ObjectDoesNotExist:
+                    messages.error(request, "ERROR: One or more products in cart not found")
+                    return request.session['cart'], HttpResponseRedirect(reverse('sales'))
+        else:
+            print(checkout_form.errors)
+            messages.error(request, "ERROR: Cart is either empty or invalid checkout.")
+            return request.session['cart'], HttpResponseRedirect(reverse('sales'))
 
 def cashierHistoryView(request):
     payments = Payment.objects.order_by('-timeStamp').annotate(
