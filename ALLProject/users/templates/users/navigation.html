@@ -123,9 +123,10 @@
     <div id="messages-container">
     {% for message in messages %}
         <div class="message">
-            <img {%if message.tags == "success"%} src="{% static 'images/green-checkmark.png' %}" 
+            <img {%if 'success' in message.tags%} src="{% static 'images/green-checkmark.png' %}" 
             {%else%} src="{% static 'images/exclamation.png' %}"  {%endif%}
             alt="green checkmark"></img>
+            
             <p class="message-text">{{message}}</p>
         </div>
     {% endfor %}

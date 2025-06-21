@@ -7,7 +7,7 @@ from .decorators import role_required
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.contrib import messages
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, PasswordResetView
 
 class CustomLoginView(LoginView):
     template_name = 'registration/login.html'
@@ -173,7 +173,7 @@ def user_delete_view(request, employee_id):
             }
         )
 
-@login_required(login_url='/accounts/login')
+@login_required(login_url='/users/user_login')
 def home_view(request):
     employee = Employee.objects.get(user=request.user)
 
@@ -191,3 +191,18 @@ def logout_view(request):
     messages.add_message(request, messages.SUCCESS, "Logout successful!")
 
     return redirect("user_login")
+
+class CustomPasswordResetView(PasswordResetView):
+    template_name = "users/password_reset.html"
+    html_email_template_name = 'users/password_reset_email.html'
+    subject_template_name = 'users/password_reset_subject.txt'
+    success_message = "We've emailed you instructions for setting your password, " \
+                      "if an account exists with the email you entered. You should receive them shortly." \
+                      " If you don't receive an email, " \
+                      "please make sure you've entered the address you registered with, and check your spam folder."
+    success_url = reverse_lazy('user_login')
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, "Email sent!")
+        return response
