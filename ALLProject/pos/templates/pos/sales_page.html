@@ -3,16 +3,22 @@
 {% load static %}
 {% block dashboard %}
     <link rel="stylesheet" href="{% static "css/sales_page.css" %}">
-    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    {% comment %} <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script> {% endcomment %}
     
     <body>
-        <div id="scanner-div">
+        {% comment %} <div id="scanner-div">
             <div id="reader" width="600px"></div>
             <button type="button" onclick="show_scanner(false)">Close</button>
-        </div>
+        </div> {% endcomment %}
 
         <div class="input-box">
-            <button type="button" class="input-bttn scan" onclick="show_scanner(true)">Scan Item</button>
+            {% comment %} <button type="button" class="input-bttn scan" onclick="show_scanner(true)">Scan Item</button> {% endcomment %}
+            <form action="" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="scan" value=true>
+                <button type="submit" class="input-bttn scan">Scan Item</button>
+            </form>
+
             <div class="product-detail" id="product-detail-tab">
                 <div class="details-box default">
                 </div>

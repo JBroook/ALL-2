@@ -59,7 +59,7 @@
             {% elif user_role == 'cashier' %}
                 <link rel="stylesheet" href="{% static "css/cashier/navigation.css" %}">
                 <!-- Cashier View -->
-                <a href="{% url 'sales' %}"class="nav nav-sale"><img src="{% static "images/shipping.png" %}" class="nav-logo nav-sale"><p class="navfull nav-sale"> Sale </p></a>
+                <a href="{% url 'sales' %}"class="nav nav-sale"><img src="{% static "images/barcode.png" %}" class="nav-logo nav-sale"><p class="navfull nav-sale"> Sale </p></a>
                 <a href="{% url 'history' %}"class="nav nav-history"><img src="{% static "images/file.png" %}" class="nav-logo nav-history"><p class="navfull nav-history"> History </p></a>
 
             {% endif %}

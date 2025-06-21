@@ -71,13 +71,13 @@ let successive_scans = 0;
 
 function onScanSuccess(decodedText, decodedResult) {
   // handle the scanned code as you like, for example:
-    // console.log(`Code matched = ${decodedText}`, decodedResult);
     successive_scans++;
     if(successive_scans>=5){
         if (!successful_scan){
             successful_scan = true;
 
             console.log("One success")
+            console.log(`Code matched = ${decodedText}`, decodedResult);
         }
     }
 }

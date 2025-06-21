@@ -70,7 +70,7 @@ h2,h3{
     width: inherit;
     height: inherit;
     visibility: hidden;
-    text-align: center;
+    text-align: -webkit-center;
 }
 .details-box.default{
     visibility: visible;
@@ -80,7 +80,6 @@ h2,h3{
 }
 .details-box.addItem {
     visibility: hidden;
-    align-content: center;
 }
 .boxTitle.add {
     margin-top: 1.5%;

@@ -7,7 +7,14 @@ from .forms import ItemCodeForm, QuantityForm, CheckOutForm, ClearCartItems, Cle
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, redirect
 from django.db.models import Sum
+
 import datetime
+import cv2
+from pyzbar.pyzbar import decode
+from pydub import AudioSegment
+from pydub.playback import play
+from django.templatetags.static import static
+
 
 # Create your views here.
 def cashierPOSView(request):
@@ -27,11 +34,11 @@ def cashierPOSView(request):
         request.session['cart'] = []
     if request.session['cart']:
         cart_cost = sum(item['total_price'] for item in request.session['cart'])
-        print("Cart Cost = ",cart_cost)
+        # print("Cart Cost = ",cart_cost)
         
-    print(request.session['cart'])
-    print("Request Session", request.session)
-    print("Request Post: ",request.POST)
+    # print(request.session['cart'])
+    # print("Request Session", request.session)
+    # print("Request Post: ",request.POST)
     
     if request.method == 'POST':
         # Handle submission for item code
@@ -82,13 +89,21 @@ def cashierPOSView(request):
                             messages.error(request, "ALERT: LOW STOCK WARNING!")
 
                         # Add to cart logic
-                        request.session['cart'].append({
-                            'item_code' : item_code,
-                            'name' : product.name,
-                            'unit_price' : product.price,
-                            'quantity' : quantity,
-                            'total_price' : float(product.price*quantity)
-                        })
+                        valueinCart = False
+                        for item in request.session['cart']:
+                            print(item)
+                            if product.name == item['name']:
+                                item['quantity'] += quantity
+                                valueinCart = True
+
+                        if not valueinCart:
+                            request.session['cart'].append({
+                                'item_code' : item_code,
+                                'name' : product.name,
+                                'unit_price' : product.price,
+                                'quantity' : quantity,
+                                'total_price' : float(product.price*quantity)
+                            })
                         request.session.modified = True
 
                         # reset forms and insert cart item successfully
@@ -104,6 +119,8 @@ def cashierPOSView(request):
                     messages.error(request, "ERROR: Product Not Found")
                     return HttpResponseRedirect(reverse('sales'))
                 
+        if 'scan' in request.POST:
+            scanItem(request)
 
         # Handles Cart Items Deletion
         if 'clear_cart' in request.POST:
@@ -121,6 +138,9 @@ def cashierPOSView(request):
             else:
                 messages.error(request, "ERROR: No Item in Cart")
                 return HttpResponseRedirect(reverse('sales'))
+            
+        if 'delete' in request.POST:
+            removeItem(request)
         
         # Handles checkout submission
         if 'check_out' in request.POST:
@@ -222,6 +242,49 @@ def checkout(request,cart_cost):
             print(checkout_form.errors)
             messages.error(request, "ERROR: Cart is either empty or invalid checkout.")
             return request.session['cart'], HttpResponseRedirect(reverse('sales'))
+
+def removeItem(request,):
+    i = 0
+    delete_item = request.POST['delete']
+    
+    for item in request.session['cart']:
+        if delete_item == item['name']:
+            request.session['cart'].pop(i)
+            request.session.modified = True
+            messages.success(request, "Product Removed.")
+            return HttpResponseRedirect(reverse('sales'))
+        i += 1
+    
+    print(request.session['cart'])
+
+def scanItem(request):
+    cap = cv2.VideoCapture(0)
+    # song = AudioSegment.from_mp3(static('beep.mp3'))
+    
+    while cap.isOpened():
+        success, frame = cap.read()
+
+        frame = cv2.flip(frame,1) # Flip Image fetched from camera
+        detectedCode = decode(frame)
+        if not detectedCode:
+            print("No Barcode/QR Code Detected")
+        
+        else:
+            for code in detectedCode:
+                if code.data != "":
+                    print(str(code.data.decode("utf-8")))
+                    messages.success(request, f"Product Added: {str(code.data.decode("utf-8"))}")
+                    cap.release()
+                    return HttpResponseRedirect(reverse('sales'))
+
+                    # cv2.putText(frame,str(code.data),(50,50),cv2.FONT_HERSHEY_COMPLEX,2,(0,255,255),2)
+                    # play(song)
+                    # cv2.imwrite("code.png",frame)
+        
+        cv2.imshow('scanner',frame)
+        if cv2.waitKey(1) == ord('q'):
+            break
+
 
 def cashierHistoryView(request):
     payments = Payment.objects.order_by('-timeStamp').annotate(

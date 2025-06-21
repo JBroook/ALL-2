@@ -9,32 +9,41 @@
 
     <div class="cartbox">
         <h3 class="boxTitle">Cart</h3>
-        <table class="cart">
-            <thead>
-                <tr>
-                    <th>Product Name</th>
-                    <th>Unit Price</th>
-                    <th>Quantity</th>
-                    <th>Total</th>
-                </tr>
-            </thead>
-            <tbody class="cart">
-                {% if cart %}
-                    {% for item in cart %}
-                        <tr class="cart">
-                            <td>{{ item.name }}</td>
-                            <td>{{ item.unit_price|floatformat:2 }}</td>
-                            <td>{{ item.quantity }}</td>
-                            <td>{{ item.total_price|floatformat:2 }}</td>
-                        </tr>
-                    {% endfor %}
-                {% else %}
-                    <tr></tr> 
-                {% endif %}
-                
-                <tr></tr>
-            </tbody>
-        </table>
+        <div id="table_container">
+            <table class="cart">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Product Name</th>
+                        <th>Unit Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody class="cart">
+                    {% if cart %}
+                        {% for item in cart %}
+                            <tr class="cart">
+                                <td><form action="" method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="delete" value="{{ item.name }}">
+                                        <button type="submit" class="delete">X</button>
+                                    </form>
+                                </td>
+                                <td>{{ item.name }}</td>
+                                <td>{{ item.unit_price|floatformat:2 }}</td>
+                                <td>{{ item.quantity }}</td>
+                                <td>{{ item.total_price|floatformat:2 }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr></tr> 
+                    {% endif %}
+                    
+                    <tr></tr>
+                </tbody>
+            </table>
+        </div>
         <div class="container">
             <div class="keyboardBox" id="item-code">
                 <button type="button" class="keyboard keyboard-cart" value="1">1</button>
