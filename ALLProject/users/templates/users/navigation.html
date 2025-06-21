@@ -93,22 +93,19 @@
             border-radius: 1vw;
             box-shadow: 4px 2px 4px gray;
             display: flex;
-            align-items: center;
+            justify-content: space-between;
             padding-left: 1vw;
-            animation: cssAnimation 0s 3s forwards;
+            animation: cssAnimation 0s 5s forwards;
             visibility: visible;
+            overflow: hidden;
         }
 
         @keyframes cssAnimation {
-        to   { visibility: hidden; }
+            to   { visibility: hidden;}
         }
 
         .success{
             color: green;
-        }
-
-        .message img {
-            width: 2vw;
         }
 
         .message-text {
@@ -118,17 +115,47 @@
             font-style: normal;
             font-size: 1.2vw;
         }
+
+        .message-left {
+            display: flex;
+            width: 70%;
+            height: 100%;
+            align-items: center;
+        }
+
+        .message img{
+            width: 1.25vw;
+        }
+
+        .close-message-button {
+            border-style: none;
+            background-color: transparent;
+            height: 100%;
+        }
+
+        .close-message-button:hover{
+            background-color: rgb(0, 0, 0, 0.3);
+        }
     </style>
 
+    <script>
+        function close_message(message_id){
+            document.getElementById("message-"+message_id).remove();
+        }
+    </script>
+
     <div id="messages-container">
-    {% for message in messages %}
-        <div class="message">
-            <img {%if 'success' in message.tags%} src="{% static 'images/green-checkmark.png' %}" 
-            {%else%} src="{% static 'images/exclamation.png' %}"  {%endif%}
-            alt="green checkmark"></img>
-            
-            <p class="message-text">{{message}}</p>
-        </div>
-    {% endfor %}
+        {% for message in messages %}
+            <div class="message" id="message-{{forloop.counter}}">
+                <div class="message-left">
+                    <img {%if 'success' in message.tags%} src="{% static 'images/green-checkmark.png' %}" 
+                    {%else%} src="{% static 'images/exclamation.png' %}"  {%endif%}
+                    alt="green checkmark"></img>
+                    
+                    <p class="message-text">{{message}}</p>
+                </div>
+                <button class="close-message-button" onclick="close_message({{forloop.counter}})"><img src="{% static 'images/close.png'%}"></button>
+            </div>
+        {% endfor %}
     </div>
 {% endif %}

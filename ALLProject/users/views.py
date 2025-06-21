@@ -15,8 +15,14 @@ class CustomLoginView(LoginView):
     
     def form_valid(self, form):
         response = super().form_valid(form)
-        messages.success(self.request, "Login successful!")
+        messages.add_message(self.request, messages.SUCCESS, "Login successful!")
         return response
+    
+    def form_invalid(self, form):
+        response = super().form_invalid(form)
+        messages.add_message(self.request, messages.ERROR, "Login failed!")
+        return response
+    
 
 @role_required(['manager'])
 def user_list_view(request):

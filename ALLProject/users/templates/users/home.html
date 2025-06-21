@@ -71,18 +71,95 @@
         <div class="logo-container">
             <img src="{% static 'images/warehub-logo.png' %}" id="main-logo" alt="WareHub logo">
         </div>
-
-        {% if messages %}
-            <div id="messages-container">
-            {% for message in messages %}
-                <div class="message">
-                    {% comment %} <p class="{{message.tags}}">{{message.tags|capfirst}}</p> {% endcomment %}
-                    <img src="{% static 'images/green-checkmark.png' %}" alt="green checkmark"></img>
-                    <p class="message-text">{{message}}</p>
-                </div>
-            {% endfor %}
-            </div>
-        {% endif %}
     </body>
     
+    {% if messages %}
+        <style>
+            #messages-container {
+                width: 20vw;
+                height: fit-content;
+                position: fixed;
+                z-index: 5;
+                right: 0%;
+                top: 0%;
+                display: flex;
+                justify-content: center;
+                align-items: flex-start;
+                padding-top: 5vh;
+            }
+
+            .message {
+                width: 90%;
+                aspect-ratio: 4/1;
+                background-color: #FFF7EB;
+                border-radius: 1vw;
+                box-shadow: 4px 2px 4px gray;
+                display: flex;
+                justify-content: space-between;
+                padding-left: 1vw;
+                animation: cssAnimation 0s 5s forwards;
+                visibility: visible;
+                overflow: hidden;
+            }
+
+            @keyframes cssAnimation {
+                to   { visibility: hidden;}
+            }
+
+            .success{
+                color: green;
+            }
+
+            .message-text {
+                margin-left: 5%;
+                font-family: Verdana, Geneva, Tahoma, sans-serif;
+                font-weight: 300;
+                font-style: normal;
+                font-size: 1.2vw;
+            }
+
+            .message-left {
+                display: flex;
+                width: 70%;
+                height: 100%;
+                align-items: center;
+            }
+
+            .message img{
+                width: 1.25vw;
+            }
+
+            .close-message-button {
+                border-style: none;
+                background-color: transparent;
+                height: 100%;
+            }
+
+            .close-message-button:hover{
+                background-color: rgb(0, 0, 0, 0.3);
+            }
+        </style>
+
+        <script>
+            function close_message(message_id){
+                document.getElementById("message-"+message_id).remove();
+            }
+        </script>
+
+        <div id="messages-container">
+            {% for message in messages %}
+                <div class="message" id="message-{{forloop.counter}}">
+                    <div class="message-left">
+                        <img {%if 'success' in message.tags%} src="{% static 'images/green-checkmark.png' %}" 
+                        {%else%} src="{% static 'images/exclamation.png' %}"  {%endif%}
+                        alt="green checkmark"></img>
+                        
+                        <p class="message-text">{{message}}</p>
+                    </div>
+                    <button class="close-message-button" onclick="close_message({{forloop.counter}})"><img src="{% static 'images/close.png'%}"></button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
     <script src={% static 'js/home.js'%}></script>
