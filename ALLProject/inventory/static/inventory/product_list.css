@@ -402,21 +402,22 @@ form {
 }
 
 .field-wrapper select {
-  width: 240px;
-  height: 30px;
+  width: 16vw;
+  height: 4vh;
   background-color: #f8ece4;
   border: none;
-  border-radius: 5px;
-  font-size: 22px;
+  border-radius: 0.5vw;
+  font-size: 1.2vw;
 }
 
 .form-control {
-  width: 240px;
-  height: 30px;
+  width: 16vw;
+  height: 4vh;
   background-color: #f8ece4;
   border: none;
-  border-radius: 5px;
-  font-size: 22px;
+  border-radius: 0.5vw;
+  font-size: 1.2vw;
+  padding: 0.2vw;
 } 
 
 .delete-container {
@@ -484,4 +485,23 @@ form {
 
 .nothing-message h3 {
   color: gray;
+}
+
+#id_image {
+  width: 16vw;
+  height: 4vh;
+  background-color: #f8ece4;
+  display: inline-block;
+  padding: auto 0.1vw;
+  cursor: pointer;
+  border-radius: 0.5vw;
+}
+
+::file-selector-button {
+  border-style: none;
+  height: 100%;
+  width: 50%;
+  border-radius: 0.2vw;
+  background-color: #C3B299;
+  cursor: pointer;
 }

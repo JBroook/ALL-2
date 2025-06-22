@@ -2,8 +2,6 @@ from django import forms
 from .models import Product, Category, Restock
 
 class ProductForm(forms.ModelForm):
-    category = forms.ModelChoiceField(Category.objects.order_by('name'), required=True)
-    
     class Meta:
         model = Product
         fields = '__all__'
@@ -29,8 +27,7 @@ class ProductForm(forms.ModelForm):
                 'placeholder':'e.g. 100', 'class':'form-control'}),
             'supplier' : forms.TextInput(attrs={
                 'placeholder':'e.g. Milk & Lawson', 'class':'form-control'}),
-            'image' : forms.FileInput(attrs={
-                'class':'form-control'}),
+            'image' : forms.FileInput(),
             'alert_threshold' : forms.NumberInput(attrs={
                 'placeholder':'e.g. 5', 'class':'form-control'})
         }
@@ -38,6 +35,7 @@ class ProductForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.label_suffix = ""
+        self.fields['category'].queryset = Category.objects.order_by('name')
 
 class DateInput(forms.DateInput):
     input_type = 'date'
