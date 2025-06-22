@@ -10,5 +10,9 @@
         </div>
     {% endfor %}
 {% else%}
-    <h3>No users found with the name "{{search_input}}"</h3>
+    {% if search_criteria and search_input%}
+        <h3>No users found with the {{search_criteria}} "{{search_input}}"</h3>
+    {%else%}
+        <h3>No users found.</h3>
+    {%endif%}
 {%endif%}

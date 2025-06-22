@@ -90,6 +90,10 @@ tr {
     box-shadow: 0px 1px gray;
 }
 
+.category-row:hover {
+    background-color: #C3B299;
+}
+
 .header {
     width: 3em;
     height: 3em;
@@ -394,4 +398,21 @@ ul {
 .nothing-message h3 {
   color: gray;
   font-size: 1.25vw;
+}
+
+.table-header-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: fit-content;
+}
+
+.table-header-container:hover {
+    background-color: #e5e5e5;
+}
+
+.table-header-container img{
+    width: 2vw;
+    height: 2vw;
+    padding: 0.2vw;
 }

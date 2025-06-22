@@ -200,20 +200,21 @@ def category_view(request):
             'page': page
         })
 
-# def category_partial_view(request):
-#     category_id = int(request.GET.get('category_id'))
-#     products = Product.objects.all()
+def category_partial_view(request):
+    sort_method = request.GET.get('sort')
 
-#     if category_id != -1:
-#         category = Category.objects.get(pk=category_id)
-#         products = Product.objects.filter(category=category)
+    categories = Category.objects.annotate(
+        product_types=Count("product"),
+        total_stock=Sum("product__quantity"),
+        average_price=Avg("product__price")
+    ).order_by(sort_method)
 
-#     return render(
-#         request, 
-#         "partials/category_partial.html", 
-#         {
-#             'products': products,
-#         })
+    return render(
+        request, 
+        "partials/category_partial.html", 
+        {
+            'categories' : categories
+        })
 
 def category_form_view(request):
     form = CategoryForm()

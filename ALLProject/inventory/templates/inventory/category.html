@@ -20,10 +20,26 @@
                 <table>
                     <thead>
                         <tr>
-                            <th><p> Name</p></th>
-                            <th><p> Products</p></th>
-                            <th><p> Total Stock</p></th>
-                            <th><p> Average Price (RM)</p></th>
+                            <th>
+                                <div class="table-header-container" onclick="sort_category('name')">
+                                <img src="{% static 'images/up-and-down-arrow.png'%}" ><p> Name</p>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="table-header-container" onclick="sort_category('product_types')">
+                                <img src="{% static 'images/up-and-down-arrow.png'%}"><p> Products</p>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="table-header-container" onclick="sort_category('total_stock')">
+                                <img src="{% static 'images/up-and-down-arrow.png'%}"><p> Total Stock</p>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="table-header-container" onclick="sort_category('average_price')">
+                                <img src="{% static 'images/up-and-down-arrow.png'%}"><p> Average Price (RM)</p>
+                                </div>
+                            </th>
                         </tr>
                     </thead>
                     

@@ -49,7 +49,15 @@ def user_list_partial_view(request):
     if selected_role:
        employees = Employee.objects.filter(role=selected_role)
 
-    return render(request,'partials/user_list_partial.html',context={'employees':employees,'page':page})
+    return render(
+        request,
+        'partials/user_list_partial.html',
+        context={
+            'employees':employees,
+            'search_input' : request.GET.get('role'),
+            'search_criteria': 'role',
+            'page':page
+            })
 
 def user_list_search_view(request):
     search_input = request.GET.get('input').strip().split()
@@ -72,6 +80,7 @@ def user_list_search_view(request):
         context={
             'employees':employees,
             'search_input': request.GET.get('input'),
+            'search_criteria': 'name',
             'page':page
             })
 

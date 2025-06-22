@@ -1,12 +1,20 @@
-// function refresh_table(_category_id){
+let sort_order = {
+    name: true,
+    products: true,
+    total_stock: true,
+    average_price: true
+};
 
-//     fetch(`/inventory/category_partial/?category_id=${_category_id}`, {
-//     })
-//     .then(response => response.text())
-//     .then(html => {
-//         document.getElementById("product-table-body").innerHTML = html;
-//     });
-// }
+function sort_category(sort_method){
+    sort_order[sort_method] = !sort_order[sort_method];
+    sort_method = (sort_order[sort_method] ? "" : "-")+sort_method
+    fetch(`/inventory/category_partial/?sort=${sort_method}`, {
+    })
+    .then(response => response.text())
+    .then(html => {
+        document.getElementById("product-table-body").innerHTML = html;
+    });
+}
 
 function add_category(){
     fetch(`/inventory/category_form`, {
