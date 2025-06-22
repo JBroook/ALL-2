@@ -12,10 +12,14 @@ def role_required(allowed_roles):
                 messages.add_message(request, messages.ERROR, "Not logged in!")
                 return redirect("user_login")
             
-            user_role = Employee.objects.get(user=request.user).role
+            employee = Employee.objects.get(user=request.user)
 
-            if user_role in allowed_roles:
-                return view_func(request, *args, **kwargs)
+            if employee.role in allowed_roles:
+                if not employee.virgin_login:
+                    return view_func(request, *args, **kwargs)
+                else:
+                    messages.add_message(request, messages.ERROR, "Password not changed yet!")
+                    return redirect("password_change")
             else:
                 messages.add_message(request, messages.ERROR, "Required role missing!")
                 return HttpResponseForbidden("You do not have permission to access this page.")

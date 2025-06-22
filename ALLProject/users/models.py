@@ -12,6 +12,7 @@ class Employee(models.Model):
             ('manager', 'Manager')
         ]
     )
+    virgin_login = models.BooleanField(default=True)
     
     def get_role_options(self):
         options = [
@@ -66,14 +67,3 @@ class Employee(models.Model):
                 filtered_options.append(options[i])
 
         return filtered_options
-
-
-# rec_login_required = user_passes_test(lambda u: True if u.is_recruiter else False, login_url='/')
-
-# def recruiter_login_required(view_func):
-#     decorated_view_func = login_required(rec_login_required(view_func), login_url='/')
-#     return decorated_view_func
-
-# @recruiter_login_required
-# def index(request):
-#     return render(request, 'index.html')

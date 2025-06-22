@@ -7,7 +7,8 @@ from .decorators import role_required
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.contrib import messages
-from django.contrib.auth.views import LoginView, PasswordResetView
+from django.contrib.auth.views import LoginView, PasswordResetView, PasswordChangeView
+from django.contrib.auth.forms import PasswordChangeForm
 
 class CustomLoginView(LoginView):
     template_name = 'registration/login.html'
@@ -16,12 +17,23 @@ class CustomLoginView(LoginView):
     def form_valid(self, form):
         response = super().form_valid(form)
         messages.add_message(self.request, messages.SUCCESS, "Login successful!")
+        
         return response
     
     def form_invalid(self, form):
         response = super().form_invalid(form)
         messages.add_message(self.request, messages.ERROR, "Login failed!")
         return response
+    
+    def get_success_url(self):
+        employee = Employee.objects.get(user=self.request.user)
+
+        if employee.virgin_login:
+            print("Virgin account")
+            return reverse_lazy('password_change')
+            
+        
+        return reverse_lazy('home')
     
 
 @role_required(['manager'])
@@ -221,3 +233,21 @@ class CustomPasswordResetView(PasswordResetView):
         response = super().form_valid(form)
         messages.success(self.request, "Email sent!")
         return response
+    
+class ChangePasswordView(PasswordChangeView):
+    form_class = PasswordChangeForm
+    success_url = reverse_lazy('home')
+    template_name = 'users/change_password.html'
+
+    def form_valid(self, form):
+        messages.add_message(self.request, messages.SUCCESS, "Password changed!")
+        employee = Employee.objects.get(user=self.request.user)
+        employee.virgin_login = False
+        employee.save()
+        return super().form_valid(form)
+    
+    def form_invalid(self, form):
+        messages.add_message(self.request, messages.ERROR, "Invalid password!")
+        return super().form_invalid(form)
+    
+    
