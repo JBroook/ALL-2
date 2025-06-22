@@ -66,36 +66,36 @@ function enterPin() {
     });
 }
 
-let successful_scan = false;
-let successive_scans = 0;
+// let successful_scan = false;
+// let successive_scans = 0;
 
-function onScanSuccess(decodedText, decodedResult) {
-  // handle the scanned code as you like, for example:
-    successive_scans++;
-    if(successive_scans>=5){
-        if (!successful_scan){
-            successful_scan = true;
+// function onScanSuccess(decodedText, decodedResult) {
+//   // handle the scanned code as you like, for example:
+//     successive_scans++;
+//     if(successive_scans>=5){
+//         if (!successful_scan){
+//             successful_scan = true;
 
-            console.log("One success")
-            console.log(`Code matched = ${decodedText}`, decodedResult);
-        }
-    }
-}
+//             console.log("One success")
+//             console.log(`Code matched = ${decodedText}`, decodedResult);
+//         }
+//     }
+// }
 
-function onScanFailure(error) {
-  // handle scan failure, usually better to ignore and keep scanning.
-  // for example:
-//   console.warn(`Code scan error = ${error}`);
-    successful_scan = false;
-    successive_scans = 0;
-}
+// function onScanFailure(error) {
+//   // handle scan failure, usually better to ignore and keep scanning.
+//   // for example:
+// //   console.warn(`Code scan error = ${error}`);
+//     successful_scan = false;
+//     successive_scans = 0;
+// }
 
-let html5QrcodeScanner = new Html5QrcodeScanner(
-  "reader",
-  { fps: 30, qrbox: {width: 250, height: 250} },
-  /* verbose= */ false);
-html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+// let html5QrcodeScanner = new Html5QrcodeScanner(
+//   "reader",
+//   { fps: 30, qrbox: {width: 250, height: 250} },
+//   /* verbose= */ false);
+// html5QrcodeScanner.render(onScanSuccess, onScanFailure);
 
-function show_scanner(show){
-    document.getElementById('scanner-div').style.visibility = (show ? "visible" : "hidden")
-}
+// function show_scanner(show){
+//     document.getElementById('scanner-div').style.visibility = (show ? "visible" : "hidden")
+// }

@@ -47,7 +47,7 @@ def cashierPOSView(request):
             if item_code_form.is_valid():
                 item_code = item_code_form.cleaned_data['item_code']
                 try:
-                    product = Product.objects.get(id=item_code)
+                    product = Product.objects.get(barcode_number=item_code)
 
                     # if the same product exists in cart
                     actual_quantity = product.quantity
@@ -70,7 +70,7 @@ def cashierPOSView(request):
             item_code = request.POST.get('item_code')
             if quantity_form.is_valid() and item_code:
                 try:
-                    product = Product.objects.get(id=item_code)
+                    product = Product.objects.get(barcode_number=item_code)
                     quantity = quantity_form.cleaned_data['item_quantity']
 
                     # Check if cart quantity is more than existing stock quantity
@@ -259,6 +259,7 @@ def removeItem(request,):
 
 def scanItem(request):
     cap = cv2.VideoCapture(0)
+    # cap = cv2.VideoCapture('http://192.168.1.8:8080/video')
     # song = AudioSegment.from_mp3(static('beep.mp3'))
     
     while cap.isOpened():
@@ -272,10 +273,88 @@ def scanItem(request):
         else:
             for code in detectedCode:
                 if code.data != "":
-                    print(str(code.data.decode("utf-8")))
-                    messages.success(request, f"Product Added: {str(code.data.decode("utf-8"))}")
-                    cap.release()
-                    return HttpResponseRedirect(reverse('sales'))
+                    if code.type == "QRCODE":
+                        data = code.data.decode("utf-8").split('Barcode Number:')[-1]
+                        # print(type(data))
+                        print(data)
+                        product = Product.objects.get(barcode_number=data)
+                        print(product)
+                        
+                        # Check if cart quantity is more than existing stock quantity
+                        quantity = 1
+                        totalProduct = quantity
+                        for items in request.session['cart']:
+                            if product.id == items['item_code']:
+                                totalProduct += items['quantity']
+
+                        if totalProduct > product.quantity:
+                            messages.error(request, "ERROR: Quantity exceeds available stock")
+                        else:
+                            # Show Warning alert if stock quantity reached alert_threshold
+                            actual_quantity = product.quantity - totalProduct
+                            if actual_quantity <= product.alert_threshold:
+                                messages.error(request, "ALERT: LOW STOCK WARNING!")
+
+                            # Add to cart logic
+                            valueinCart = False
+                            for item in request.session['cart']:
+                                if product.name == item['name']:
+                                    print("Cart Found")
+                                    print(item)
+                                    item['quantity'] += quantity
+                                    valueinCart = True
+
+                            if not valueinCart:
+                                print("Not in Cart yet")
+                                request.session['cart'].append({
+                                    'item_code' : product.id,
+                                    'name' : product.name,
+                                    'unit_price' : product.price,
+                                    'quantity' : quantity,
+                                    'total_price' : float(product.price*quantity)
+                                })
+                            request.session.modified = True
+
+                        messages.success(request, f"Product Added: {product.name}")
+                        return HttpResponseRedirect(reverse('sales'))
+                    else:
+                        product = Product.objects.get(barcode_number=code.data.decode("utf-8"))
+                        
+                        # Check if cart quantity is more than existing stock quantity
+                        totalProduct, quantity = 1
+                        for items in request.session['cart']:
+                            if product.id == items['item_code']:
+                                totalProduct += items['quantity']
+
+                        if totalProduct > product.quantity:
+                            messages.error(request, "ERROR: Quantity exceeds available stock")
+                        else:
+                            # Show Warning alert if stock quantity reached alert_threshold
+                            actual_quantity = product.quantity - totalProduct
+                            if actual_quantity <= product.alert_threshold:
+                                messages.error(request, "ALERT: LOW STOCK WARNING!")
+
+                            # Add to cart logic
+                            valueinCart = False
+                            for item in request.session['cart']:
+                                print(item)
+                                if product.name == item['name']:
+                                    item['quantity'] += quantity
+                                    valueinCart = True
+
+                            if not valueinCart:
+                                request.session['cart'].append({
+                                    'item_code' : product.id,
+                                    'name' : product.name,
+                                    'unit_price' : product.price,
+                                    'quantity' : quantity,
+                                    'total_price' : float(product.price*quantity)
+                                })
+                            request.session.modified = True
+
+                        messages.success(request, f"Product Added: {product.name}")
+                        cap.release()
+                        return HttpResponseRedirect(reverse('sales'))
 
                     # cv2.putText(frame,str(code.data),(50,50),cv2.FONT_HERSHEY_COMPLEX,2,(0,255,255),2)
                     # play(song)
