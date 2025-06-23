@@ -7,13 +7,25 @@
     box-shadow: -2px 2px 8px 0px rgba(0, 0, 0, 0.3);
 }
 
+#table_container {
+    width: 100%;
+    height: 61%;
+    overflow-y: scroll;
+    background: #d9d6bf38;
+}
+#table_container::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
 .cart {
-    width: 90%;
-    height: 62%;
+    width: 100%;
+    height: 100%;
     vertical-align: middle;
+    border-spacing: 1px;
     
     font-family: "Mukta Mahee", sans-serif;
-    font-weight: 600;
+    font-weight: 300;
     font-style: normal;
     text-align: center;
 }
@@ -23,12 +35,35 @@ thead.cart, tr.cart {
     padding-top: 2.5%;
     padding-bottom: 2.5%;
 }
+thead.cart {
+    position: sticky;
+    top: 0;
+    background-color: white;
+}
+
+.edit-cart {
+    margin: 0;
+}
+.delete {
+    border-color: rgb(255, 136, 140);
+    color: #FFF;
+    background-color: rgb(255, 136, 140);
+}
+.edit-quantity {
+    border-color: #DBEBC0;
+    background-color: #DBEBC0;
+}
+.edit-quantity:hover {
+    border-color: #c4d6a4;
+    background-color: #c4d6a4;
+}
 
 .container {
     display: flex;
     justify-content: space-evenly;
     width: 100%;
     height: 33%;
+    margin-top: 1%;
 }
 
 .keyboardBox {
@@ -71,7 +106,7 @@ thead.cart, tr.cart {
     background-color: rgba(163, 214, 217);
 }
 
-.keyboard.clear:hover, .keyboard-cash.clear:hover, .keyboard-card.clear:hover {
+.delete:hover, .keyboard.clear:hover, .keyboard-cash.clear:hover, .keyboard-card.clear:hover {
     color: #FFF;
     background-color: rgba(232, 101, 106);
 }

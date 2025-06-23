@@ -262,9 +262,34 @@ a.fill-div {
   align-items: center;
 }
 
-/* #qr-image{
-  margin: 20px;
-} */
+#qr-image{
+  position: absolute;
+  margin-left: 1.5vw;
+}
+
+#changeCode {
+  display: flex;
+  position: fixed;
+  bottom: 3.5vh;
+  right: 16vw;
+
+  width: 12vw;
+  height: 5vh;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  background-color: #EDEDED;
+  overflow: hidden;
+}
+.change-qr, .change-bar {
+  width: 50%;
+  height: 100%;
+  border-style: none;
+  background-color: transparent;
+}
+#change-qr {
+  background-color: #523249;
+  color: white;
+}
 
 #detail-buttons{
   display: flex;

@@ -1,4 +1,5 @@
 from django import forms
+from django.core.validators import RegexValidator
 
 class ItemCodeForm(forms.Form):
     item_code = forms.IntegerField(widget=forms.NumberInput(
@@ -7,7 +8,7 @@ class ItemCodeForm(forms.Form):
 class QuantityForm(forms.Form):
     item_quantity = forms.IntegerField(min_value=1, label="Quantity :",
                                   widget=forms.NumberInput(
-                                      attrs={'id': 'quantity'}))
+                                      attrs={'id': 'quantity-input'}))
 
 class CheckOutForm(forms.Form):
     check_out = forms.CharField(required=False, widget=forms.HiddenInput(
@@ -21,13 +22,50 @@ class CheckOutForm(forms.Form):
                                 widget=forms.TextInput(attrs={'id':'cash-paid'}))
     
     card_number = forms.CharField(required=False, max_length=16,
-                                  widget=forms.TextInput(attrs={'class':'card-info', 'id':'cardNo', 'placeholder':'Card Number'}))
+                                  validators=[
+                                        RegexValidator(
+                                            r'^[0-9]*$',
+                                            message='Enter a valid number in the format XXXX-XXXX-XXXX (digits only).'
+                                        )
+                                    ],
+                                  widget=forms.TextInput(attrs={
+                                      'class':'card-info', 
+                                      'id':'cardNo', 
+                                      'placeholder':'Card Number',
+                                      'pattern': '[0-9]*',
+                                      'inputmode': 'numeric',
+                                      'title': 'Format: XXXX-XXXX-XXXX-XXXX',
+                                      }))
     
     expiry = forms.CharField(required=False, max_length=5,
-                             widget=forms.TextInput(attrs={'class':'card-info sec expiry', 'id':'cardExp', 'placeholder':'MM/YY'}))
+                             validators=[
+                                 RegexValidator(
+                                    r'^[0-9]*$',
+                                    message='Enter a valid number in the format XXXX-XXXX-XXXX (digits only).'
+                                 )
+                             ],
+                             widget=forms.TextInput(attrs={
+                                 'class':'card-info sec expiry', 
+                                 'id':'cardExp', 
+                                 'placeholder':'MM/YY',
+                                 'pattern': '[0-9]*',
+                                 'inputmode': 'numeric',
+                                 }))
     
     cvv = forms.CharField(required=False, max_length=4,
-                          widget=forms.TextInput(attrs={'class':'card-info sec cvv', 'id':'cardCVV', 'placeholder':'Security Num'}))
+                          validators=[
+                              RegexValidator(
+                                  r'^[0-9]*$',
+                                  message='Enter a valid number in the format XXXX-XXXX-XXXX (digits only).'
+                              )
+                          ],
+                          widget=forms.TextInput(attrs={
+                              'class':'card-info sec cvv', 
+                              'id':'cardCVV', 
+                              'placeholder':'Security Num',
+                              'pattern': '[0-9]*',
+                              'inputmode': 'numeric',
+                              }))
     
 class ClearCartItems(forms.Form):
     clear_cart = forms.BooleanField(required=False, 

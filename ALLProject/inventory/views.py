@@ -10,8 +10,6 @@ from pathlib import Path
 from users.decorators import role_required
 from django.contrib import messages
 
-import qrcode
-import os
 from django.http import HttpResponse
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
@@ -84,12 +82,6 @@ def product_create_view(request):
         if form.is_valid():
             new_product = form.save(commit=False)
             new_product.category = form.cleaned_data["category"] 
-            
-            image = qrcode.make("Pooop")
-            filename = f"{new_product.name}_{new_product.id}_qr.png"
-            image.save(str(settings.BASE_DIR)+'/media/qr/'+ filename)
-
-            new_product.qr_code = '/qr/'+ filename
 
             new_product.save()
             form.save_m2m()
