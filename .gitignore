@@ -195,5 +195,6 @@ cython_debug/
 
 #Report PDFs
 *.pdf
-ALLProject/db.sqlite3
-ALLProject/db.sqlite3
+ALLProject/media/barcode
+ALLProject/media/products
+ALLProject/media/qr
