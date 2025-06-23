@@ -21,8 +21,17 @@
 
 <div class="qr-details">
     {% if chosen_product is not None%}
-    <div id="qr-image">
-        <img src="{{chosen_product.qr_code.url}}" width="200" height="200" alt="QR code">
+    <div>
+        <div id="qr-image">
+            <img src="{{chosen_product.qr_code.url}}" width="200" height="200" alt="QR code">
+        </div>
+        <div id="barcode-image">
+            <img src="{{chosen_product.barcode_img.url}}" width="250" height="250" style="object-fit: contain;" alt="BarCode">
+        </div>
+        <div id="changeCode">
+            <button type="button" id="change-qr" style="width: 50%; height: 100%; border-style: none;" onclick='changeToQR()'>QR Code</button>
+            <button type="button" id="change-bar" style="width: 50%; height: 100%; border-style: none;" onclick='changeToBar()'>Barcode</button>
+        </div>
     </div>
     <div id="detail-buttons">
         <button class="normal-button" onclick="edit_product({{chosen_product.id}})">
@@ -34,5 +43,5 @@
     </div>
     {% else%}
     <div class="default-message"><h3>No QR information found</h3></div>
-    {%endif%}
+    {% endif %}
 </div>

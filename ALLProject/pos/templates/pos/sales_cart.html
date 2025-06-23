@@ -9,34 +9,57 @@
 
     <div class="cartbox">
         <h3 class="boxTitle">Cart</h3>
-        <table class="cart">
-            <thead>
-                <tr>
-                    <th>Product Name</th>
-                    <th>Unit Price</th>
-                    <th>Quantity</th>
-                    <th>Total</th>
-                </tr>
-            </thead>
-            <tbody class="cart">
-                {% if cart %}
-                    {% for item in cart %}
-                        <tr class="cart">
-                            <td>{{ item.name }}</td>
-                            <td>{{ item.unit_price|floatformat:2 }}</td>
-                            <td>{{ item.quantity }}</td>
-                            <td>{{ item.total_price|floatformat:2 }}</td>
-                        </tr>
-                    {% endfor %}
-                {% else %}
-                    <tr></tr> 
-                {% endif %}
-                
-                <tr></tr>
-            </tbody>
-        </table>
+        <div id="table_container">
+            <table class="cart">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Product Name</th>
+                        <th>Unit Price</th>
+                        <th width='10'></th>
+                        <th>Quantity</th>
+                        <th width='10'></th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody class="cart">
+                    {% if cart %}
+                        {% for item in cart %}
+                            <tr class="cart">
+                                <td><form action="" method="post" class="edit-cart">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="delete" value="{{ item.name }}">
+                                        <button type="submit" class="delete">X</button>
+                                    </form>
+                                </td>
+                                <td>{{ item.name }}</td>
+                                <td>{{ item.unit_price|floatformat:2 }}</td>
+                                <td><form action="" method="post" class="edit-cart">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="minus" value="{{ item.name }}">
+                                        <button type="submit" class="edit-quantity">-</button>
+                                    </form>
+                                </td>
+                                <td>{{ item.quantity }}</td>
+                                <td><form action="" method="post" class="edit-cart">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="add" value="{{ item.name }}">
+                                        <button type="submit" class="edit-quantity">+</button>
+                                    </form>
+                                </td>
+                                <td>{{ item.total_price|floatformat:2 }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr></tr> 
+                    {% endif %}
+                    
+                    <tr></tr>
+                </tbody>
+            </table>
+        </div>
         <div class="container">
-            <div class="keyboardBox">
+            <div class="keyboardBox" id="item-code">
                 <button type="button" class="keyboard keyboard-cart" value="1">1</button>
                 <button type="button" class="keyboard keyboard-cart" value="2">2</button>
                 <button type="button" class="keyboard keyboard-cart" value="3">3</button>
@@ -51,11 +74,11 @@
                     {{ clear_cart_form }}
                     <button type="submit" class="keyboard clear">Clear Cart</button>
                 </form>
-                <button type="button" class="keyboard" value="0">0</button>
+                <button type="button" class="keyboard keyboard-cart" value="0">0</button>
                 <form action="" method="post" id="clear_last_form">
                     {% csrf_token %}
                     {{ clear_last_form }}
-                    <button type="submit" class="keyboard cancel">Cancel</button>
+                    <button type="submit" class="keyboard cancel">Undo</button>
                 </form>
             </div>
             <div class="checkout-box">

@@ -21,6 +21,28 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log("Closed quantity");
         });
     }
+
+    //enter item code
+    document.querySelectorAll('.keyboard.keyboard-cart').forEach(button => {
+        button.addEventListener('click', function() {
+            const parent_code_box = document.getElementById('add-item-box')
+            const code_input = document.getElementById('itemCode')
+            const parent_quantity_box = document.getElementById('quantity-item-box')
+            const quantity_input = document.getElementById('quantity-input')
+
+            console.log(parent_quantity_box.style.visibility)
+
+            if (parent_code_box.style.visibility=='visible'){
+                code_input.value = code_input.value+button.value
+                console.log("Code input:", button.value)
+            }else if(parent_quantity_box.style.visibility=='visible'){
+                quantity_input.value = quantity_input.value+button.value
+                console.log("Quantity input:", button.value)
+            }else{
+                console.log("no dice")
+            }
+        });
+    });
 });
 
 function resetDefault(){
@@ -43,3 +65,37 @@ function enterPin() {
         });
     });
 }
+
+// let successful_scan = false;
+// let successive_scans = 0;
+
+// function onScanSuccess(decodedText, decodedResult) {
+//   // handle the scanned code as you like, for example:
+//     successive_scans++;
+//     if(successive_scans>=5){
+//         if (!successful_scan){
+//             successful_scan = true;
+
+//             console.log("One success")
+//             console.log(`Code matched = ${decodedText}`, decodedResult);
+//         }
+//     }
+// }
+
+// function onScanFailure(error) {
+//   // handle scan failure, usually better to ignore and keep scanning.
+//   // for example:
+// //   console.warn(`Code scan error = ${error}`);
+//     successful_scan = false;
+//     successive_scans = 0;
+// }
+
+// let html5QrcodeScanner = new Html5QrcodeScanner(
+//   "reader",
+//   { fps: 30, qrbox: {width: 250, height: 250} },
+//   /* verbose= */ false);
+// html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+
+// function show_scanner(show){
+//     document.getElementById('scanner-div').style.visibility = (show ? "visible" : "hidden")
+// }
