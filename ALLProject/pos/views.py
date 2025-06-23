@@ -260,15 +260,18 @@ def checkout(request,cart_cost):
                         if not key.startswith("_"): # skip keys set by the django system
                             del request.session[key]
                     request.session.modified = True
-                    return request.session['cart'], HttpResponseRedirect(reverse('sales'))
+                    return HttpResponseRedirect(reverse('sales'))
                     
                 except ObjectDoesNotExist:
                     messages.error(request, "ERROR: One or more products in cart not found")
-                    return request.session['cart'], HttpResponseRedirect(reverse('sales'))
+                    return HttpResponseRedirect(reverse('sales'))
         else:
             print(checkout_form.errors)
             messages.error(request, "ERROR: Cart is either empty or invalid checkout.")
-            return request.session['cart'], HttpResponseRedirect(reverse('sales'))
+            return HttpResponseRedirect(reverse('sales'))
+    else:
+        messages.error(request, "ERROR: Cart is either empty or invalid checkout.")
+        return HttpResponseRedirect(reverse('sales'))
 
 def removeItem(request,):
     i = 0
