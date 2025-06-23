@@ -38,7 +38,7 @@ def cashierPOSView(request):
         
     # print(request.session['cart'])
     # print("Request Session", request.session)
-    # print("Request Post: ",request.POST)
+    print("Request Post: ",request.POST)
     
     if request.method == 'POST':
         # Handle submission for item code
@@ -141,6 +141,33 @@ def cashierPOSView(request):
             
         if 'delete' in request.POST:
             removeItem(request)
+
+        if 'add' in request.POST:
+            product = request.POST['add']
+            for item in request.session['cart']:
+                if item['name'] == product:
+                    print("Success added")
+                    item['quantity'] += 1
+                    request.session.modified = True
+                    print(item['quantity'])
+                    return HttpResponseRedirect(reverse('sales'))
+
+        if 'minus' in request.POST:
+            product = request.POST['minus']
+            i = 0
+            for item in request.session['cart']:
+                if item['name'] == product:
+                    if item['quantity'] > 1:
+                        item['quantity'] -= 1
+                        request.session.modified = True
+                        return HttpResponseRedirect(reverse('sales'))
+                    elif item['quantity'] == 1 :
+                        request.session['cart'].pop(i)
+                        request.session.modified = True
+                        messages.success(request, "Product Removed.")
+                        return HttpResponseRedirect(reverse('sales'))
+                i += 1
+
         
         # Handles checkout submission
         if 'check_out' in request.POST:
@@ -258,7 +285,8 @@ def removeItem(request,):
     print(request.session['cart'])
 
 def scanItem(request):
-    cap = cv2.VideoCapture(0)
+    # cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture('http://10.229.173.212:8080/video')
     # cap = cv2.VideoCapture('http://192.168.1.8:8080/video')
     # song = AudioSegment.from_mp3(static('beep.mp3'))
     
@@ -318,10 +346,13 @@ def scanItem(request):
                         messages.success(request, f"Product Added: {product.name}")
                         return HttpResponseRedirect(reverse('sales'))
                     else:
-                        product = Product.objects.get(barcode_number=code.data.decode("utf-8"))
+                        data = code.data.decode("utf-8")
+                        print(data)
+                        product = Product.objects.get(barcode_number=data)
                         
                         # Check if cart quantity is more than existing stock quantity
-                        totalProduct, quantity = 1
+                        quantity = 1
+                        totalProduct = quantity
                         for items in request.session['cart']:
                             if product.id == items['item_code']:
                                 totalProduct += items['quantity']

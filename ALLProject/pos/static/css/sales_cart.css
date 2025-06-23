@@ -41,6 +41,23 @@ thead.cart {
     background-color: white;
 }
 
+.edit-cart {
+    margin: 0;
+}
+.delete {
+    border-color: rgb(255, 136, 140);
+    color: #FFF;
+    background-color: rgb(255, 136, 140);
+}
+.edit-quantity {
+    border-color: #DBEBC0;
+    background-color: #DBEBC0;
+}
+.edit-quantity:hover {
+    border-color: #c4d6a4;
+    background-color: #c4d6a4;
+}
+
 .container {
     display: flex;
     justify-content: space-evenly;
@@ -89,7 +106,7 @@ thead.cart {
     background-color: rgba(163, 214, 217);
 }
 
-.keyboard.clear:hover, .keyboard-cash.clear:hover, .keyboard-card.clear:hover {
+.delete:hover, .keyboard.clear:hover, .keyboard-cash.clear:hover, .keyboard-card.clear:hover {
     color: #FFF;
     background-color: rgba(232, 101, 106);
 }
