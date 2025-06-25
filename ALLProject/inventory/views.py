@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Product, Category, Restock
 from .forms import ProductForm, RestockForm, CategoryForm
 from django.conf import settings
-from django.db.models import Count, Avg, Sum
+from django.db.models import Count, Avg, Sum, Prefetch
 from django.urls import reverse
 from pathlib import Path
 from users.decorators import role_required
@@ -188,6 +188,8 @@ def category_view(request):
         product_types=Count("product"),
         total_stock=Sum("product__quantity"),
         average_price=Avg("product__price")
+    ).prefetch_related(
+        Prefetch("product_set", queryset=Product.objects.all(), to_attr="products")
     ).order_by("name")
         
     page = "nav-category"
@@ -206,7 +208,9 @@ def category_partial_view(request):
     categories = Category.objects.annotate(
         product_types=Count("product"),
         total_stock=Sum("product__quantity"),
-        average_price=Avg("product__price")
+        average_price=Avg("product__price"),
+    ).prefetch_related(
+        Prefetch("product_set", queryset=Product.objects.all(), to_attr="products")
     ).order_by(sort_method)
 
     return render(
