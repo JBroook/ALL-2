@@ -2,12 +2,20 @@
 
 {% if categories %}
     {% for category in categories%}
-        <tr onclick="view_category({{category.id}})" class="category-row">
+        <tr onclick="view_category({{category.id}})" class="category-row" id="category-{{category.id}}">
             <td><p>{{category.name}}</p></td>
             <td><p>{{category.product_types}}</p></td>
             <td><p>{{category.total_stock}}</p></td>
             <td><p>{{category.average_price|floatformat:2}}</p></td>
         </tr>
+        {% for product in category.products%}
+            <tr class="associated-product from-category-{{category.id}}">
+                <td>↪</td>
+                <td>{{product.name}}</td>
+                <td>{{product.quantity}}</td>
+                <td>{{product.price}}</td>
+            </tr>
+        {%endfor%}
     {% endfor %}
 {%else%}
     <div class="nothing-message">

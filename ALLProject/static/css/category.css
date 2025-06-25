@@ -91,7 +91,7 @@ tr {
 }
 
 .category-row:hover {
-    background-color: #C3B299;
+    background-color: #C3B299 !important;
 }
 
 .header {
@@ -415,4 +415,10 @@ ul {
     width: 2vw;
     height: 2vw;
     padding: 0.2vw;
+}
+
+.associated-product {
+    display: none;
+    width: 100%;
+    background-color: #F0ECDD;
 }
