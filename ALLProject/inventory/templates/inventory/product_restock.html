@@ -2,7 +2,6 @@
 
 {% block dashboard %}
 {% load static %}
-    <!-- <link rel = "stylesheet" href="{% static 'manager/inventory.css' %}"> -->
     <link rel="stylesheet" href="{% static 'css/product_restock.css'%}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,42 +13,50 @@
         });
     </script>
 
+    <div id="return">
+        <a href="{% url 'product_list' %}" id="close-box"><img src="{% static 'images/back-arrow.png' %}" alt="back-arrow" id="close"></a>
+    </div>
+
     <div id="main-content">
-        <button type="button" id="close-box"  onclick="window.location.href='{% url 'product_list' %}'">
-            <img src="{% static 'images/back-arrow.png'%}" alt="back-arrow" id="close">
-        </button>
         <div id="important-details">
+            <div class="product-box image">
+                <img src="{{product.image.url}}">
+            </div>
             <div class="product-box detail">
                 <h1>{{product.name}}</h1>
-                <h3>{{product.id}}</h3>
-                <button type="button" class="qr-barcode">QR</button>
-                <button type="button" class="qr-barcode">Barcode</button>
+                <h3>{{product.id}}</h3> 
+                <div id="scannables">
+                    <button type="button" class="qr-barcode" id="qr-bttn" onclick="changeToQR()">QR</button>
+                    <button type="button" class="qr-barcode" id="barcode-bttn" onclick="changeToBar()">Barcode</button>
+                </div>
             </div>
             <div class="product-box qr">
                 <img src="{{product.qr_code.url }}" alt="Product QR" id="qrCode">
-            </div>
-            <div class="product-box image">
-                <img src="{{product.image.url}}" width="361" height="208" >
+                <img src="{{product.barcode_img.url }}" alt="Product QR" id="barCode">
             </div>
         </div>
         <div id="detail-history">
-            <form class="detail-box" method="POST">
+            <form id="detail-box" method="POST">
                 {% csrf_token %}
                 <div class="detail-box form">
-                    <div id="form-label">
+                    <div class="form-label-box left">
                         <h3 class="form-label">Stock (New)</h3>
                         <h3 class="form-label">Last Batch</h3>
                         <h3 class="form-label">Date Stocked</h3>
-                        <h3 class="form-label">Cost Per Unit</h3>
-                        <h3 class="form-label">Unit(s) in Batch</h3>
-                        <h3 class="form-label">Total Cost</h3>
                     </div>
-                    <div id="stock-history">
+                    <div class="stock-history-box left">
                         <div class="stock-history"><h3 id="h3-quantity">{{product.quantity}}</h3></div>
                         <div class="stock-history"><h3>10</h3></div>
                         <div class="stock-history">
                             {{form.date}}
                         </div>
+                    </div>
+                    <div class="form-label-box right">
+                        <h3 class="form-label">Cost Per Unit</h3>
+                        <h3 class="form-label">Unit(s) in Batch</h3>
+                        <h3 class="form-label">Total Cost</h3>
+                    </div>
+                    <div class="stock-history-box right">
                         <div class="stock-history" oninput="refresh_numbers({{product.quantity}})">
                             {{form.cpu}}
                         </div>

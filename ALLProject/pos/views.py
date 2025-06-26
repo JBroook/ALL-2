@@ -34,11 +34,6 @@ def cashierPOSView(request):
         request.session['cart'] = []
     if request.session['cart']:
         cart_cost = sum(item['total_price'] for item in request.session['cart'])
-        # print("Cart Cost = ",cart_cost)
-        
-    # print(request.session['cart'])
-    # print("Request Session", request.session)
-    print("Request Post: ",request.POST)
     
     if request.method == 'POST':
         # Handle submission for item code
@@ -146,10 +141,8 @@ def cashierPOSView(request):
             product = request.POST['add']
             for item in request.session['cart']:
                 if item['name'] == product:
-                    print("Success added")
                     item['quantity'] += 1
                     request.session.modified = True
-                    print(item['quantity'])
                     return HttpResponseRedirect(reverse('sales'))
 
         if 'minus' in request.POST:
@@ -188,7 +181,6 @@ def cashierPOSView(request):
         'show_quantity' : show_quantity,
         'page': page
     }
-    print(messages.get_messages)
     return HttpResponse(template.render(context,request))
 
 def checkout(request,cart_cost):
