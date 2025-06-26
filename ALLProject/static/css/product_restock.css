@@ -50,8 +50,9 @@ h1,h3 {
     left: 8%;
 
     width: 92%;
-    background-color: #FFF;
     padding-top: 3%;
+    background-image: linear-gradient(to right, #FFF, #FFF8EE, #FAFFF1);
+    overflow: hidden;
 }
 
 #important-details {
@@ -80,6 +81,7 @@ h1,h3 {
     height: 12%;
 
     background-color: transparent;
+    color: grey;
     border-radius: 10px;
     border-style: none;
     font-family: "Mukta Mahee", sans-serif;
@@ -89,6 +91,7 @@ h1,h3 {
 }
 #qr-bttn {
     background-color: rgba(205, 231, 161, 0.5);
+    color: black;
 }
 .qr-barcode:hover {
     background-color: rgba(205, 231, 161, 0.8) !important;
@@ -110,14 +113,15 @@ h1,h3 {
     right: 0vh;
 }
 #barcode {
-    width: 30vh;
-    height: 30vh;    
+    height: 30vh;
+    aspect-ratio: 3/2;
+    visibility: hidden;
 }
 
 .product-box.image {
     width: 40vh;
     height: 40vh;
-    background-color: #C3B299;
+    background-color: #C3B29980;
     border-radius: 10px;
 }
 .product-box.image img {
@@ -129,10 +133,10 @@ h1,h3 {
 #detail-history {
     position: relative;
     width: 90%;
-    height: 65%;
+    height: 60%;
 
     display: flex;
-    top: -10%;
+    top: -5%;
     left: 5%;
 }
 
@@ -149,7 +153,7 @@ h1,h3 {
 }
 #detail-box {
     width: 100%;
-    margin-top: 8%;
+    margin-top: 4%;
     place-items: center;
 }
 
@@ -198,7 +202,7 @@ input:focus {
 #updateBttn {
     width: 25vh;
     height: 7vh;
-    margin-top: 10%;
+    margin-top: 8%;
 
     background-color: #CDE7A1;
     border-radius: 20px;

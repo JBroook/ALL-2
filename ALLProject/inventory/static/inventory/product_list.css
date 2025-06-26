@@ -90,16 +90,18 @@ main {
 }
 
 .product {
-  width: 17vw;
+  width: 90%;
   /* height: 210px; */
   aspect-ratio: 262/210;
-  background-color: #C3B299;
+  background-color: #C3B29980;
   margin: 2vh 1vw 2vh 1vw;
   border: 1px solid #BCBCBC;
+  border-radius: 10px;
   display: flex;
   justify-content: space-between;
   flex-direction: column;
   align-items: flex-end;
+  overflow: hidden;
 }
 
 .top-section {
@@ -117,9 +119,10 @@ a.fill-div {
   text-decoration: none;
 }
 
-/* .product:hover{
-  background-color: #a39580;
-} */
+.product:hover{
+  width: 100%;
+  margin: 0;
+}
 
 .product-stock {
   background-color: #815355;

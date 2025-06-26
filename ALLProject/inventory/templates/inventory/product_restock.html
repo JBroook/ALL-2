@@ -14,7 +14,7 @@
     </script>
 
     <div id="return">
-        <a href="{% url 'report' %}" id="close-box"><img src="{% static 'images/back-arrow.png' %}" alt="back-arrow" id="close"></a>
+        <a href="{% url 'product_list' %}" id="close-box"><img src="{% static 'images/back-arrow.png' %}" alt="back-arrow" id="close"></a>
     </div>
 
     <div id="main-content">
@@ -26,8 +26,8 @@
                 <h1>{{product.name}}</h1>
                 <h3>{{product.id}}</h3> 
                 <div id="scannables">
-                    <button type="button" class="qr-barcode" id="qr-bttn">QR</button>
-                    <button type="button" class="qr-barcode" id="barcode-bttn">Barcode</button>
+                    <button type="button" class="qr-barcode" id="qr-bttn" onclick="changeToQR()">QR</button>
+                    <button type="button" class="qr-barcode" id="barcode-bttn" onclick="changeToBar()">Barcode</button>
                 </div>
             </div>
             <div class="product-box qr">
