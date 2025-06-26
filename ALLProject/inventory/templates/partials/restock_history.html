@@ -1,5 +1,4 @@
 <div class="hButton" onclick="refresh_history(false, {{product_id}})"><span class="hCard date">Latest</span></div>
-<div class="hButton" onclick="refresh_history(true, {{product_id}})"><span class="hCard date">Oldest</span></div>
 {% for restock in restocks%}
     <div class="hCard">
         <span class="hCard date">{{restock.units}} units restocked on {{restock.date}}</span>

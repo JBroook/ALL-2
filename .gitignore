@@ -198,4 +198,6 @@ cython_debug/
 ALLProject/db.sqlite3
 ALLProject/db.sqlite3
 *.sqlite3
-/ALLProject/media
+/ALLProject/media/product
+/ALLProject/media/qr
+/ALLProject/media/barcode

@@ -9,6 +9,8 @@ body html {
     
     position: fixed;
     overflow: hidden;
+    padding-top: 10px;
+    padding-bottom: 10px;
 
     width: 3.5em;
     height: 14em;

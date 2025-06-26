@@ -35,6 +35,37 @@ h3,h4 {
     box-shadow: 4px 2px 4px gray;
 }
 
+#return {
+    position: absolute;
+    top: 15vh;
+    width: 4%;
+    background-color: #9eb7a0;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+    box-shadow: 0px 4px 4px -2px #5a6a5c;
+}
+
+#close-box {
+    margin-top: 10%;
+    margin-bottom: 10%;
+    margin-right: 10%;
+    float: right;
+    
+    filter: brightness(1) invert(1);
+    background: transparent;
+    border-style: none;
+}
+#close {
+    width: 2vw;
+    height: 2vw;
+}
+#return:hover {
+    width: 6%;
+    #close-box {
+        margin-right: 15%;
+    }
+}
+
 #main-content {
     position: relative;
     left: 7%;

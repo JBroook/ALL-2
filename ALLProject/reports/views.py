@@ -59,8 +59,7 @@ def ManagerReportView(request):
     
     best_product.sort(key=lambda x:x['quantity_sold'])
     best_product.reverse()
-    #print(best_product)
-    #print(all_products)
+
     
     # Sales for each category (Donut Chart)
     total_sold = CartItem.objects.aggregate(total=Sum('quantity'))
@@ -69,8 +68,7 @@ def ManagerReportView(request):
     for i in category_sale_only:
         percentage = round(((i['total']/total_sold['total'])* 100),2)
         i.update({'y':percentage})
-    # print(total_sold)
-    # print(category_sale)
+        
 
     # Sales made for each months within the year (Sales Graph & Sales Category)
     today = datetime.now()
@@ -80,30 +78,22 @@ def ManagerReportView(request):
     sales_per_month = []
     
     total_yearly_sales = Payment.objects.filter(timeStamp__year = today.year).count()
-    # print(today)
-    # print(sales_per_month)
 
-    for i in range (1,13):
-        monthly_sales = Payment.objects.filter(timeStamp__month = i).count()
-        all_monthly_sales.append(monthly_sales)
-        sales_on_month = Payment.objects.filter(timeStamp__month = i).aggregate(revenue = Sum('total_cost'))
-        sales_per_month.append(sales_on_month['revenue'])
-    
-    for j in range(0,len(all_monthly_sales)):
-        all_monthly_sales[j] = all_monthly_sales[j] / total_yearly_sales
+    if total_yearly_sales != 0:
+        for i in range (1,13):
+            monthly_sales = Payment.objects.filter(timeStamp__month = i).count()
+            all_monthly_sales.append(monthly_sales)
+            sales_on_month = Payment.objects.filter(timeStamp__month = i).aggregate(revenue = Sum('total_cost'))
+            sales_per_month.append(sales_on_month['revenue'])
+        
+        for j in range(0,len(all_monthly_sales)):
+            all_monthly_sales[j] = all_monthly_sales[j] / total_yearly_sales
 
-    # for j in range(0,12):
-    #     print("Month: ",j+1)
-    #     print(all_monthly_sales[j])
-    # print(sales_per_month)
 
     # Get Restock List
     all_restock = Restock.objects.select_related('product_id').values_list(
         'product_id__supplier','product_id__name','date','cpu','product_id__quantity','units').all().annotate(unitPrice=F('units')*F('cpu'))
-    # print("ALL RESTOCK DETAILS:")
-    # print(all_restock)
-    # for items in all_restock:
-    #     print(items[1])
+    
 
     # Get Today's Transactions
     total_revenue = 0
@@ -138,22 +128,6 @@ def ManagerReportView(request):
             for i in show_transacts:
                 total_transacts += 1
                 total_revenue += float(i['total_cost'])
-
-    # if 'change-monthly' in request.POST:
-    #     print('change-monthly found')
-    #     print(request.POST['change-monthly'])
-    #     print(type(request.POST['change-monthly']))
-    # print(total_revenue)
-    #print(avg_transact_revenue)
-    # print(products_sold)
-    # print(transacts_day)
-    # for items in transacts_day:
-    #     print(items)
-    # print(month_or_day)
-    # print(transacts_mth)
-    # for items in transacts_mth:
-    #     print(items)
-    # print(total_transacts)
     
 
     # Transaction Report
@@ -245,7 +219,6 @@ def ManagerReportView(request):
         
         report_data = report_data + list(product.values() for product in cat_data)
         report_data = report_data + [['Total Sold',products_sold['sold'],products_sold['revenue']]]
-        # print("Report Data: ",report_data)
             
         # Top Products, Category Name, Quantity, Revenue
         top_product_data = CartItem.objects.filter(cart_id__timeStamp__month = today.month).values(
@@ -254,8 +227,6 @@ def ManagerReportView(request):
         ).annotate(quantity=Sum('quantity')).annotate(revenue=Sum('total_cost')).order_by('-quantity')
         i = 0
         new_product_data = [['Rank','Category','Product Name','Sold','Revenue(RM)']]
-        # print("Old Product Data: ",top_product_data)
-        # top_product_data = list(top_product_data)
 
         for product in top_product_data:
             i+=1
@@ -263,8 +234,6 @@ def ManagerReportView(request):
             # print("New Product: ",new_product)
             new_product_data.append(new_product)
 
-        # print("New Product Data: ", new_product_data)
-        # print("Old Product Data: ",top_product_data)
         print_pdf(title,report_type,period,user,report_title,report_col,report_data,data_title,data_col,new_product_data)
         return HttpResponseRedirect(reverse('report'))
     
@@ -314,7 +283,6 @@ def ManagerReportView(request):
         for product in all_products:
             if product['name'] not in new_product_list:
                 no_new_restock.append([product['name'],product['timeStamp'].strftime("%Y-%m-%d"),product['quantity'],"Normal" if product['quantity']>product['alert_threshold'] else "Low Stock"])
-        # print("Product with no nre restock: ",no_new_restock)
 
         inventory_data = [["Product","Last Restock On","Quantity","Status"]] + list(data.values() for data in product_data) + no_new_restock
 
@@ -323,7 +291,6 @@ def ManagerReportView(request):
     
     page = "nav-report"
 
-    # print(request.session['day_month'])
     context = {
         'sales_report': sales_report,
         'product_report': product_report,
@@ -354,9 +321,6 @@ def viewMoreBestProduct(request):
     all_monthly_sales = []
     product_holder = None
     chosen_month_sale = 0
-    # print("Chosen: ",product_name)
-    print("filter by: ",filter_data)
-    print("ordered: ",order)
     
     # Useful Data
     today = datetime.now()
@@ -365,7 +329,6 @@ def viewMoreBestProduct(request):
     all_prev_month = []
     for i in range(1,today.month):
         all_prev_month.append(datetime(today.year,i,1).strftime("%b"))
-    # print(all_prev_month)
     
 
     # Fetch product data from rank
@@ -373,59 +336,55 @@ def viewMoreBestProduct(request):
     if product_name:
         # Holder for if product has not been bought
         product_holder = Product.objects.filter(name=product_name).values()
-        # print("Product Hold: ",product_holder,'\n')
 
         chosen_product = CartItem.objects.filter(cart_id__timeStamp__month = today.month, product_id__name=product_name).values(
             'product_id__name',
             'product_id__supplier',
             'product_id__price'
         ).annotate(quantity=Sum('quantity'))
-        # print("Chosen Value: ",chosen_product)
 
         # Product Chart        
         total_yearly_sales = CartItem.objects.filter(cart_id__timeStamp__year = today.year, product_id__name=product_name).aggregate(sold=Sum('quantity'))['sold'] or 0
-        # print(total_yearly_sales)
 
-        for i in range (1,13):
-            monthly_sales = CartItem.objects.filter(cart_id__timeStamp__month = i,
-                                                    cart_id__timeStamp__year = today.year,
-                                                    product_id__name=product_name,
-                                                    ).aggregate(
-                                                        sold=Coalesce(
-                                                            Sum('quantity'),
-                                                            Value(0, output_field=IntegerField())
-                                                        ),
-                                                        revenue=Coalesce(
-                                                            Sum('total_cost'),
-                                                            Value(0.0, output_field=FloatField())
+        if total_yearly_sales != 0:
+            for i in range (1,13):
+                monthly_sales = CartItem.objects.filter(cart_id__timeStamp__month = i,
+                                                        cart_id__timeStamp__year = today.year,
+                                                        product_id__name=product_name,
+                                                        ).aggregate(
+                                                            sold=Coalesce(
+                                                                Sum('quantity'),
+                                                                Value(0, output_field=IntegerField())
+                                                            ),
+                                                            revenue=Coalesce(
+                                                                Sum('total_cost'),
+                                                                Value(0.0, output_field=FloatField())
+                                                            )
                                                         )
-                                                    )
-            percentage = (monthly_sales['sold'] / total_yearly_sales) if total_yearly_sales > 0 and monthly_sales['sold'] > 0 else 0.0
-            monthly_sales['percentage'] = percentage
-            monthly_sales['no'] = str(datetime(today.year,i,1).strftime("%b"))
+                percentage = (monthly_sales['sold'] / total_yearly_sales) if total_yearly_sales > 0 and monthly_sales['sold'] > 0 else 0.0
+                monthly_sales['percentage'] = percentage
+                monthly_sales['no'] = str(datetime(today.year,i,1).strftime("%b"))
 
-            if monthly_sales:
-                all_monthly_sales.append(monthly_sales)
-            else:
-                all_monthly_sales.append({'sold': 0,'revenue':0.00,'percentage':0.00,'no':str(datetime(today.year,i,1).strftime("%b"))})
+                if monthly_sales:
+                    all_monthly_sales.append(monthly_sales)
+                else:
+                    all_monthly_sales.append({'sold': 0,'revenue':0.00,'percentage':0.00,'no':str(datetime(today.year,i,1).strftime("%b"))})
 
-            if month_name:
-                if i == datetime.strptime(month_name,'%b').month:
+                if month_name:
+                    if i == datetime.strptime(month_name,'%b').month:
+                        if monthly_sales is not None:
+                            # print("Monthly sales: ",monthly_sales['sold'])
+                            chosen_month_sale = monthly_sales['sold']
+                        else:
+                            chosen_month_sale = str(0)
+
+                elif i == chosen_month:
                     if monthly_sales is not None:
                         # print("Monthly sales: ",monthly_sales['sold'])
                         chosen_month_sale = monthly_sales['sold']
                     else:
                         chosen_month_sale = str(0)
-
-            elif i == chosen_month:
-                if monthly_sales is not None:
-                    # print("Monthly sales: ",monthly_sales['sold'])
-                    chosen_month_sale = monthly_sales['sold']
-                else:
-                    chosen_month_sale = str(0)
-                
-        # print("Monthly Sales: ",all_monthly_sales)
-        # print("chosen_month_sale: ",chosen_month_sale)
+            
     
     all_products = Product.objects.values(
         'name',
@@ -442,28 +401,23 @@ def viewMoreBestProduct(request):
     ).annotate(quantity=Sum('quantity')).annotate(revenue=Sum('total_cost')).order_by('-quantity')
     i = 0
     new_product_data = []
-    # print("Old Product Data: ",top_product_data)
 
     for product in top_product_data:
         i+=1
         new_product = [str(i), product['product__category__name'], product['product__name'],product['product__supplier'], product['quantity'], product['revenue'], f"{settings.MEDIA_URL}{product['product__image']}"]
-        # print("New Product: ",new_product)
         new_product_data.append(new_product)
 
-    # print(new_product_data)
 
     new_product_list = []
     for product in all_products:
         for data in top_product_data:
             if product['name'] == data['product__name']:
-                # print(product['name'])
                 new_product_list.append(product['name'])
 
     for product in all_products:
         if product['name'] not in new_product_list:
             i+=1
             new_product_data.append([str(i), product['category__name'], product['name'],product['supplier'], 0, "0.00", f"{settings.MEDIA_URL}{product['image']}"])
-    # print("Product with no new restock: ",new_product_data)
 
     if filter_data:
         if filter_data == "rank":
