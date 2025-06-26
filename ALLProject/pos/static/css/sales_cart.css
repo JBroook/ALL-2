@@ -126,6 +126,9 @@ thead.cart {
     padding-top: 2%;
     padding-right: 3%;
 }
+.check-out.total {
+    padding-top: 10%;
+}
 
 .checkOut-Bttn {
     width: 100%;
