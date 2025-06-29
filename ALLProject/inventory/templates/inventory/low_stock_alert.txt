@@ -1,0 +1,6 @@
+{{product.name}} is currently low in stock. There are only {{product.quantity}} left.
+This alert was generated automatically by WareHub according to {{product.name}}'s low stock alert threshold of {{product.alert_threshold}}.
+Thank you for using WareHub.
+
+Sincerely,
+WareHub Team.

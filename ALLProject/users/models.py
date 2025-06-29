@@ -1,6 +1,8 @@
 from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
 
 # Create your models here.
 class Employee(models.Model):
@@ -67,3 +69,26 @@ class Employee(models.Model):
                 filtered_options.append(options[i])
 
         return filtered_options
+    
+    def call_manager(self):
+        text_content = render_to_string(
+            "pos/call_manager_text.txt",
+            context={"user": self.user},
+        )
+
+        html_content = render_to_string(
+            "pos/call_manager_email.html",
+            context={"user": self.user},
+        )
+
+        managers = Employee.objects.filter(role='manager')
+
+        msg = EmailMultiAlternatives(
+            "Manager Help Requested",
+            text_content,
+            None,
+            [manager.user.email for manager in managers],
+        )
+
+        msg.attach_alternative(html_content, "text/html")
+        msg.send()

@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 {% load static %}
 {% block dashboard %}
+    <script src="{% static 'js/call_manager.js'%}"></script>
     <link rel="stylesheet" href="{% static "css/sales_page.css" %}">
     
     <div class="input-box">
@@ -80,7 +81,7 @@
         </div> 
 
         <button type="button" class="input-bttn code" id="enterCode">Enter Code</button>
-        <button type="button" class="input-bttn manager">Call Manager</button>
+        <button type="button" class="input-bttn manager" id="call-manager-button" onclick="call_manager()">Call Manager</button>
     </div>
     
     {% block cart %}{% endblock %}
