@@ -1,4 +1,4 @@
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.contrib import messages
 from django.template import loader
 from django.urls import reverse
@@ -512,3 +512,9 @@ def payment_detail_view(request, payment_id):
             'page': page
         }
     )
+
+def call_manager_view(request):
+    employee = Employee.objects.get(user=request.user)
+    employee.call_manager()
+
+    return JsonResponse({'status': 'success', 'message': 'Manager has been notified.'})

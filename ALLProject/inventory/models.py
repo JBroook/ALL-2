@@ -8,6 +8,10 @@ from io import BytesIO
 import qrcode
 from barcode import EAN13
 from barcode.writer import ImageWriter
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+from users.models import Employee
+from django.db.models import Q
 
 # Create your models here.
 class Category(models.Model):
@@ -28,6 +32,7 @@ class Product(models.Model):
     barcode_number = models.CharField(max_length=50,unique=True,blank=True,null=True)
     barcode_img = models.ImageField(upload_to='barcode/',blank=True,null=True)
     timeStamp = models.DateTimeField(auto_now_add=True)
+    sku = models.CharField(max_length=10, verbose_name="Stock Keeping Unit")
 
     def __str__(self):
         return self.name
@@ -50,6 +55,29 @@ class Product(models.Model):
             self.qr_code = '/qr/'+ filename
             
         super().save(*args, **kwargs)
+
+    def low_stock_alert(self):
+        text_content = render_to_string(
+            "inventory/low_stock_alert.txt",
+            context={"product": self},
+        )
+
+        html_content = render_to_string(
+            "inventory/low_stock_alert_email.html",
+            context={"produc": self},
+        )
+
+        admin_managers = Employee.objects.filter(Q(role='manager') | Q(role='admin'))
+
+        msg = EmailMultiAlternatives(
+            f"{self.name} low in stock",
+            text_content,
+            None,
+            [person.user.email for person in admin_managers],
+        )
+
+        msg.attach_alternative(html_content, "text/html")
+        msg.send()
     
 class Restock(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
