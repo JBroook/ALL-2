@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Product, Category, Restock
 from .forms import ProductForm, RestockForm, CategoryForm
 from django.conf import settings
-from django.db.models import Count, Avg, Sum, Prefetch
+from django.db.models import Count, Avg, Sum, Prefetch, Q
 from django.urls import reverse
 from users.decorators import role_required
 from django.contrib import messages
@@ -33,6 +33,7 @@ def product_list_partial_view(request):
     products = Product.objects.all()
     category = request.GET.get('category')
     availability = request.GET.get('availability')
+    text = request.GET.get('text')
 
     if category!='none':
         products = products.filter(category__name=category)
@@ -43,6 +44,10 @@ def product_list_partial_view(request):
             'zero':0
         }
         products = products.filter(quantity__lte=info[availability])
+
+    print(text)
+    if text:
+        products = products.filter(name__icontains=text)
 
     page = "nav-inventory"
     

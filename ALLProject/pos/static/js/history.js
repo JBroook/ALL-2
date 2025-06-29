@@ -1,20 +1,20 @@
 function filter_by_date(type){
   fetch(`/pos/history_partial/selection/?specific=${type}`, {
-    })
-    .then(response => response.text())
-    .then(html => {
-        document.getElementById("history-list").innerHTML = html;
-    });
+  })
+  .then(response => response.text())
+  .then(html => {
+      document.getElementById("history-list").innerHTML = html;
+  });
 
-    if (type=="today"){
-      type = 'Today'
-    }else if (type=="week"){
-      type = 'Last 7 Days'
-    }else if (type=="month"){
-      type = 'Last Month'
-    }
+  if (type=="today"){
+    type = 'Today'
+  }else if (type=="week"){
+    type = 'Last 7 Days'
+  }else if (type=="month"){
+    type = 'Last Month'
+  }
 
-    document.getElementById('date-filter-title').innerText = type
+  document.getElementById('date-filter-title').innerText = type
 }
 
 function is_date(d) {
@@ -68,3 +68,8 @@ window.addEventListener("DOMContentLoaded", (event) => {
     filter_custom_date(start_date.value, end_date.value)
   });
 });
+
+
+function print_receipt(id){
+  fetch(`/pos/print_payment/?id=${id}`);
+}

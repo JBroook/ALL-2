@@ -518,3 +518,9 @@ def call_manager_view(request):
     employee.call_manager()
 
     return JsonResponse({'status': 'success', 'message': 'Manager has been notified.'})
+
+
+def print_payment_view(request, payment_id):
+    payment = Payment.objects.get(pk=payment_id)
+
+    return payment.print_payment()
