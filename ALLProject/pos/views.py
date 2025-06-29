@@ -216,14 +216,14 @@ def checkout(request,cart_cost):
 
                     # Create CartItems inside Cart
                     for items in request.session['cart']:
-                        product = Product.objects.get(id=items['item_code'])
+                        product = Product.objects.get(barcode_number=items['item_code'])
                         CartItem.objects.create(
                             cart = new_cart, 
                             product = product, 
                             quantity = items['quantity'], 
                             total_cost = items['total_price']
                         )
-                        product.quantity -= items['quantity']
+                        product.deduct_stock(items['quantity'])
                         product.save()
 
                     # Payment Data
