@@ -2,7 +2,7 @@ from django import forms
 from django.core.validators import RegexValidator
 
 class ItemCodeForm(forms.Form):
-    item_code = forms.IntegerField(widget=forms.NumberInput(
+    item_code = forms.CharField(widget=forms.TextInput(
                                     attrs={'id': 'itemCode'}))
 
 class QuantityForm(forms.Form):

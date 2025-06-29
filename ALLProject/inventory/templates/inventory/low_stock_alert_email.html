@@ -1,0 +1,58 @@
+<html lang="en">
+    <head>
+        {% comment %} <meta>{%csrf_token%}</meta> {% endcomment %}
+        <title>Low stock alert</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Mukta+Mahee:wght@200;300;400;500;600;700;800&family=Sansation:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
+
+        <style>
+            body, html{
+            font-family: "Mukta Mahee", sans-serif;
+            font-weight: 300;
+            font-style: normal;
+            }
+
+            #email-head {
+            height: fit-content;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            }
+
+            #email-head img{
+            height: 90px;
+            margin: 0 10px 0 10px;
+            }
+
+            h1 {
+            margin: auto 0;
+            margin-left: 20px;
+            }
+
+            p {
+            font-size: 14px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="email-head">
+        <img src="https://i.imgur.com/oJvGtXv.png" alt="Warehub logo">
+        <h1>{{product.name}} is low in stock!</h1>
+        </div>
+
+        <p>
+        {{product.name}} is currently low in stock. There are only {{product.quantity}} left.
+        </p>
+
+        <p>
+        This alert was generated automatically by WareHub according to {{product.name}}'s low stock alert threshold of {{product.alert_threshold}}.
+        Thank you for using WareHub.
+        </p>
+
+        <p>
+        Sincerely,<br>
+        WareHub Team.
+        </p>
+    </body>
+</html>

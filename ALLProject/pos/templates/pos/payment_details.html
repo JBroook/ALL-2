@@ -24,7 +24,7 @@
             <div class="container">
                 <h3>Created on {{payment.timeStamp}}</h3>
                 <h3>Receipt Number: {{payment.id}}</h3>
-                <button type="button" id="print">Print</button>
+                <button type="button" id="print" onclick="window.location.href='{% url 'print_payment' payment.id %}'">Print</button>
                 <div class="content-detail">
                     <div class="box header">
                         <h3 class="header">Item Code</h3>

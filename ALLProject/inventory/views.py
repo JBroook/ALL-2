@@ -4,17 +4,13 @@ from django.contrib.auth.decorators import login_required
 from .models import Product, Category, Restock
 from .forms import ProductForm, RestockForm, CategoryForm
 from django.conf import settings
-from django.db.models import Count, Avg, Sum, Prefetch
+from django.db.models import Count, Avg, Sum, Prefetch, Q
 from django.urls import reverse
-from pathlib import Path
 from users.decorators import role_required
 from django.contrib import messages
 
 from django.http import HttpResponse
-from reportlab.pdfgen import canvas
-from reportlab.lib.pagesizes import A4
-from django.conf import settings
-from reportlab.lib.units import mm
+
 
 @role_required(['admin','manager'])
 def product_list_view(request):
@@ -37,6 +33,7 @@ def product_list_partial_view(request):
     products = Product.objects.all()
     category = request.GET.get('category')
     availability = request.GET.get('availability')
+    text = request.GET.get('text')
 
     if category!='none':
         products = products.filter(category__name=category)
@@ -47,6 +44,10 @@ def product_list_partial_view(request):
             'zero':0
         }
         products = products.filter(quantity__lte=info[availability])
+
+    print(text)
+    if text:
+        products = products.filter(name__icontains=text)
 
     page = "nav-inventory"
     
@@ -305,18 +306,5 @@ def category_edit_view(request, category_id):
 
 def product_print_view(request, product_id):
     product = Product.objects.get(pk=product_id)
-    qr_code_path = Path(str(settings.BASE_DIR)+product.qr_code.url)
-
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = f'attachment; filename="qr_code_{product.id}.pdf"'
-
-    p = canvas.Canvas(response, pagesize=A4)
-    width, height = A4
-    p.setFont("Helvetica-Bold", 14)
-    p.drawCentredString(width/2, height - 50, f"QR Code for Product: {product.name}")
-
-    p.drawImage(qr_code_path, x=width/2 - 25 * mm, y=height - 200, width=50 * mm, height=50 * mm)
-
-    p.showPage()
-    p.save()
-    return response
+    
+    return product.print_codes()

@@ -21,6 +21,22 @@
                     <h3 class="filter-title"> Filter </h3>
                     <img src="{% static 'images/adjust.png'%}" class="logo filter">
                 </div>
+
+                <div class="filter-date-box">
+                    <div class="filter-date fixed">
+                        <button type="button" onclick="filter_by_date('today')"> Today </button>
+                        <button type="button" onclick="filter_by_date('week')"> Last 7 days </button>
+                        <button type="button" onclick="filter_by_date('month')"> This Month </button>
+                    </div>
+                    <div class="filter-date custom">
+                        <h4>Custom Date Range</h4>
+                        <div style="display: flex;justify-content: space-evenly;align-items: center; width: 100%; height: 70%;">
+                            <input type="date" class="filter-date choice" id="start-date"></input>
+                            <span class="filter-date middle"> - </span>
+                            <input type="date" class="filter-date choice" id="end-date"> </input>
+                        </div>
+                    </div>
+                </div>
               
                 <div class="filter-payment-box">
                     <button type="button" onclick="filter_payment('Credit Card')">Credit Card</button>
@@ -29,10 +45,6 @@
                     <button type="button" onclick="filter_payment('Cash')">Cash</button>
                     <button type="button" onclick="filter_payment('Others')">Others</button>
                 </div>
-            </div>
-            
-            <div class="history" id="history-list">
-                {% include 'partials/history_partial.html' %}
             </div>
         </div>
         

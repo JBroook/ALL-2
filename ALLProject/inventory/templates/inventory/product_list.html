@@ -21,7 +21,7 @@
         <div class="list-header">
           <div class="list-subheader">
             <h1>List of Products</h1>
-            <p>Showing {{product_count}} products</p>
+            <p>Showing {{product_count}} product{{product_count|pluralize}}</p>
           </div>
 
           <div class="list-filter">
@@ -41,6 +41,7 @@
               </select>
 
               <img src="{% static 'images/search 1.png' %}">
+              <input type="text" id="text-search" oninput="filter_products()"></input>
             </form>
           </div>
         </div>
