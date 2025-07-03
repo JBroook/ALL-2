@@ -1,83 +1,150 @@
-@media only screen and (max-width: 1920px) {
-    body, html{
-        font-family: "Mukta Mahee", sans-serif;
-        font-weight: 300;
-        font-style: normal;
-    }
+body, html{
+    font-family: "Mukta Mahee", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+}
 
-    body {
-        margin: 0%;
-        padding: 0;
-        border : 0;
-        background-image: url(../images/warehouse-1.jpg);
-    }
+body {
+    margin: 0%;
+    padding: 0;
+    border : 0;
+    background-image: url(../images/warehouse-1.jpg);
+}
 
-    h1 {
-        font-family: "Mukta Mahee" sans-serif;
-    }
+h1 {
+    font-family: "Mukta Mahee" sans-serif;
+}
 
-    #form-container {
-        position: absolute;
-        place-self: anchor-center;
-        width: 75%;
-        height: 70%;
-        display: flex;
-        background-color: white;
-        border-radius: 30px;
-        overflow: hidden;
-    }
+.box, #form-container {
+    position: absolute;
+    place-self: anchor-center;
+    width: 70%;
+    height: 70%;
+    display: flex;
+    background-image: linear-gradient(#523249, #815355);
+    border-radius: 30px;
+    overflow: hidden;
+}
 
-    #form-left {
-        width: 56%;
-        height: auto;
-        aspect-ratio: 1/3;
-        align-content: center;
-        justify-items: anchor-center;
-    }
+#form-container {
+    width: 100%;
+    height: 100%;
+    background: none;
+}
+#form-container::before {
+    background: radial-gradient(900px circle at 0px 0px, #FFE9C94D, transparent 15%);
+    opacity: 0;
+    transition: all 0.2s ease-in-out;
+}
 
-    #form-right {
-        display: inherit;
-        width: 44%;
-        aspect-ratio: 2/3;
-        flex-shrink: 0;
-        background-image: url(../images/warehouse-2.jpg);
-        background-position-y: center;
-    }
-
-    #loginForm {
-        margin: auto;
-        padding: 1%;
-        text-align: center;
-    }
-
-    label{
-        color: #000;
-        text-align: center;
-        font-family: Verdana, Geneva, Tahoma, sans-serif;
-        font-size: 16px;
-        font-style: normal;
-        font-weight: 400;
-        line-height: normal;
-    }
+#form-left {
+    width: 45%;
+    height: 90%;
+    align-content: center;
+    justify-items: anchor-center;
     
-    #submit-Bttn {
-        width: 15em;
-        height: 3em;
-        flex-shrink: 0;
-        text-align: center;
-        color: white;
-        font-family: Verdana, Geneva, Tahoma, sans-serif;
-        font-size: 16px;
-        border-radius: 50px;
-        border-style: none;
-        background: #815355;
-    }
+    margin-left: 2.5%;
+    margin-top: 2.5%;
+    background-color: white;
+    border-radius: 20px;
+}
+#form-right {
+    display: block;
+    width: 55%;
+}
 
-    #submit-Bttn:hover {
-        background: #603d3f;
-    }
+#logo-box {
+    width: 12vw;
+    height: 12vw;
 
-    #warehub-logo{
-        width: 5vw;
-    }
+    margin-top: 15%;
+    background-color: #FFFFFF66;
+
+    border-radius: 50%;
+    align-content: center;
+    justify-self: center;
+    text-align: center;
+}
+
+#warehub-logo {
+    width: 8vw;
+    margin-top: 5%;
+    margin-left: 8%;
+}
+#welcome {
+    margin-top: 10%;
+    color: white;
+    text-align: center;
+}
+
+#loginForm {
+    margin: auto;
+    padding: 1%;
+    text-align: center;
+}
+
+label{
+    color: #000;
+    text-align: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+a {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 12px;
+    border-radius: 10px;
+    border-style: none;
+}
+
+input {
+    width: 19em;
+    height: 3em;
+    padding-left: 5%;
+    border-radius: 10px;
+}
+
+#submit-Bttn {
+    width: 18em;
+    height: 3em;
+    flex-shrink: 0;
+
+    margin-top: 4%;
+    padding: 0;
+    text-align: center;
+    color: white;
+    background: #815355;
+
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 16px;
+    border-radius: 10px;
+    border-style: none;
+}
+
+#submit-Bttn:hover {
+    background: #603d3f;
+}
+
+#extra {
+    width: 18em;
+    margin-top: 1%;
+}
+#extra a {
+    float: right;
+}
+
+#contact {
+    padding: 2.5%;
+    background-color: #523249;
+    color: white;
+
+    border-radius: 10px;
+    border: none;
+
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 12px;
+    border-radius: 10px;
+    border-style: none;
 }

@@ -78,7 +78,7 @@
                 <form action="" method="post" id="clear_last_form">
                     {% csrf_token %}
                     {{ clear_last_form }}
-                    <button type="submit" class="keyboard cancel">Undo</button>
+                    <button type="submit" class="keyboard cancel"><img src="{% static 'images/backspace.png' %}" alt="Esc" style="width: 2vw;height: 2vw;"></button>
                 </form>
             </div>
             <div class="checkout-box">

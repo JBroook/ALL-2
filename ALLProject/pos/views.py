@@ -125,14 +125,7 @@ def cashierPOSView(request):
             return HttpResponseRedirect(reverse('sales'))
 
         if 'clear_last' in request.POST:
-            if request.session['cart']:
-                request.session['cart'].pop(-1)
-                request.session.modified = True
-                messages.success(request, "Cleared Last Item Added in Cart")
-                return HttpResponseRedirect(reverse('sales'))
-            else:
-                messages.error(request, "ERROR: No Item in Cart")
-                return HttpResponseRedirect(reverse('sales'))
+            return HttpResponseRedirect(reverse('sales'))
             
         if 'delete' in request.POST:
             removeItem(request)
@@ -142,7 +135,9 @@ def cashierPOSView(request):
             for item in request.session['cart']:
                 if item['name'] == product:
                     item['quantity'] += 1
+                    item['total_price'] = float(item['unit_price'] * item['quantity'])
                     request.session.modified = True
+
                     return HttpResponseRedirect(reverse('sales'))
 
         if 'minus' in request.POST:
@@ -152,6 +147,7 @@ def cashierPOSView(request):
                 if item['name'] == product:
                     if item['quantity'] > 1:
                         item['quantity'] -= 1
+                        item['total_price'] = float(item['unit_price'] * item['quantity'])
                         request.session.modified = True
                         return HttpResponseRedirect(reverse('sales'))
                     elif item['quantity'] == 1 :
@@ -226,7 +222,7 @@ def checkout(request,cart_cost):
                     # Create and encrypt payment data
                     paid = Payment.objects.create(
                         cart = new_cart,
-                        employeeID = Employee.objects.get(id=2),
+                        employeeID = Employee.objects.get(id=Employee.objects.get(user=request.user).id),
                         payment_method = payment_method,
                         tax = 0.00,
                         discount = 0.00,

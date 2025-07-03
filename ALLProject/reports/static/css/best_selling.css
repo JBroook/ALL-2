@@ -43,6 +43,7 @@ h3,h4 {
     border-top-right-radius: 30px;
     border-bottom-right-radius: 30px;
     box-shadow: 0px 4px 4px -2px #5a6a5c;
+    cursor: pointer;
 }
 
 #close-box {

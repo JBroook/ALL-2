@@ -1,7 +1,8 @@
 from django import forms
 from .models import Employee
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm
+from django.contrib.auth import authenticate
 
 class UserForm(UserCreationForm):
     email = forms.EmailField(required=True, help_text='Required. Enter a valid email address.')
@@ -91,3 +92,20 @@ class ChangePasswordForm(forms.Form):
     old_password = forms.CharField(widget=forms.PasswordInput)
     new_password = forms.CharField(widget=forms.PasswordInput)
     confirm_password = forms.CharField(widget=forms.PasswordInput)
+
+class CustomAuthenticationForm(AuthenticationForm):
+    email = forms.EmailField(required=True)
+    def clean(self):
+        super(CustomAuthenticationForm, self).clean()
+        email = self.cleaned_data.get('email')
+        if email:
+            self.user_cache = authenticate(
+                self.request,
+                username=email,
+                password=self.cleaned_data.get('password')
+            )
+            if self.user_cache is None:
+                raise forms.ValidationError(
+                    'Invalid email or password'
+                )
+        return self.cleaned_data

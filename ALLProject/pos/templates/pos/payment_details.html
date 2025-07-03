@@ -7,6 +7,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Mukta+Mahee:wght@200;300;400;500;600;700;800&family=Sansation:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
     <script src="{% static 'js/history.js'%}"></script>
 
+    <div id="return" onclick="window.history.back()">
+        <a href="{% url 'history' %}" id="close-box"><img src="{% static 'images/back-arrow.png' %}" alt="back-arrow" id="close"></a>
+    </div>
 
     <div id="main-content">
         <div id="dashboard">
@@ -20,7 +23,6 @@
         </div>
         
         <div class="transact-detail">
-            <button type="button" id="close-box" onclick="window.history.back()"><img src="{% static 'images/back-arrow.png'%}" alt="back-arrow" id="close"></button>
             <div class="container">
                 <h3>Created on {{payment.timeStamp}}</h3>
                 <h3>Receipt Number: {{payment.id}}</h3>
