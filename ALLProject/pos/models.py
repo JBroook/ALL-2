@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.db import models
+from django.contrib.auth.hashers import make_password, check_password
 from inventory.models import Product
 from users.models import Employee
 
@@ -39,11 +40,21 @@ class Payment(models.Model):
     tax = models.FloatField(default=0.00)
     discount = models.FloatField(default=0.00)
     total_cost = models.FloatField(default=0.00,null=False)
-    card_info = models.CharField(max_length=16, null=True)
-    expiry = models.CharField(max_length=5,null=True)
-    cvv = models.CharField(max_length=4,null=True)
+    card_info = models.CharField(max_length=256, null=True)
+    expiry = models.CharField(max_length=256,null=True)
+    cvv = models.CharField(max_length=256,null=True)
     timeStamp = models.DateTimeField(auto_now_add=True)
 
+    def save(self, *args, **kwargs):
+        if self.card_info and not self.card_info.startswith('pbkdf2_'): # Check if card_info is not already hashed
+            self.card_info = make_password(self.card_info)
+        if self.expiry and not self.expiry.startswith('pbkdf2_'): # Check if expiry is not already hashed
+            self.expiry = make_password(self.expiry)
+        if self.cvv and not self.cvv.startswith('pbkdf2_'): # Check if cvv is not already hashed
+            self.cvv = make_password(self.cvv)
+            
+        super().save(*args, **kwargs)
+            
     def print_payment(self):
         response = HttpResponse(content_type='application/pdf')
         response['Content-Disposition'] = f'attachment; filename="{self.timeStamp}_receipt_{self.id}.pdf"'

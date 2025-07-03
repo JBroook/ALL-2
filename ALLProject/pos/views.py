@@ -27,13 +27,13 @@ def cashierPOSView(request):
     product = None
     actual_quantity = None
     show_quantity = False
-    cart_cost = 0.00
     item_code = request.POST.get('item_code') if request.method == 'POST' else None
 
     if 'cart' not in request.session:
         request.session['cart'] = []
+        request.session['cart_cost'] = 0.00
     if request.session['cart']:
-        cart_cost = sum(item['total_price'] for item in request.session['cart'])
+        request.session['cart_cost'] = sum(item['total_price'] for item in request.session['cart'])
     
     if request.method == 'POST':
         # Handle submission for item code
@@ -108,6 +108,7 @@ def cashierPOSView(request):
                         quantity = None
                         product = None
                         show_quantity = False
+                        request.session['cart_cost'] = sum(item['total_price'] for item in request.session['cart'])
                         HttpResponseRedirect(reverse('sales'))
                     
                 except ObjectDoesNotExist:
@@ -160,7 +161,7 @@ def cashierPOSView(request):
         
         # Handles checkout submission
         if 'check_out' in request.POST:
-            checkout(request,cart_cost)
+            checkout(request)
     
     page = "nav-sale"
     context = {
@@ -173,13 +174,13 @@ def cashierPOSView(request):
         'actual_quantity' : actual_quantity if request.method == 'POST' else None,
         'item_code' : item_code,
         'cart' : request.session.get('cart',[]),
-        'cart_cost' : cart_cost,
+        'cart_cost' : request.session.get('cart_cost'),
         'show_quantity' : show_quantity,
         'page': page
     }
     return HttpResponse(template.render(context,request))
 
-def checkout(request,cart_cost):
+def checkout(request):
     checkout_form = CheckOutForm(request.POST)
     print("Check-out")
     if checkout_form.is_valid():
@@ -191,11 +192,11 @@ def checkout(request,cart_cost):
             payment_method = "Debit/Credit Card"
         print("Payment Method: ", payment_method)
         if request.session['cart']:
-            if payment_method == "cash" and checkout_form.cleaned_data['cashPaid'] < cart_cost:
+            if payment_method == "cash" and checkout_form.cleaned_data['cashPaid'] < request.session['cart_cost']:
                 messages.error(request, "ERROR: Cash amount is lower than cost of products")
             else:
                 try:
-                    change = cart_cost-checkout_form.cleaned_data['cashPaid'] if checkout_form.cleaned_data['cashPaid'] else 0
+                    change = request.session['cart_cost']-checkout_form.cleaned_data['cashPaid'] if checkout_form.cleaned_data['cashPaid'] else 0
 
                     # Create Cart Record
                     new_cart = Cart.objects.create(
@@ -226,14 +227,14 @@ def checkout(request,cart_cost):
                         payment_method = payment_method,
                         tax = 0.00,
                         discount = 0.00,
-                        total_cost = float(f"{cart_cost:.2f}"),
+                        total_cost = float(f"{request.session['cart_cost']:.2f}"),
                         card_info = card_number,
                         expiry = card_expiry,
                         cvv = card_cvv,
                     )
                     paid.save()
 
-                    new_cart.total_cost = cart_cost
+                    new_cart.total_cost = request.session['cart_cost']
                     new_cart.save()
 
                     if payment_method == 'Debit/Credit Card':
@@ -251,7 +252,7 @@ def checkout(request,cart_cost):
                     return HttpResponseRedirect(reverse('sales'))
                     
                 except ObjectDoesNotExist:
-                    messages.error(request, "ERROR: One or more products in cart not found")
+                    messages.error(request, "1ERROR: One or more products in cart not found")
                     return HttpResponseRedirect(reverse('sales'))
         else:
             print(checkout_form.errors)

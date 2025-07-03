@@ -100,15 +100,13 @@ a {
 }
 
 input {
-    width: 19em;
-    height: 3em;
+    width: 18vw;
+    height: 6vh;
     padding-left: 5%;
     border-radius: 10px;
 }
 
 #submit-Bttn {
-    width: 18em;
-    height: 3em;
     flex-shrink: 0;
 
     margin-top: 4%;
