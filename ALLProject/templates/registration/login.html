@@ -8,34 +8,53 @@
         <link href="https://fonts.googleapis.com/css2?family=Mukta+Mahee:wght@200;300;400;500;600;700;800&family=Sansation:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
         <title> User Login </title>
     </head>
-    
+
     <body>
-        <div id="form-container">
-            <div id="form-left">
-                {% block content %}
-                    
-                    <img src="{% static 'images/warehub-logo.png'%}" alt="Warehub logo" id="warehub-logo">
-                    <h1>Login to WareHub</h1>
+        <div class="box">
+            <div id="form-container" class="card">
+                <div id="form-left">
+                    {% block content %}
+                        <form method="POST" id="loginForm">
+                            {% csrf_token%}
 
-                    <form method="POST" id="loginForm">
-                        {% csrf_token%}
+                            <label for="user-email">Username</label><br>
+                            {{form.username}}<br></br>
+                            <label for="password">Password</label><br>
+                            {{form.password}}<br></br>
 
-                        <label for="user-email">Username</label><br>
-                        {{form.username}}<br></br>
-                        <label for="password">Password</label><br>
-                        {{form.password}}<br></br>
+                            <input type="submit" value="Login" id="submit-Bttn">
+                        </form>
 
-                        <input type="submit" value="Login" id="submit-Bttn">
-                    </form>
-
-                    <a href="{% url 'password_reset'%}">Forgot password?</a>
-                {% endblock %}
-            </div>
-            <div id="form-right">
-                {% comment %} <img src="" alt="inventory-checking.png">  {% endcomment %}
+                        <div id="extra">
+                            <a href="{% url 'password_reset'%}">Forgot password?</a>
+                        </div>
+                    {% endblock %}
+                </div>
+                <div id="form-right">
+                    <div id="logo-box">
+                        <img src="{% static 'images/warehub-logo.png'%}" alt="Warehub logo" id="warehub-logo">
+                    </div>
+                    <h1 id="welcome">Welcome Back To WareHub!</h1>
+                </div>
             </div>
         </div>
     </body>
+    
+    <script>
+      const cards = document.querySelectorAll(".card");
+      const wrapper = document.querySelector(".box");
+
+      wrapper.addEventListener("mousemove", function (event) {
+        cards.forEach((card) => {
+          const rect = card.getBoundingClientRect();
+          const x = event.clientX - rect.left;
+          const y = event.clientY - rect.top;
+
+          card.style.background = `radial-gradient(900px circle at ${x}px ${y}px, #FFE9C94D, transparent 15%)`;
+        });
+      });
+    </script>
+
     {% if messages %}
         <style>
             #messages-container {
@@ -46,6 +65,7 @@
                 right: 0%;
                 top: 0%;
                 display: flex;
+                flex-direction: column;
                 justify-content: center;
                 align-items: flex-start;
                 padding-top: 5vh;

@@ -1,0 +1,1 @@
+Your presence has been requested by cashier, {{ user.first_name }} {{user.last_name}}, at the counter!

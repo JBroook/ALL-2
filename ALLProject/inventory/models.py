@@ -1,13 +1,23 @@
 from django.db import models
+from django.db.models import Q
 from django.utils import timezone
 from django.core.files import File
 from django.conf import settings
+from django.http import HttpResponse
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+from pathlib import Path
 
 import random
 from io import BytesIO
 import qrcode
 from barcode import EAN13
 from barcode.writer import ImageWriter
+from users.models import Employee
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import A4
+from django.conf import settings
+from reportlab.lib.units import mm
 
 # Create your models here.
 class Category(models.Model):
@@ -28,6 +38,7 @@ class Product(models.Model):
     barcode_number = models.CharField(max_length=50,unique=True,blank=True,null=True)
     barcode_img = models.ImageField(upload_to='barcode/',blank=True,null=True)
     timeStamp = models.DateTimeField(auto_now_add=True)
+    sku = models.CharField(max_length=10, verbose_name="Stock Keeping Unit")
 
     def __str__(self):
         return self.name
@@ -50,6 +61,59 @@ class Product(models.Model):
             self.qr_code = '/qr/'+ filename
             
         super().save(*args, **kwargs)
+
+    def low_stock_alert(self):
+        text_content = render_to_string(
+            "inventory/low_stock_alert.txt",
+            context={"product": self},
+        )
+
+        html_content = render_to_string(
+            "inventory/low_stock_alert_email.html",
+            context={"product": self},
+        )
+
+        admin_managers = Employee.objects.filter(Q(role='manager') | Q(role='admin'))
+
+        msg = EmailMultiAlternatives(
+            f"{self.name} low in stock",
+            text_content,
+            None,
+            [person.user.email for person in admin_managers],
+        )
+
+        msg.attach_alternative(html_content, "text/html")
+        msg.send()
+
+    def deduct_stock(self, stock_to_deduct):
+        self.quantity -= stock_to_deduct
+        print("Stock deducted")
+        if self.quantity <= self.alert_threshold:
+            print("Low stock alert sent")
+            self.low_stock_alert()
+
+    def print_codes(self):
+        qr_code_path = Path(str(settings.BASE_DIR)+self.qr_code.url)
+        barcode_path = Path(str(settings.BASE_DIR)+self.barcode_img.url)
+
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = f'attachment; filename="{self.name}_qr_code_{self.id}.pdf"'
+
+        p = canvas.Canvas(response, pagesize=A4)
+        width, height = A4
+        p.setFont("Helvetica-Bold", 14)
+        p.drawCentredString(width/2, height - 50, f"QR Code for Product: {self.name}")
+
+        p.drawImage(qr_code_path, x=width/2 - 25 * mm, y=height - 200, width=50 * mm, height=50 * mm)
+
+        p.drawCentredString(width/2, height - 220, f"Barcode for Product: {self.name}")
+
+        p.drawImage(barcode_path, x=width/2 - 40 * mm, y=height - 400, width=80 * mm, height=50 * mm)
+
+        p.showPage()
+        p.save()
+
+        return response
     
 class Restock(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)

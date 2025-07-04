@@ -307,6 +307,7 @@ button.filter-payment:hover {
 
     background-color: #fff;
     border-radius: 20px;
+    cursor: pointer;
 }
 
 .day.transactions:hover {

@@ -71,7 +71,7 @@
 {% endblock nav %}
 {% block dashboard %}{% endblock dashboard %}
 
-{% if messages %}
+{% if messages and page != 'nav-sale'%}
     <style>
         #messages-container {
             width: 20vw;
@@ -82,6 +82,7 @@
             top: 0%;
             display: flex;
             justify-content: center;
+            flex-direction: column;
             align-items: flex-start;
             padding-top: 5vh;
         }
@@ -93,7 +94,6 @@
             border-radius: 1vw;
             box-shadow: 4px 2px 4px gray;
             display: flex;
-            flex-direction: column;
             justify-content: space-between;
             padding-left: 1vw;
             animation: cssAnimation 0s 5s forwards;

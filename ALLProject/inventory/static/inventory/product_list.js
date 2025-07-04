@@ -37,9 +37,10 @@ function delete_product(_product_id){
 function filter_products(){
     const category = document.getElementById("category-filter").value;
     const availability = document.getElementById("availability-filter").value;
+    const text = document.getElementById("text-search").value;
 
-    fetch(`/inventory/product_list_partial/?category=${category}&availability=${availability}`, {
-    })
+    fetch(`/inventory/product_list_partial/?category=${category}&availability=${availability}&text=${text}`, {
+    })  
     .then(response => response.text())
     .then(html => {
         document.getElementById("product-list-container").innerHTML = html;

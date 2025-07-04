@@ -13,7 +13,8 @@ class ProductForm(forms.ModelForm):
             'quantity' : 'Quantity',
             'supplier' : 'Supplier',
             'image' : 'Image',
-            'alert_threshold' : 'Alert Notice'
+            'alert_threshold' : 'Alert Notice',
+            'sku' : 'Stock Keeping Unit'
         }
 
         widgets = {
@@ -29,7 +30,12 @@ class ProductForm(forms.ModelForm):
                 'placeholder':'e.g. Milk & Lawson', 'class':'form-control'}),
             'image' : forms.FileInput(),
             'alert_threshold' : forms.NumberInput(attrs={
-                'placeholder':'e.g. 5', 'class':'form-control'})
+                'placeholder':'e.g. 5', 'class':'form-control'}),
+            'sku' : forms.TextInput(
+                attrs={
+                    'placeholder':'e.g. 110243AF', 'class':'form-control'
+                    }),
+            
         }
 
     def __init__(self, *args, **kwargs):

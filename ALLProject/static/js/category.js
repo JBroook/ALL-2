@@ -26,6 +26,19 @@ function add_category(){
 }
 
 function view_category(_category_id){
+    console.log("from-category-"+toString(_category_id))
+    const products = document.getElementsByClassName("from-category-"+_category_id);
+    const category = document.getElementById("category-"+_category_id);
+    for (let i = 0; i < products.length; i++) {
+        if(products[i].style.display!='table-row'){
+            products[i].style.display = 'table-row';
+            category.style['background-color'] = '#C3B299' ;
+        }else{
+            products[i].style.display = 'none';
+            category.style['background-color'] = 'transparent' ;
+        }
+    }
+
     fetch(`/inventory/category_specific/` + _category_id, {
     })
     .then(response => response.text())

@@ -2,7 +2,7 @@ from django import forms
 from django.core.validators import RegexValidator
 
 class ItemCodeForm(forms.Form):
-    item_code = forms.IntegerField(widget=forms.NumberInput(
+    item_code = forms.CharField(widget=forms.TextInput(
                                     attrs={'id': 'itemCode'}))
 
 class QuantityForm(forms.Form):
@@ -14,7 +14,7 @@ class CheckOutForm(forms.Form):
     check_out = forms.CharField(required=False, widget=forms.HiddenInput(
                                 attrs={'id':'cartForm', 'value':'true'}))
     
-    payment_method = forms.ChoiceField(required=True,
+    payment_method = forms.ChoiceField(required=False,
                                         choices=[('cash', 'Cash'), ('debit_card', 'Debit/Credit Card')],
                                         widget=forms.HiddenInput(attrs={'id':'paymentMethod'}))
     
@@ -40,8 +40,8 @@ class CheckOutForm(forms.Form):
     expiry = forms.CharField(required=False, max_length=5,
                              validators=[
                                  RegexValidator(
-                                    r'^[0-9]*$',
-                                    message='Enter a valid number in the format XXXX-XXXX-XXXX (digits only).'
+                                    '[0-9][0-9]/[0-9][0-9]',
+                                    message='Enter a valid number in the format XX/XX (digits only).'
                                  )
                              ],
                              widget=forms.TextInput(attrs={
@@ -50,13 +50,14 @@ class CheckOutForm(forms.Form):
                                  'placeholder':'MM/YY',
                                  'pattern': '[0-9]*',
                                  'inputmode': 'numeric',
+                                 'title': 'Format: XX/XX',
                                  }))
     
     cvv = forms.CharField(required=False, max_length=4,
                           validators=[
                               RegexValidator(
                                   r'^[0-9]*$',
-                                  message='Enter a valid number in the format XXXX-XXXX-XXXX (digits only).'
+                                  message='Enter a valid number in the format XXXX (digits only).'
                               )
                           ],
                           widget=forms.TextInput(attrs={
@@ -65,6 +66,7 @@ class CheckOutForm(forms.Form):
                               'placeholder':'Security Num',
                               'pattern': '[0-9]*',
                               'inputmode': 'numeric',
+                              'title': 'Format: XXXX',
                               }))
     
 class ClearCartItems(forms.Form):

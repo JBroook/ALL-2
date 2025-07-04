@@ -78,7 +78,7 @@
                 <form action="" method="post" id="clear_last_form">
                     {% csrf_token %}
                     {{ clear_last_form }}
-                    <button type="submit" class="keyboard cancel">Undo</button>
+                    <button type="submit" class="keyboard cancel"><img src="{% static 'images/backspace.png' %}" alt="Esc" style="width: 2vw;height: 2vw;"></button>
                 </form>
             </div>
             <div class="checkout-box">
@@ -90,10 +90,6 @@
                 </div>
                 <div class="check-out discount">
                     <h4>Discount</h4>
-                    <h4>RM 0.00</h4>
-                </div>
-                <div class="check-out tax">
-                    <h4>Tax</h4>
                     <h4>RM 0.00</h4>
                 </div>
                 <div class="check-out total">

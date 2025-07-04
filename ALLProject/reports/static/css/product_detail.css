@@ -90,6 +90,7 @@
     border-style: solid;
     border-width: 2px;
     background-color: #FFF;
+    cursor: pointer;
 }
 
 .dropdown-button {
