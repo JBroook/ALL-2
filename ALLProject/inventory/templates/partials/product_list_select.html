@@ -1,0 +1,36 @@
+{% load static %}
+
+{%if products %}
+    <div class="list-body">
+        {% for product in products%}
+            <div class="product" onclick="select_product({{product.id}})" id="{{product.id}}">
+                {%if product.quantity == 0 %}
+                    <div class="stock-alert empty">
+                        <img src="{% static 'inventory/exclamation.png'%}"></img>
+                    </div>
+                {%elif product.quantity <= 5%}
+                    <div class="stock-alert low">
+                        <img src="{% static 'inventory/exclamation-yellow2.png'%}"></img>
+                    </div>
+                {%endif%}
+                <div class="top-section" style="background-image: url('{{product.image.url}}')">
+                    <div class="product-stock">
+                        <p>Stock: {{product.quantity}}</p>
+                    </div>
+                </div>
+                
+                <div class="product-name">
+                    <h3>{{product.name}}</h3>
+                    <p>RM {{product.price| floatformat:2}}</p>
+                </div>
+
+                <div class="select-icon">
+                    <img src="{% static 'images/circle.png'%}" id="product-icon-{{product.id}}"></img>
+                    <img style="display: none;" src="{% static 'images/green-checkmark.png'%}" id="product-select-{{product.id}}"></img>
+                </div>
+            </div>
+        {% endfor%}
+    </div>
+{%else%}
+    <div class="nothing-message"><h3>No products found</h3></div>
+{%endif%}
