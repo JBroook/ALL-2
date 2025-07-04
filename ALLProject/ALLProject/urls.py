@@ -26,5 +26,4 @@ urlpatterns = [
     path('inventory/',include('inventory.urls')),
     path('pos/',include('pos.urls')),
     path('report/',include('reports.urls')),
-    path("silk/", include("silk.urls", namespace="silk"))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

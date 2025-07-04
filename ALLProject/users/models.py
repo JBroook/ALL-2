@@ -37,7 +37,7 @@ class Employee(models.Model):
                 'roles' : ['manager'],
                 'description' : 'View detailed analyses of performance and generate reports',
                 'image' : 'images/purple-report.png',
-                'url' : reverse('user_list')
+                'url' : reverse('report')
             },
             {
                 'title' : 'Users',

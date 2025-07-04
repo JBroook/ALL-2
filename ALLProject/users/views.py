@@ -10,6 +10,7 @@ from django.contrib import messages
 from django.contrib.auth.views import LoginView, PasswordResetView, PasswordChangeView
 from django.contrib.auth.forms import PasswordChangeForm
 
+
 class CustomLoginView(LoginView):
     template_name = 'registration/login.html'
     success_url = reverse_lazy('home')
