@@ -50,28 +50,45 @@
         text-align: center;
     }
 
-    label{
-        color: #000;
-        text-align: center;
-        font-family: Verdana, Geneva, Tahoma, sans-serif;
-        font-size: 16px;
-        font-style: normal;
-        font-weight: 400;
-        line-height: normal;
-    }
-    
-    #submit-Bttn {
-        width: 15em;
-        height: 3em;
-        flex-shrink: 0;
-        text-align: center;
-        color: white;
-        font-family: Verdana, Geneva, Tahoma, sans-serif;
-        font-size: 16px;
-        border-radius: 50px;
-        border-style: none;
-        background: #815355;
-    }
+label{
+    color: #000;
+    text-align: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+a {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 12px;
+    border-radius: 10px;
+    border-style: none;
+}
+
+input {
+    width: 18vw;
+    height: 6vh;
+    padding-left: 5%;
+    border-radius: 10px;
+}
+
+#submit-Bttn {
+    width: 20vw;
+    height: 6vh;
+    flex-shrink: 0;
+
+    margin-top: 4%;
+    padding: 0;
+    text-align: center;
+    color: white;
+    background: #815355;
+
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 16px;
+    border-radius: 10px;
+    border-style: none;
+}
 
     #submit-Bttn:hover {
         background: #603d3f;
