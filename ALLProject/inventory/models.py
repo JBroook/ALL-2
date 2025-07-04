@@ -17,6 +17,7 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 from django.conf import settings
 from reportlab.lib.units import mm
+import os
 
 # Create your models here.
 class Category(models.Model):
@@ -53,11 +54,18 @@ class Product(models.Model):
             self.barcode_number = ean.__str__()
         
         if not self.qr_code:    
-            image = qrcode.make(f"Name: {self.name}\nCategory: {self.category}\nPrice: RM {self.price}\nBarcode Number: {self.barcode_number}")
-            filename = f"{self.name}_{self.id}_qr.png"
-            image.save(str(settings.BASE_DIR)+'/media/qr/'+ filename)
+            qr_data = qrcode.make(f"Name: {self.name}\nCategory: {self.category}\nPrice: RM {self.price}\nBarcode Number: {self.barcode_number}")
+            qr_image = qrcode.make(qr_data)
 
-            self.qr_code = '/qr/'+ filename
+            buffer = BytesIO()
+            qr_image.save(buffer, format='PNG')
+            buffer.seek(0)
+
+            filename = f"{self.name}_qr.png"
+            file_path = os.path.join('qr', filename)
+
+            # Save the in-memory file to the model's ImageField/FileField
+            self.qr_code.save(filename, File(buffer), save=False)
             
         super().save(*args, **kwargs)
 
@@ -113,6 +121,23 @@ class Product(models.Model):
         p.save()
 
         return response
+    
+    def print_code_to(self, p):
+        qr_code_path = Path(str(settings.BASE_DIR)+self.qr_code.url)
+        barcode_path = Path(str(settings.BASE_DIR)+self.barcode_img.url)
+
+        width, height = A4
+        p.setFont("Helvetica-Bold", 14)
+        p.drawCentredString(width/2, height - 50, f"QR Code for Product: {self.name}")
+
+        p.drawImage(qr_code_path, x=width/2 - 25 * mm, y=height - 200, width=50 * mm, height=50 * mm)
+
+        p.drawCentredString(width/2, height - 220, f"Barcode for Product: {self.name}")
+
+        p.drawImage(barcode_path, x=width/2 - 40 * mm, y=height - 400, width=80 * mm, height=50 * mm)
+
+        p.showPage()
+
     
 class Restock(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
