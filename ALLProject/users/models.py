@@ -92,3 +92,30 @@ class Employee(models.Model):
 
         msg.attach_alternative(html_content, "text/html")
         msg.send()
+
+    def send_initiation_email(self, password):
+        text_content = render_to_string(
+            "users/user_welcome_text.txt",
+            context={
+                "user": self.user, 
+                "first_password": password
+                },
+        )
+
+        html_content = render_to_string(
+            "users/user_welcome_email.html",
+            context={
+                "user": self.user, 
+                "first_password": password
+                },
+        )
+
+        msg = EmailMultiAlternatives(
+            "Welcome to WareHub!",
+            text_content,
+            None,
+            [self.user.email],
+        )
+
+        msg.attach_alternative(html_content, "text/html")
+        msg.send()

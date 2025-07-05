@@ -119,11 +119,14 @@ def user_create_view(request):
     if request.method=="POST":
         user_form = UserForm(request.POST)
         if user_form.is_valid():
+            password = user_form.cleaned_data['password1']
             new_user = user_form.save()
             employee_form = EmployeeForm(request.POST)
+
             new_employee = employee_form.save(commit=False)
             new_employee.user = new_user
             new_employee.save()
+            new_employee.send_initiation_email(password)
             messages.add_message(request, messages.SUCCESS, "User added!")
         else:
             messages.add_message(request, messages.ERROR, "Failed!")
