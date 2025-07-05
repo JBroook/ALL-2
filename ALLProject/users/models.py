@@ -15,6 +15,7 @@ class Employee(models.Model):
         ]
     )
     virgin_login = models.BooleanField(default=True)
+    active = models.BooleanField(default=False)
     
     def get_role_options(self):
         options = [
