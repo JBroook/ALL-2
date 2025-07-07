@@ -1,5 +1,6 @@
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.contrib import messages
+from django.conf import settings
 from django.template import loader
 from django.urls import reverse
 from .models import Product,CartItem,Cart,Payment,Employee
@@ -10,10 +11,8 @@ from django.db.models import Sum
 
 import cv2
 from pyzbar.pyzbar import decode
-from pydub import AudioSegment
-from pydub.playback import play
+import os
 from django.templatetags.static import static
-
 
 # Create your views here.
 def cashierPOSView(request):
@@ -27,6 +26,7 @@ def cashierPOSView(request):
     actual_quantity = None
     show_quantity = False
     item_code = request.POST.get('item_code') if request.method == 'POST' else None
+
 
     if 'cart' not in request.session:
         request.session['cart'] = []
@@ -276,10 +276,9 @@ def removeItem(request,):
     print(request.session['cart'])
 
 def scanItem(request):
-    # cap = cv2.VideoCapture(0)
-    cap = cv2.VideoCapture('http://10.229.173.212:8080/video')
+    cap = cv2.VideoCapture(0)
     # cap = cv2.VideoCapture('http://192.168.1.8:8080/video')
-    # song = AudioSegment.from_mp3(static('beep.mp3'))
+    # cap = cv2.VideoCapture('http://192.168.1.8:8080/video')
     
     while cap.isOpened():
         success, frame = cap.read()
@@ -336,7 +335,8 @@ def scanItem(request):
 
                         messages.success(request, f"Product Added: {product.name}")
                         return HttpResponseRedirect(reverse('sales'))
-                    else:
+                    
+                    else: # Barcode
                         data = code.data.decode("utf-8")
                         print(data)
                         product = Product.objects.get(barcode_number=data)
@@ -379,7 +379,7 @@ def scanItem(request):
                         return HttpResponseRedirect(reverse('sales'))
 
                     # cv2.putText(frame,str(code.data),(50,50),cv2.FONT_HERSHEY_COMPLEX,2,(0,255,255),2)
-                    # play(song)
+                    
                     # cv2.imwrite("code.png",frame)
         
         cv2.imshow('scanner',frame)
