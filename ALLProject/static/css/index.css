@@ -1,3 +1,4 @@
+
 body, html{
     font-family: "Mukta Mahee", sans-serif;
     font-weight: 300;
@@ -107,6 +108,8 @@ input {
 }
 
 #submit-Bttn {
+    width: 20vw;
+    height: 6vh;
     flex-shrink: 0;
 
     margin-top: 4%;
