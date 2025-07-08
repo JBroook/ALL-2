@@ -186,11 +186,11 @@ def product_restock_view(request, product_id):
 
     if request.method=="POST":
         form = RestockForm(request.POST)
+        form.product_id = product_id
         if form.is_valid:
             restock = form.save(commit=False)
-            restock.product = product
-            product.quantity += restock.units
-            product.save()
+            restock.product = Product.objects.get(pk=product_id)
+            restock.change_quantity()
             restock.save()
             messages.add_message(request, messages.SUCCESS, "Product restocked!")
             return redirect("product_list")

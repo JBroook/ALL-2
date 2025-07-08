@@ -6,7 +6,7 @@ from django.template.loader import render_to_string
 
 # Create your models here.
 class Employee(models.Model):
-    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    user = models.OneToOneField(User,on_delete=models.CASCADE)
     role = models.CharField(
         choices=[
             ('cashier', 'Cashier'),

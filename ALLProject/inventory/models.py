@@ -7,6 +7,7 @@ from django.http import HttpResponse
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from pathlib import Path
+from django.core.validators import MinValueValidator
 
 import random
 from io import BytesIO
@@ -22,19 +23,22 @@ import os
 
 # Create your models here.
 class Category(models.Model):
-    name = models.CharField(max_length=100, verbose_name='Name')
+    name = models.CharField(max_length=100, verbose_name='Name', unique=True)
 
     def __str__(self):
         return self.name
 
 class Product(models.Model):
     name = models.CharField(max_length=100, verbose_name='Name')
-    quantity = models.IntegerField(verbose_name='Quantity')
+    quantity = models.IntegerField(
+        verbose_name='Quantity',
+        validators=[MinValueValidator(0, message="Value must be zero or greater.")]
+        )
     image = models.ImageField(upload_to='products/',default='/media/products/20240322_200331.jpg')
     supplier = models.CharField(max_length=100)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    price = models.FloatField()
-    alert_threshold = models.IntegerField()
+    price = models.FloatField(validators=[MinValueValidator(0, message="Value must be zero or greater.")])
+    alert_threshold = models.IntegerField(validators=[MinValueValidator(0, message="Value must be zero or greater.")])
     qr_code = models.ImageField(upload_to='qr/')
     barcode_number = models.CharField(max_length=50,unique=True,blank=True,null=True)
     barcode_img = models.ImageField(upload_to='barcode/',blank=True,null=True)
@@ -141,14 +145,24 @@ class Product(models.Model):
 
     
 class Restock(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=False)
     date = models.DateField(verbose_name='Date', default=timezone.now)
-    units = models.IntegerField(verbose_name='Stock Added')
-    cpu = models.FloatField(verbose_name='Cost Per Unit')
+    units = models.IntegerField(
+        verbose_name='Stock Added',
+        validators=[MinValueValidator(0, message="Value must be zero or greater.")]
+        )
+    cpu = models.FloatField(
+        verbose_name='Cost Per Unit',
+        validators=[MinValueValidator(0, message="Value must be zero or greater.")]
+        )
     
     def get_total_cost(self):
         return self.units * self.cpu
     
     def __str__(self):
         return self.product.name
+    
+    def change_quantity(self):
+        self.product.quantity += self.units
+        self.product.save()
 
