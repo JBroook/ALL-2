@@ -249,7 +249,7 @@ def checkout(request):
                             del request.session[key]
                     request.session.modified = True
                     
-                    return HttpResponseRedirect(reverse('print_payment',kwargs=Payment.objects.values("id").get(id=paid.id)['id']))
+                    return HttpResponseRedirect(reverse('print_payment',args=[Payment.objects.values("id").get(id=paid.id)['id']]))
                     
                 except ObjectDoesNotExist:
                     messages.error(request, "1ERROR: One or more products in cart not found")
@@ -327,7 +327,7 @@ def scanItem(request):
                                 if not valueinCart:
                                     print("Not in Cart yet")
                                     request.session['cart'].append({
-                                        'item_code' : product.id,
+                                        'item_code' : product.barcode_number,
                                         'name' : product.name,
                                         'unit_price' : product.price,
                                         'quantity' : quantity,
@@ -337,6 +337,7 @@ def scanItem(request):
 
                             messages.success(request, f"Product Added: {product.name}")
                             cap.release()
+                            request.session['cart_cost'] = sum(item['total_price'] for item in request.session['cart'])
                             return HttpResponseRedirect(reverse('sales'))
                         
                         else: # Barcode
@@ -369,7 +370,7 @@ def scanItem(request):
 
                                 if not valueinCart:
                                     request.session['cart'].append({
-                                        'item_code' : product.id,
+                                        'item_code' : product.barcode_number,
                                         'name' : product.name,
                                         'unit_price' : product.price,
                                         'quantity' : quantity,
@@ -379,6 +380,7 @@ def scanItem(request):
 
                             messages.success(request, f"Product Added: {product.name}")
                             cap.release()
+                            request.session['cart_cost'] = sum(item['total_price'] for item in request.session['cart'])
                             return HttpResponseRedirect(reverse('sales'))
 
                         # cv2.putText(frame,str(code.data),(50,50),cv2.FONT_HERSHEY_COMPLEX,2,(0,255,255),2)
