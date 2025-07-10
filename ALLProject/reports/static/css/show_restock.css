@@ -47,6 +47,10 @@
     height: 100%;
     margin-left: 2.5%;
     border-collapse: collapse;
+    
+    font-family: "Mukta Mahee", sans-serif;
+    font-weight: 150;
+    font-style: normal;
 }
 
 #header {

@@ -407,6 +407,7 @@ thead.cart {
 #success-box {
     position: fixed;
     align-self: anchor-center;
+    text-align: center;
     left: 30%;
     z-index: 1;
 
@@ -449,7 +450,7 @@ thead.cart {
     align-content: center;
     justify-self: center;
     width: 95%;
-    height: 75%;
+    height: 55%;
 
     font-family: "Mukta Mahee", sans-serif;
     font-weight: 700;
@@ -457,4 +458,14 @@ thead.cart {
     color: #E8656A;
     letter-spacing: 2px;
     line-height: 30px;
+}
+#print {
+    width: 10%;
+    height: 5vh;
+    border-radius: 15px;
+    border-style: none;
+    background-color: rgba(163, 214, 217, 0.5);
+}
+#print:hover {
+    background-color: rgba(163, 214, 217);
 }

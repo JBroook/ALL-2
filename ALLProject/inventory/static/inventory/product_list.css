@@ -85,7 +85,7 @@ main {
 
 .list-body {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 33.3% 33.3% 33.3%;
   margin-top: 2vh;
 }
 

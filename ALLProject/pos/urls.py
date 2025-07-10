@@ -11,4 +11,5 @@ urlpatterns = [
     path('details/<int:payment_id>/',views.payment_detail_view, name="payment_details"),
     path('call_manager/', views.call_manager_view, name='call_manager'),
     path('print_payment/<int:payment_id>/', views.print_payment_view, name='print_payment'),
+    path('print_payment_pos/<int:payment_id>/', views.print_pos_payment_view, name='print_payment_pos'),
 ]

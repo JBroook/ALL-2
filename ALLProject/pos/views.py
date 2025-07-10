@@ -27,6 +27,7 @@ def cashierPOSView(request):
     show_quantity = False
     item_code = request.POST.get('item_code') if request.method == 'POST' else None
 
+    print(request.POST)
 
     if 'cart' not in request.session:
         request.session['cart'] = []
@@ -108,7 +109,7 @@ def cashierPOSView(request):
                         product = None
                         show_quantity = False
                         request.session['cart_cost'] = sum(item['total_price'] for item in request.session['cart'])
-                        HttpResponseRedirect(reverse('sales'))
+                        return HttpResponseRedirect(reverse('sales'))
                     
                 except ObjectDoesNotExist:
                     messages.error(request, "ERROR: Product Not Found")
@@ -160,7 +161,7 @@ def cashierPOSView(request):
         
         # Handles checkout submission
         if 'check_out' in request.POST:
-            checkout(request)
+            return checkout(request)
     
     page = "nav-sale"
     context = {
@@ -174,6 +175,7 @@ def cashierPOSView(request):
         'item_code' : item_code,
         'cart' : request.session.get('cart',[]),
         'cart_cost' : request.session.get('cart_cost'),
+        'payment' : request.session.get('payment'),
         'show_quantity' : show_quantity,
         'page': page
     }
@@ -244,15 +246,16 @@ def checkout(request):
                     # Clear Cart in session
                     print("finish adding cart")
                     request.session['cart'] = []
-                    for key in list(request.session.keys()):
-                        if not key.startswith("_"): # skip keys set by the django system
-                            del request.session[key]
+                    # for key in list(request.session.keys()):
+                    #     if not key.startswith("_"): # skip keys set by the django system
+                    #         del request.session[key]
+                    request.session['payment'] = paid.id
                     request.session.modified = True
-                    
-                    return HttpResponseRedirect(reverse('print_payment',args=[Payment.objects.values("id").get(id=paid.id)['id']]))
+
+                    return HttpResponseRedirect(reverse('sales'))
                     
                 except ObjectDoesNotExist:
-                    messages.error(request, "1ERROR: One or more products in cart not found")
+                    messages.error(request, "ERROR: One or more products in cart not found")
                     return HttpResponseRedirect(reverse('sales'))
         else:
             print(checkout_form.errors)
@@ -468,3 +471,8 @@ def print_payment_view(request, payment_id):
     payment = Payment.objects.get(pk=payment_id)
 
     return payment.print_payment()
+
+def print_pos_payment_view(request, payment_id):
+    payment = Payment.objects.get(pk=payment_id)
+
+    return payment.print_payment(), HttpResponseRedirect(reverse('sales'))

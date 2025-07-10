@@ -30,7 +30,11 @@
     width: 20%;
     height: 100%;
     margin-right: 2%;
-    justify-items: center;   
+    justify-items: center; 
+
+    font-family: "Mukta Mahee", sans-serif;
+    font-weight: 150;
+    font-style: normal;  
 }
 
 .product-img-box {
@@ -47,5 +51,5 @@
 }
 
 .product-details {
-    margin: 0.5em;
+    margin: 0.2em;
 }

@@ -383,6 +383,9 @@ button.filter-payment:hover {
     border-style: none;
     background-color: rgba(163, 214, 217, 0.5);
 }
+#print:hover {
+    background-color: rgba(163, 214, 217);
+}
 
 .content-detail {
     width: 60%;
