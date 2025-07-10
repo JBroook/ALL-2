@@ -87,6 +87,7 @@ main {
   display: grid;
   grid-template-columns: 33.3% 33.3% 33.3%;
   margin-top: 2vh;
+  padding-bottom: 15vh;
 }
 
 .product {

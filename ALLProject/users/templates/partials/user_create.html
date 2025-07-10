@@ -2,8 +2,7 @@
     <h2 class="title"> Add User </h2>
     <form method="POST" action="{% url 'user_create'%}">
         {% csrf_token %}
-        {{user_form.errors}}
-        {{employee_form.errors}}
+        
 
         {% for field in user_form%}
             <div class="form-field">
@@ -13,10 +12,21 @@
             </div>
         {% endfor %}
 
+
         <div class="form-field">
             <h3>{{employee_form.role.label}}</h3>
             {{employee_form.role}}
         </div>
+
+        {% if user_form.errors %}
+            <div class="alert" role="alert">
+                <div class="form_errors">
+                    {% for key, value in user_form.errors.items %}
+                        <strong>{{ value }}</strong>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %} 
 
         <div id="button-container">
             <button type="submit">Add User</button>

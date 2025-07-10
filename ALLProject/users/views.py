@@ -122,23 +122,35 @@ def user_create_form_view(request):
 
 #@ajax_only
 def user_create_view(request):
-    employee_form = EmployeeForm()
-    user_form = UserForm()
-
     if request.method=="POST":
         user_form = UserForm(request.POST)
+        employee_form = EmployeeForm(request.POST)
         if user_form.is_valid():
             password = user_form.cleaned_data['password1']
             new_user = user_form.save()
-            employee_form = EmployeeForm(request.POST)
-
             new_employee = employee_form.save(commit=False)
             new_employee.user = new_user
             new_employee.save()
             new_employee.send_initiation_email(password, request)
             messages.add_message(request, messages.SUCCESS, "User added!")
         else:
-            messages.add_message(request, messages.ERROR, "Failed!")
+            messages.add_message(request, messages.ERROR, "Action failed!")
+
+            employees = Employee.objects.all()
+            roles = Employee.objects.values_list('role', flat=True)
+            page = "nav-users"
+
+            return render(
+                request,
+                'users/user_list_errors.html',
+                context={
+                    'employee_form':employee_form,
+                    'user_form':user_form,
+                    'employees' : employees,
+                    'roles' : roles,
+                    'page':page
+                    }
+                )
         
     return redirect('user_list')
 

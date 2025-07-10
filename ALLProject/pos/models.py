@@ -175,7 +175,7 @@ class Payment(models.Model):
             lower_bound = datetime.datetime.strptime(start_date, "%Y-%m-%d").date()
             nothing_message = f"No sales made between {lower_bound} and {upper_bound}"
         elif type=='payment':
-            payments = Payment.objects.filter(payment_method=specific).order_by('-timeStamp').annotate(
+            payments = Payment.objects.filter(payment_method=specific).filter(employeeID=employee).order_by('-timeStamp').annotate(
                 items_sold=Sum('cart__cart_items__quantity')
             )
             nothing_message = f"No sales made with {specific}"
