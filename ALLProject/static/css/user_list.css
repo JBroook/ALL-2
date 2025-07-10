@@ -522,3 +522,7 @@ input.addUser {
 #delete-button:hover {
   background: #c7575b; 
 }
+
+.alert {
+    color: rgb(180, 0, 0)
+}
