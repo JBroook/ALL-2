@@ -248,7 +248,8 @@ def checkout(request):
                         if not key.startswith("_"): # skip keys set by the django system
                             del request.session[key]
                     request.session.modified = True
-                    return HttpResponseRedirect(reverse('sales'))
+                    
+                    return HttpResponseRedirect(reverse('print_payment',kwargs=Payment.objects.values("id").get(id=paid.id)['id']))
                     
                 except ObjectDoesNotExist:
                     messages.error(request, "1ERROR: One or more products in cart not found")
@@ -276,8 +277,8 @@ def removeItem(request,):
     print(request.session['cart'])
 
 def scanItem(request):
-    cap = cv2.VideoCapture(0)
-    # cap = cv2.VideoCapture('http://192.168.1.8:8080/video')
+    # cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture('http://10.3.227.189:8080/video')
     # cap = cv2.VideoCapture('http://192.168.1.8:8080/video')
     
     while cap.isOpened():
@@ -289,98 +290,102 @@ def scanItem(request):
             print("No Barcode/QR Code Detected")
         
         else:
-            for code in detectedCode:
-                if code.data != "":
-                    if code.type == "QRCODE":
-                        data = code.data.decode("utf-8").split('Barcode Number:')[-1]
-                        # print(type(data))
-                        print(data)
-                        product = Product.objects.get(barcode_number=data)
-                        print(product)
+            try:
+                for code in detectedCode:
+                    if code.data != "":
+                        if code.type == "QRCODE":
+                            data = code.data.decode("utf-8").split('Barcode Number: ')[-1]
+                            # print(type(data))
+                            print(data)
+                            product = Product.objects.get(barcode_number=data)
+                            print(product)
+                            
+                            # Check if cart quantity is more than existing stock quantity
+                            quantity = 1
+                            totalProduct = quantity
+                            for items in request.session['cart']:
+                                if product.id == items['item_code']:
+                                    totalProduct += items['quantity']
+
+                            if totalProduct > product.quantity:
+                                messages.error(request, "ERROR: Quantity exceeds available stock")
+                            else:
+                                # Show Warning alert if stock quantity reached alert_threshold
+                                actual_quantity = product.quantity - totalProduct
+                                if actual_quantity <= product.alert_threshold:
+                                    messages.error(request, "ALERT: LOW STOCK WARNING!")
+
+                                # Add to cart logic
+                                valueinCart = False
+                                for item in request.session['cart']:
+                                    if product.name == item['name']:
+                                        print("Cart Found")
+                                        print(item)
+                                        item['quantity'] += quantity
+                                        valueinCart = True
+
+                                if not valueinCart:
+                                    print("Not in Cart yet")
+                                    request.session['cart'].append({
+                                        'item_code' : product.id,
+                                        'name' : product.name,
+                                        'unit_price' : product.price,
+                                        'quantity' : quantity,
+                                        'total_price' : float(product.price*quantity)
+                                    })
+                                request.session.modified = True
+
+                            messages.success(request, f"Product Added: {product.name}")
+                            cap.release()
+                            return HttpResponseRedirect(reverse('sales'))
                         
-                        # Check if cart quantity is more than existing stock quantity
-                        quantity = 1
-                        totalProduct = quantity
-                        for items in request.session['cart']:
-                            if product.id == items['item_code']:
-                                totalProduct += items['quantity']
+                        else: # Barcode
+                            data = code.data.decode("utf-8")
+                            print(data)
+                            product = Product.objects.get(barcode_number=data)
+                            
+                            # Check if cart quantity is more than existing stock quantity
+                            quantity = 1
+                            totalProduct = quantity
+                            for items in request.session['cart']:
+                                if product.id == items['item_code']:
+                                    totalProduct += items['quantity']
 
-                        if totalProduct > product.quantity:
-                            messages.error(request, "ERROR: Quantity exceeds available stock")
-                        else:
-                            # Show Warning alert if stock quantity reached alert_threshold
-                            actual_quantity = product.quantity - totalProduct
-                            if actual_quantity <= product.alert_threshold:
-                                messages.error(request, "ALERT: LOW STOCK WARNING!")
+                            if totalProduct > product.quantity:
+                                messages.error(request, "ERROR: Quantity exceeds available stock")
+                            else:
+                                # Show Warning alert if stock quantity reached alert_threshold
+                                actual_quantity = product.quantity - totalProduct
+                                if actual_quantity <= product.alert_threshold:
+                                    messages.error(request, "ALERT: LOW STOCK WARNING!")
 
-                            # Add to cart logic
-                            valueinCart = False
-                            for item in request.session['cart']:
-                                if product.name == item['name']:
-                                    print("Cart Found")
+                                # Add to cart logic
+                                valueinCart = False
+                                for item in request.session['cart']:
                                     print(item)
-                                    item['quantity'] += quantity
-                                    valueinCart = True
+                                    if product.name == item['name']:
+                                        item['quantity'] += quantity
+                                        valueinCart = True
 
-                            if not valueinCart:
-                                print("Not in Cart yet")
-                                request.session['cart'].append({
-                                    'item_code' : product.id,
-                                    'name' : product.name,
-                                    'unit_price' : product.price,
-                                    'quantity' : quantity,
-                                    'total_price' : float(product.price*quantity)
-                                })
-                            request.session.modified = True
+                                if not valueinCart:
+                                    request.session['cart'].append({
+                                        'item_code' : product.id,
+                                        'name' : product.name,
+                                        'unit_price' : product.price,
+                                        'quantity' : quantity,
+                                        'total_price' : float(product.price*quantity)
+                                    })
+                                request.session.modified = True
 
-                        messages.success(request, f"Product Added: {product.name}")
-                        return HttpResponseRedirect(reverse('sales'))
-                    
-                    else: # Barcode
-                        data = code.data.decode("utf-8")
-                        print(data)
-                        product = Product.objects.get(barcode_number=data)
+                            messages.success(request, f"Product Added: {product.name}")
+                            cap.release()
+                            return HttpResponseRedirect(reverse('sales'))
+
+                        # cv2.putText(frame,str(code.data),(50,50),cv2.FONT_HERSHEY_COMPLEX,2,(0,255,255),2)
                         
-                        # Check if cart quantity is more than existing stock quantity
-                        quantity = 1
-                        totalProduct = quantity
-                        for items in request.session['cart']:
-                            if product.id == items['item_code']:
-                                totalProduct += items['quantity']
-
-                        if totalProduct > product.quantity:
-                            messages.error(request, "ERROR: Quantity exceeds available stock")
-                        else:
-                            # Show Warning alert if stock quantity reached alert_threshold
-                            actual_quantity = product.quantity - totalProduct
-                            if actual_quantity <= product.alert_threshold:
-                                messages.error(request, "ALERT: LOW STOCK WARNING!")
-
-                            # Add to cart logic
-                            valueinCart = False
-                            for item in request.session['cart']:
-                                print(item)
-                                if product.name == item['name']:
-                                    item['quantity'] += quantity
-                                    valueinCart = True
-
-                            if not valueinCart:
-                                request.session['cart'].append({
-                                    'item_code' : product.id,
-                                    'name' : product.name,
-                                    'unit_price' : product.price,
-                                    'quantity' : quantity,
-                                    'total_price' : float(product.price*quantity)
-                                })
-                            request.session.modified = True
-
-                        messages.success(request, f"Product Added: {product.name}")
-                        cap.release()
-                        return HttpResponseRedirect(reverse('sales'))
-
-                    # cv2.putText(frame,str(code.data),(50,50),cv2.FONT_HERSHEY_COMPLEX,2,(0,255,255),2)
-                    
-                    # cv2.imwrite("code.png",frame)
+                        # cv2.imwrite("code.png",frame)
+            except:
+                messages.error(request, "Product Scanning Failed, it is either not in inventory or is tampered.")
         
         cv2.imshow('scanner',frame)
         if cv2.waitKey(1) == ord('q'):
