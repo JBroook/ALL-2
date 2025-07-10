@@ -277,7 +277,7 @@ def removeItem(request,):
 
 def scanItem(request):
     cap = cv2.VideoCapture(0)
-    # cap = cv2.VideoCapture('http://192.168.1.8:8080/video')
+    cap = cv2.VideoCapture('http://10.3.227.189:8080/video')
     # cap = cv2.VideoCapture('http://192.168.1.8:8080/video')
     
     while cap.isOpened():
@@ -292,7 +292,7 @@ def scanItem(request):
             for code in detectedCode:
                 if code.data != "":
                     if code.type == "QRCODE":
-                        data = code.data.decode("utf-8").split('Barcode Number:')[-1]
+                        data = code.data.decode("utf-8").split('Barcode Number: ')[-1]
                         # print(type(data))
                         print(data)
                         product = Product.objects.get(barcode_number=data)

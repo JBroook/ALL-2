@@ -1,58 +1,80 @@
+<!DOCTYPE html>
 <html lang="en">
-    <head>
-        {% comment %} <meta>{%csrf_token%}</meta> {% endcomment %}
-        <title>Low stock alert</title>
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Mukta+Mahee:wght@200;300;400;500;600;700;800&family=Sansation:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
-
-        <style>
-            body, html{
-            font-family: "Mukta Mahee", sans-serif;
-            font-weight: 300;
-            font-style: normal;
-            }
-
-            #email-head {
-            height: fit-content;
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            }
-
-            #email-head img{
-            height: 90px;
-            margin: 0 10px 0 10px;
-            }
-
-            h1 {
-            margin: auto 0;
-            margin-left: 20px;
-            }
-
-            p {
-            font-size: 14px;
-            }
-        </style>
-    </head>
-    <body>
-        <div id="email-head">
-        <img src="https://i.imgur.com/oJvGtXv.png" alt="Warehub logo">
-        <h1>{{product.name}} is low in stock!</h1>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Low stock: {{product.name}}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            text-align: center;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .logo {
+            margin-bottom: 20px;
+        }
+        .logo img {
+            width: 150px;
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        p {
+            font-size: 1.2em;
+            line-height: 1.6;
+            margin: 10px 0;
+        }
+        a {
+            color: #7bac43;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .footer {
+            margin-top: 30px;
+            font-size: 0.9em;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" style="margin: 0; padding: 0; width: 100%; font-family: Arial, sans-serif; background-color: #F0ECDD;">
+        <!-- Full-width image section -->
+        <div class="logo" style="width: 100%; text-align: left; background-color: #F0ECDD;">
+            <img src="https://cdn.imgchest.com/files/45xcv92zpl7.png"
+                 alt="WareHub Logo" style="width: 100%; max-height: 150px; object-fit: cover; display: block; margin: 0;"
+            >
         </div>
-
-        <p>
-        {{product.name}} is currently low in stock. There are only {{product.quantity}} left.
-        </p>
-
-        <p>
-        This alert was generated automatically by WareHub according to {{product.name}}'s low stock alert threshold of {{product.alert_threshold}}.
+        <!-- Content section -->
+        <div style="padding: 20px; background-color: #FFFFFF;">
+            <h1 style="margin-top: 0; font-size: 24px; color: #333;">Low Stock Alert!</h1>
+            <p style="font-size: 16px; color: #555;">
+                {{product.name}} is currently low in stock. There are only {{product.quantity}} units left.
+            </p>
+            <p style="font-size: 16px; color: #555;">
+                This alert was generated automatically by WareHub according to {{product.name}}'s low stock alert threshold of {{product.alert_threshold}} minimum units.
         Thank you for using WareHub.
-        </p>
+            </p>
+        </div>
+        <!-- Footer section -->
+        <div class="footer" style="padding: 10px; background-color: #F0ECDD; text-align: center; font-size: 12px; color: #777;">
+            <p style="margin: 5px 0;">Email us: <a href="#" target="_blank" style="color: #7bac43;">warehub.co@gmail.com</a></p>
+        </div>
+    </div>
+</body>
 
-        <p>
-        Sincerely,<br>
-        WareHub Team.
-        </p>
-    </body>
 </html>

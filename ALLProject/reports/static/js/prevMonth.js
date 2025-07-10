@@ -36,6 +36,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     method: 'GET',
                     headers: {
                         'X-Requested-With': 'XMLHttpRequest',
+                        'X-Custom-Partial-Request': 'true'
                     },
                 })
                 .then(response => {

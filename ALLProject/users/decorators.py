@@ -3,6 +3,20 @@ from django.shortcuts import redirect
 from functools import wraps
 from .models import Employee
 from django.contrib import messages
+from django.http import HttpResponseBadRequest
+
+def ajax_only(view_func):
+    @wraps(view_func)
+    def _wrapped_view(request, *args, **kwargs):
+        if request.method=="POST":
+            has_pass = request.POST.get('has_pass')
+        else:
+            has_pass = request.GET.get('has_pass')
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest' or has_pass:
+            return view_func(request, *args, **kwargs)
+        return HttpResponseBadRequest("AJAX requests only.")
+    return _wrapped_view
+
 
 def role_required(allowed_roles):
     def decorator(view_func):

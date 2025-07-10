@@ -9,6 +9,10 @@ function sort_category(sort_method){
     sort_order[sort_method] = !sort_order[sort_method];
     sort_method = (sort_order[sort_method] ? "" : "-")+sort_method
     fetch(`/inventory/category_partial/?sort=${sort_method}`, {
+            headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-Custom-Partial-Request': 'true'
+        }
     })
     .then(response => response.text())
     .then(html => {
@@ -18,6 +22,10 @@ function sort_category(sort_method){
 
 function add_category(){
     fetch(`/inventory/category_form`, {
+            headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-Custom-Partial-Request': 'true'
+        }
     })
     .then(response => response.text())
     .then(html => {
@@ -40,6 +48,10 @@ function view_category(_category_id){
     }
 
     fetch(`/inventory/category_specific/` + _category_id, {
+            headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-Custom-Partial-Request': 'true'
+        }
     })
     .then(response => response.text())
     .then(html => {
@@ -49,6 +61,10 @@ function view_category(_category_id){
 
 function delete_category(_category_id){
     fetch(`/inventory/category_delete/` + _category_id, {
+            headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-Custom-Partial-Request': 'true'
+        }
     })
     .then(response => response.text())
     .then(html => {
@@ -58,6 +74,10 @@ function delete_category(_category_id){
 
 function edit_category(_category_id){
     fetch(`/inventory/category_edit/` + _category_id, {
+            headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-Custom-Partial-Request': 'true'
+        }
     })
     .then(response => response.text())
     .then(html => {

@@ -59,7 +59,7 @@ class Product(models.Model):
             self.barcode_number = ean.__str__()
         
         if not self.qr_code:    
-            qr_data = qrcode.make(f"Name: {self.name}\nCategory: {self.category}\nPrice: RM {self.price}\nBarcode Number: {self.barcode_number}")
+            qr_data = f"Name: {self.name}\nCategory: {self.category}\nPrice: RM {self.price}\nBarcode Number: {self.barcode_number}"
             qr_image = qrcode.make(qr_data)
 
             buffer = BytesIO()

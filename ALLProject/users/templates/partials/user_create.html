@@ -2,6 +2,9 @@
     <h2 class="title"> Add User </h2>
     <form method="POST" action="{% url 'user_create'%}">
         {% csrf_token %}
+        {{user_form.errors}}
+        {{employee_form.errors}}
+
         {% for field in user_form%}
             <div class="form-field">
                 <h3>{{field.label}}</h3>

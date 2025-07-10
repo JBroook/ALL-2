@@ -1,5 +1,9 @@
 function show_product(_product_id){
     fetch(`/inventory/product_info/${_product_id}`, {
+            headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-Custom-Partial-Request': 'true'
+        }
     })
     .then(response => response.text())
     .then(html => {
@@ -9,6 +13,10 @@ function show_product(_product_id){
 
 function add_product(){
     fetch(`/inventory/product_create`, {
+            headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-Custom-Partial-Request': 'true'
+        }
     })
     .then(response => response.text())
     .then(html => {
@@ -18,6 +26,10 @@ function add_product(){
 
 function edit_product(_product_id){
     fetch(`/inventory/product_update/${_product_id}`, {
+            headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-Custom-Partial-Request': 'true'
+        }
     })
     .then(response => response.text())
     .then(html => {
@@ -27,6 +39,10 @@ function edit_product(_product_id){
 
 function delete_product(_product_id){
     fetch(`/inventory/product_delete/${_product_id}`, {
+            headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-Custom-Partial-Request': 'true'
+        }
     })
     .then(response => response.text())
     .then(html => {
@@ -40,6 +56,10 @@ function filter_products(){
     const text = document.getElementById("text-search").value;
 
     fetch(`/inventory/product_list_partial/?category=${category}&availability=${availability}&text=${text}`, {
+            headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-Custom-Partial-Request': 'true'
+        }
     })  
     .then(response => response.text())
     .then(html => {
@@ -90,6 +110,10 @@ function select_products() {
         const text = document.getElementById("text-search").value;
 
         fetch(`/inventory/product_select_partial/?category=${category}&availability=${availability}&text=${text}`, {
+            headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-Custom-Partial-Request': 'true'
+        }
         })  
         .then(response => response.text())
         .then(html => {
@@ -97,6 +121,10 @@ function select_products() {
         });
 
         fetch(`/inventory/product_select_list`, {
+            headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-Custom-Partial-Request': 'true'
+        }
         })  
         .then(response => response.text())
         .then(html => {
@@ -126,7 +154,11 @@ function select_product(_product_id){
 
         select_list.push(_product_id)
 
-        fetch(`/inventory/product_info_json/${_product_id}`, {})
+        fetch(`/inventory/product_info_json/${_product_id}`, {
+            headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-Custom-Partial-Request': 'true'
+        }})
         .then(
             response => response.json()
         ).then(
@@ -167,7 +199,11 @@ function force_select_product(_product_id, mode){
 
             select_list.push(_product_id)
 
-            fetch(`/inventory/product_info_json/${_product_id}`, {})
+            fetch(`/inventory/product_info_json/${_product_id}`, {
+                headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-Custom-Partial-Request': 'true'
+            }})
             .then(
                 response => response.json()
             ).then(
@@ -214,13 +250,17 @@ function select_all(){
 
 function print_selected(){
     if(select_count>0){
-        window.location.href = `/inventory/product_print_selected/?ids=${ select_list.join(',') }`;
+        window.location.href = `/inventory/product_print_selected/?ids=${ select_list.join(',') }&has_pass=1`;
     }
 }
 
 function delete_selected(){
     if(select_count>0){
         fetch(`/inventory/product_delete_selected/?ids=${ select_list.join(',') }`, {
+            headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-Custom-Partial-Request': 'true'
+        }
         })
         .then(response => response.text())
         .then(html => {

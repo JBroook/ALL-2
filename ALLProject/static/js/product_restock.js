@@ -15,6 +15,10 @@ function refresh_history(_asc, _product_id){
     const newOrder = _asc ? "desc" : "asc"
 
     fetch(`/inventory/restock_order/?order=${newOrder}&product_id=${_product_id}`, {
+            headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-Custom-Partial-Request': 'true'
+        }
     })
     .then(response => response.text())
     .then(html => {

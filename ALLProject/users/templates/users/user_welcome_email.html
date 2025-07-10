@@ -1,5 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to WareHub!</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            text-align: center;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .logo {
+            margin-bottom: 20px;
+        }
+        .logo img {
+            width: 150px;
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        p {
+            font-size: 1.2em;
+            line-height: 1.6;
+            margin: 10px 0;
+        }
+        a {
+            color: #7bac43;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .footer {
+            margin-top: 30px;
+            font-size: 0.9em;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" style="margin: 0; padding: 0; width: 100%; font-family: Arial, sans-serif; background-color: #F0ECDD;">
+        <!-- Full-width image section -->
+        <div class="logo" style="width: 100%; text-align: left; background-color: #F0ECDD;">
+            <img src="https://cdn.imgchest.com/files/45xcv92zpl7.png"
+                 alt="WareHub Logo" style="width: 100%; max-height: 150px; object-fit: cover; display: block; margin: 0;"
+            >
+        </div>
+        <!-- Content section -->
+        <div style="padding: 20px; background-color: #FFFFFF;">
+            <h1 style="margin-top: 0; font-size: 24px; color: #333;">Welcome to WareHub!</h1>
+            <p style="font-size: 16px; color: #555;">Welcome to WareHub! An account associated with <a href="#" target="_blank" style="color: #7bac43;">{{user.email}}</a> has been created for you!
+      To get started, click on the link below and login to your new account. </p>
+      <p style="font-size: 16px; color: #555;">Username: {{user.username}} <br>
+      Password: {{first_password}}<br></p>
+            <p style="font-size: 16px; color: #555;"><a href="#" target="_blank" style="color: #7bac43;">http://{{domain}}{% url 'user_login' %}</a></p>
+            <p style="font-size: 16px; color: #555;"><strong>You will be prompted to change your password upon login.</strong> 
+            If clicking the link above doesn't work, please copy and paste the URL in a new browser
+            window instead.
+            </p>
+        </div>
+        <!-- Footer section -->
+        <div class="footer" style="padding: 10px; background-color: #F0ECDD; text-align: center; font-size: 12px; color: #777;">
+            <p style="margin: 5px 0;">Email us: <a href="#" target="_blank" style="color: #7bac43;">warehub.co@gmail.com</a></p>
+        </div>
+    </div>
+</body>
+
+</html>
+
+{% comment %} <!DOCTYPE html>
+<html lang="en">
   <head>
       <title>Welcome to WareHub!</title>
 
@@ -63,4 +146,4 @@
     </p>
   </body>
 
-</html>
+</html> {% endcomment %}

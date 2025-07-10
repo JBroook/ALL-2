@@ -1,5 +1,9 @@
 function filter_by_date(type){
   fetch(`/pos/history_partial/selection/?specific=${type}`, {
+        headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+        'X-Custom-Partial-Request': 'true'
+    }
   })
   .then(response => response.text())
   .then(html => {
@@ -28,6 +32,10 @@ function filter_custom_date(start_date, end_date){
     console.log("Valid dates")
 
     fetch(`/pos/history_partial/custom/?start=${start_date}&end=${end_date}`, {
+            headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-Custom-Partial-Request': 'true'
+        }
     })
     .then(response => response.text())
     .then(html => {
@@ -41,6 +49,10 @@ function filter_custom_date(start_date, end_date){
 
 function filter_payment(type){
   fetch(`/pos/history_partial/payment/?specific=${type}`, {
+            headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-Custom-Partial-Request': 'true'
+        }
     })  
     .then(response => response.text())
     .then(html => {
@@ -71,5 +83,9 @@ window.addEventListener("DOMContentLoaded", (event) => {
 
 
 function print_receipt(id){
-  fetch(`/pos/print_payment/?id=${id}`);
+  fetch(`/pos/print_payment/?id=${id}`, {
+      headers: {
+      'X-Requested-With': 'XMLHttpRequest',
+      'X-Custom-Partial-Request': 'true'
+  }});
 }

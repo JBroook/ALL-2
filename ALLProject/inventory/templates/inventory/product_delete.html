@@ -2,7 +2,7 @@
     <h2>Delete {{delete_victim}}?</h2>
     <p>Do you want to delete {{delete_victim}}? <strong>Deleted products are permanently gone.</strong></p>
     <div class="button-row">
-        <form method="POST" action="{{delete_link}}">
+        <form method="POST" action="{{delete_link}}?has_pass=1">
             {%csrf_token%}
             <button name="action" value="cancel">Cancel</button>
             <button id="delete-button" type="submit" name="action" value="confirm">Confirm</button>

@@ -2,7 +2,7 @@
     <h2>Delete {{category.name}}?</h2>
     <p>Do you want to delete this category? <strong>All products of this category will be deleted.</strong></p>
     <div class="button-row">
-        <form method="POST" action="{% url 'category_delete' category.id%}">
+        <form method="POST" action="{% url 'category_delete' category.id%}?has_pass=1">
             {%csrf_token%}
             <div class="button-row">
                 <button type="submit" name="action" value="cancel">Cancel</button>

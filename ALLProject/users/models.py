@@ -3,6 +3,7 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
+from django.contrib.sites.shortcuts import get_current_site
 
 # Create your models here.
 class Employee(models.Model):
@@ -94,12 +95,16 @@ class Employee(models.Model):
         msg.attach_alternative(html_content, "text/html")
         msg.send()
 
-    def send_initiation_email(self, password):
+    def send_initiation_email(self, password, request):
+        current_site = get_current_site(request)
+        domain = current_site.domain
+
         text_content = render_to_string(
             "users/user_welcome_text.txt",
             context={
                 "user": self.user, 
-                "first_password": password
+                "first_password": password,
+                "domain" : domain
                 },
         )
 
@@ -107,7 +112,8 @@ class Employee(models.Model):
             "users/user_welcome_email.html",
             context={
                 "user": self.user, 
-                "first_password": password
+                "first_password": password,
+                "domain" : domain
                 },
         )
 

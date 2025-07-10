@@ -13,7 +13,7 @@
   {% endif%}
   
   <form method="POST" enctype="multipart/form-data" 
-  {%if create%} action="{% url 'product_create' %}" {%else%} action="{% url 'product_update' product.id%}" {%endif%}>
+  {%if create%} action="{% url 'product_create' %}" {%else%} action="{% url 'product_update' product.id%}?has_pass=1" {%endif%}>
     {% csrf_token %}
     <div class="all-fields">
       <div class="field-wrapper">

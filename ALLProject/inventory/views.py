@@ -6,7 +6,7 @@ from .forms import ProductForm, RestockForm, CategoryForm
 from django.conf import settings
 from django.db.models import Count, Avg, Sum, Prefetch, Q
 from django.urls import reverse
-from users.decorators import role_required
+from users.decorators import role_required, ajax_only
 from django.contrib import messages
 from django.http import HttpResponse
 
@@ -31,6 +31,7 @@ def product_list_view(request):
         }
     )
 
+#@ajax_only
 def product_list_partial_view(request):
     products = Product.objects.all()
     category = request.GET.get('category')
@@ -62,6 +63,7 @@ def product_list_partial_view(request):
         }
     )
 
+#@ajax_only
 def product_select_partial_view(request):
     products = Product.objects.all()
     category = request.GET.get('category')
@@ -93,6 +95,7 @@ def product_select_partial_view(request):
         }
     )
 
+#@ajax_only
 def product_info_view(request, product_id):
     product = Product.objects.get(pk=product_id)
         
@@ -107,6 +110,7 @@ def product_info_view(request, product_id):
         }
     )
 
+# #@ajax_only
 def product_create_view(request):
     form = ProductForm()
     page = "nav-inventory"
@@ -130,6 +134,7 @@ def product_create_view(request):
         'page': page
     })
 
+#@ajax_only
 def product_update_view(request, product_id):
     product = Product.objects.get(pk=product_id)
     form = ProductForm(instance=product)
@@ -206,6 +211,7 @@ def product_restock_view(request, product_id):
         }
         )
 
+#@ajax_only
 def restock_order_view(request):
     sort_order = request.GET.get('order', 'asc')
     product_id = request.GET.get('product_id')
@@ -234,6 +240,7 @@ def category_view(request):
             'page': page
         })
 
+#@ajax_only
 def category_partial_view(request):
     sort_method = request.GET.get('sort')
 
@@ -252,6 +259,7 @@ def category_partial_view(request):
             'categories' : categories
         })
 
+#@ajax_only
 def category_form_view(request):
     form = CategoryForm()
     page = "nav-category"
@@ -267,6 +275,7 @@ def category_form_view(request):
         }
         )
 
+#@ajax_only
 def category_create_view(request):
     if request.method=="POST":
         form = CategoryForm(request.POST)
@@ -277,6 +286,7 @@ def category_create_view(request):
             messages.add_message(request, messages.ERROR, "Failed!")
     return redirect('category')
 
+#@ajax_only
 def category_specific_view(request, category_id):
     category = Category.objects.annotate(
         product_types=Count("product"),
@@ -295,6 +305,7 @@ def category_specific_view(request, category_id):
         }
     )
 
+#@ajax_only
 def category_delete_view(request, category_id):
     category = Category.objects.get(pk=category_id)
         
@@ -317,6 +328,7 @@ def category_delete_view(request, category_id):
         }
     )
 
+#@ajax_only
 def category_edit_view(request, category_id):
     category = Category.objects.get(pk=category_id)
     form = CategoryForm(instance=category)
@@ -343,11 +355,13 @@ def category_edit_view(request, category_id):
         }
     )
 
+#@ajax_only
 def product_print_view(request, product_id):
     product = Product.objects.get(pk=product_id)
     
     return product.print_codes()
 
+#@ajax_only
 def product_select_list_view(request):
 
     return render(
@@ -355,6 +369,7 @@ def product_select_list_view(request):
         'partials/product_select_list.html'
     )
 
+#@ajax_only
 def product_info_json_view(request, product_id):
     product = Product.objects.get(pk=product_id)
     return JsonResponse(
@@ -362,6 +377,7 @@ def product_info_json_view(request, product_id):
             'name' : product.name
         })
 
+#@ajax_only
 def product_print_selected_view(request):
     ids_str = request.GET.get('ids', '')
     product_ids = list(map(int, ids_str.split(','))) if ids_str else []
@@ -403,9 +419,7 @@ def product_delete_selected_view(request):
 
         request.session['select_product_ids'] = product_ids
         request.session.modified = True
-    
-    print("shit",len(product_ids))
-
+        
     return render(
         request, 
         "inventory/product_delete.html", 

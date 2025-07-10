@@ -38,7 +38,7 @@
     <div id="detail-buttons">
         <button class="normal-button" onclick="edit_product({{chosen_product.id}})">
         Edit</button>
-        <button class="normal-button" onclick="window.location.href='{% url 'product_print' chosen_product.id %}'">Print</button>
+        <button class="normal-button" onclick="window.location.href='{% url 'product_print' chosen_product.id %}?has_pass=1'">Print</button>
         <button class="normal-button" onclick="window.location.href='{% url 'product_restock' chosen_product.id %}'">
         Restock</button>
         <button id="delete-button" onclick="delete_product({{chosen_product.id}})">Delete</button>

@@ -179,7 +179,7 @@ def ManagerReportView(request):
             top_product_data = [['Category','Product','Sold','Revenue(RM)']] + list(product.values() for product in top_product_data)
             
             print(top_product_data)
-            print_pdf(title,report_type,period,user,report_title,report_col,report_data,data_title,data_col,top_product_data)
+            return print_pdf(title,report_type,period,user,report_title,report_col,report_data,data_title,data_col,top_product_data)
         else:
             avg_transact_revenue = 0
             messages.error(request,"ERROR: There are no transactions done today")
@@ -234,8 +234,8 @@ def ManagerReportView(request):
             # print("New Product: ",new_product)
             new_product_data.append(new_product)
 
-        print_pdf(title,report_type,period,user,report_title,report_col,report_data,data_title,data_col,new_product_data)
-        return HttpResponseRedirect(reverse('report'))
+        return print_pdf(title,report_type,period,user,report_title,report_col,report_data,data_title,data_col,new_product_data)
+        # return HttpResponseRedirect(reverse('report'))
     
     # Inventory Report
     if 'stock_report' in request.POST:
@@ -286,8 +286,8 @@ def ManagerReportView(request):
 
         inventory_data = [["Product","Last Restock On","Quantity","Status"]] + list(data.values() for data in product_data) + no_new_restock
 
-        print_pdf(title,report_type,period,user,report_title,report_col,report_data,data_title,data_col,inventory_data)
-        return HttpResponseRedirect(reverse('report'))
+        return print_pdf(title,report_type,period,user,report_title,report_col,report_data,data_title,data_col,inventory_data)
+        # return HttpResponseRedirect(reverse('report'))
     
     page = "nav-report"
 
@@ -569,11 +569,12 @@ def generate_report(title,report_type,period,user,report_title,report_col,report
 def print_pdf(title,report_type,period,user,report_title,report_col,report_detail,data_title,data_col,data):
     response = generate_report(title,report_type,period,user,report_title,report_col,report_detail,data_title,data_col,data)
     
-    if os.name == 'posix':  # For Linux/macOS
-        os.system(f"{title}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf")
-    if os.name == 'nt':  # For Windows
-        buffer = response.content
-        with open(f"{title}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf", "wb") as f:
-            f.write(buffer)
-        os.startfile(f"{title}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf", "print")
+    # if os.name == 'posix':  # For Linux/macOS
+    #     os.system(f"{title}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf")
+    # if os.name == 'nt':  # For Windows
+    #     buffer = response.content
+    #     filename = f"{title}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf"
+    #     with open(filename, "wb") as f:
+    #         f.write(buffer)
+    #     os.startfile(filename, "print")
     return response

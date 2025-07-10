@@ -3,7 +3,7 @@ from .models import Employee
 from .forms import EmployeeForm, UserForm, UserEditForm
 from django.db.models import Q
 from django.urls import reverse, reverse_lazy
-from .decorators import role_required
+from .decorators import role_required, ajax_only
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.contrib import messages
@@ -57,6 +57,7 @@ def user_list_view(request):
         }
         )
 
+#@ajax_only
 def user_list_partial_view(request):
     selected_role = request.GET.get('role')
     selected_role = None if selected_role=='any' else selected_role
@@ -76,6 +77,7 @@ def user_list_partial_view(request):
             'page':page
             })
 
+#@ajax_only
 def user_list_search_view(request):
     search_input = request.GET.get('input').strip().split()
     page = "nav-users"
@@ -102,6 +104,7 @@ def user_list_search_view(request):
             })
 
 
+#@ajax_only
 def user_create_form_view(request):
     employee_form = EmployeeForm()
     user_form = UserForm()
@@ -117,6 +120,7 @@ def user_create_form_view(request):
             }
         )
 
+#@ajax_only
 def user_create_view(request):
     employee_form = EmployeeForm()
     user_form = UserForm()
@@ -131,13 +135,14 @@ def user_create_view(request):
             new_employee = employee_form.save(commit=False)
             new_employee.user = new_user
             new_employee.save()
-            new_employee.send_initiation_email(password)
+            new_employee.send_initiation_email(password, request)
             messages.add_message(request, messages.SUCCESS, "User added!")
         else:
             messages.add_message(request, messages.ERROR, "Failed!")
         
     return redirect('user_list')
 
+#@ajax_only
 def user_edit_view(request, employee_id):
     employee = Employee.objects.get(pk=employee_id)
     user = employee.user
@@ -155,6 +160,7 @@ def user_edit_view(request, employee_id):
         
     return redirect('user_list')
 
+#@ajax_only
 def user_edit_form_view(request, employee_id):
     employee = Employee.objects.get(pk=employee_id)
     employee_form = EmployeeForm(instance=employee)
@@ -172,6 +178,7 @@ def user_edit_form_view(request, employee_id):
             }
         )
 
+#@ajax_only
 def user_info_view(request, employee_id):
     employee = Employee.objects.get(pk=employee_id)
     page = "nav-users"
@@ -185,6 +192,7 @@ def user_info_view(request, employee_id):
         }
     )
 
+#@ajax_only
 def user_delete_view(request, employee_id):
     employee = Employee.objects.get(pk=employee_id)
     user = employee.user
