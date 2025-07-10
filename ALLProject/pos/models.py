@@ -40,9 +40,9 @@ class Payment(models.Model):
     tax = models.FloatField(default=0.00)
     discount = models.FloatField(default=0.00)
     total_cost = models.FloatField(default=0.00,null=False)
-    card_info = models.CharField(max_length=256, null=True)
-    expiry = models.CharField(max_length=256,null=True)
-    cvv = models.CharField(max_length=256,null=True)
+    card_info = models.CharField(max_length=255, null=True)
+    expiry = models.CharField(max_length=255,null=True)
+    cvv = models.CharField(max_length=255,null=True)
     timeStamp = models.DateTimeField(auto_now_add=True)
 
     def save(self, *args, **kwargs):

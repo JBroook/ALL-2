@@ -48,7 +48,6 @@ class CheckOutForm(forms.Form):
                                  'class':'card-info sec expiry', 
                                  'id':'cardExp', 
                                  'placeholder':'MM/YY',
-                                 'pattern': '[0-9]*',
                                  'inputmode': 'numeric',
                                  'title': 'Format: XX/XX',
                                  }))
