@@ -100,7 +100,7 @@ def ManagerReportView(request):
     total_transacts = 0
     if 'change-monthly' in request.POST:
         if request.POST['change-monthly'] == "1":
-            show_transacts = Payment.objects.filter(timeStamp__month = today.month).values()
+            show_transacts = Payment.objects.filter(timeStamp__month = today.month).values('id','payment_method','total_cost','employeeID_id__user_id__username','timeStamp')
             products_sold = CartItem.objects.all().filter(cart_id__timeStamp__month = today.month).aggregate(sold=Sum('quantity'))
             for i in show_transacts:
                 total_transacts += 1
@@ -108,7 +108,7 @@ def ManagerReportView(request):
             request.session['day_month'] = "month"
             
         elif request.POST['change-monthly'] == "0":
-            show_transacts = Payment.objects.filter(timeStamp__day = today.day).values()
+            show_transacts = Payment.objects.filter(timeStamp__day = today.day).values('id','payment_method','total_cost','employeeID_id__user_id__username')
             products_sold = CartItem.objects.all().filter(cart_id__timeStamp__month = today.day).aggregate(sold=Sum('quantity'))
             for i in show_transacts:
                 total_transacts += 1
@@ -117,13 +117,13 @@ def ManagerReportView(request):
     
     else:
         if request.session['day_month'] == "day":
-            show_transacts = Payment.objects.filter(timeStamp__day = today.day).values()
+            show_transacts = Payment.objects.filter(timeStamp__day = today.day).values('id','payment_method','total_cost','employeeID_id__user_id__username')
             products_sold = CartItem.objects.all().filter(cart_id__timeStamp__month = today.day).aggregate(sold=Sum('quantity'))
             for i in show_transacts:
                 total_transacts += 1
                 total_revenue += float(i['total_cost'])
         elif request.session['day_month'] == "month":
-            show_transacts = Payment.objects.filter(timeStamp__month = today.month).values()
+            show_transacts = Payment.objects.filter(timeStamp__month = today.month).values('id','payment_method','total_cost','employeeID_id__user_id__username')
             products_sold = CartItem.objects.all().filter(cart_id__timeStamp__month = today.month).aggregate(sold=Sum('quantity'))
             for i in show_transacts:
                 total_transacts += 1

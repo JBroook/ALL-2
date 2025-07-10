@@ -31,6 +31,7 @@
                 <thead class="transac-table">
                     <tr>
                         <th> Transaction ID </th>
+                        <th> Employee </th>
                         <th> Payment Method </th>
                         <th> Timestamp </th>
                         <th> Amount </th>
@@ -41,6 +42,7 @@
                         {% for items in transacts %}
                             <tr style="height:10%;">
                                 <td>{{items.id}}</td>
+                                <td>{{items.employeeID_id__user_id__username}}</td>
                                 <td>{{items.payment_method}}</td>
                                 <td>{{items.timeStamp}}</td>
                                 <td>RM {{items.total_cost|floatformat:2}}</td>
@@ -61,7 +63,7 @@
         
         <div id="transac-total-box">
             <h3 id="transac-total"> Total: </h3>
-            <h3 id="revenue">RM {{total_revenue}}</h3>
+            <h3 id="revenue">RM {{total_revenue|floatformat:2}}</h3>
         </div>
         <form action="" method="post" id="sales_report">
             {% csrf_token %}
