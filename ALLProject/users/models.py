@@ -6,7 +6,7 @@ from django.template.loader import render_to_string
 
 # Create your models here.
 class Employee(models.Model):
-    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    user = models.OneToOneField(User,on_delete=models.CASCADE)
     role = models.CharField(
         choices=[
             ('cashier', 'Cashier'),
@@ -15,6 +15,7 @@ class Employee(models.Model):
         ]
     )
     virgin_login = models.BooleanField(default=True)
+    active = models.BooleanField(default=False)
     
     def get_role_options(self):
         options = [
@@ -88,6 +89,33 @@ class Employee(models.Model):
             text_content,
             None,
             [manager.user.email for manager in managers],
+        )
+
+        msg.attach_alternative(html_content, "text/html")
+        msg.send()
+
+    def send_initiation_email(self, password):
+        text_content = render_to_string(
+            "users/user_welcome_text.txt",
+            context={
+                "user": self.user, 
+                "first_password": password
+                },
+        )
+
+        html_content = render_to_string(
+            "users/user_welcome_email.html",
+            context={
+                "user": self.user, 
+                "first_password": password
+                },
+        )
+
+        msg = EmailMultiAlternatives(
+            "Welcome to WareHub!",
+            text_content,
+            None,
+            [self.user.email],
         )
 
         msg.attach_alternative(html_content, "text/html")

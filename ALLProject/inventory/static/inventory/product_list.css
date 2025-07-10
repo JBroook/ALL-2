@@ -91,17 +91,15 @@ main {
 
 .product {
   width: 90%;
-  /* height: 210px; */
   aspect-ratio: 262/210;
   background-color: #C3B29980;
-  margin: 2vh 1vw 2vh 1vw;
+  margin: 2vh 0.8vw 2vh 0.8vw;
   border: 1px solid #BCBCBC;
-  border-radius: 10px;
+  border-radius: 0.5vw;
   display: flex;
   justify-content: space-between;
   flex-direction: column;
   align-items: flex-end;
-  overflow: hidden;
 }
 
 .top-section {
@@ -148,6 +146,7 @@ a.fill-div {
   background-color: white;
   width: 100%;
   height: 18%;
+  border-radius: 0.5vw;
 }
 
 .product-name h3{
@@ -332,9 +331,10 @@ a.fill-div {
 .product-form {
   display: flex;
   flex-flow: column;
-  width: 460px;
+  width: 30vw;
+  min-height: 20vh;
   background-color: white;
-  border-radius: 5%;
+  border-radius: 1vw;
   margin: 20px;
   box-shadow: 0px 1px 5px #828282;
   flex-direction: column;
@@ -533,4 +533,75 @@ form {
   border-radius: 0.2vw;
   background-color: #C3B299;
   cursor: pointer;
+}
+
+#select-button {
+  border-style: none;
+  margin: 0 1vw 1vw 0;
+  background-color: white;
+  cursor: pointer;
+  border-radius: 0.5vw;
+}
+
+#select-button:hover {
+  background-color: rgb(177, 177, 177);
+}
+
+.select-icon{
+  z-index: 1;
+  position: relative;
+  bottom: 1vw;
+  left: 1vw;
+  height: 0;
+}
+
+.select-icon img{
+  width: 2.25vw;
+}
+
+#select-list {
+  list-style-type: none;
+  text-align: center;
+  min-height: 5vh;
+  height: fit-content;
+  margin-bottom: 4vh;
+}
+
+#select-list li{
+  font-size: 1.25vw;
+}
+
+.select-buttons button{
+  width: 150px;
+  height: 40px;
+  border-radius: 15px;
+  border: none;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 10px 20px 10px;
+  background-color: #e8f4d4;
+  cursor: pointer;
+}
+
+.select-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  width: 100%;
+  height: 8vh;
+}
+
+.select-buttons button:hover {
+  background: #CDE7A1; 
+}
+
+#delete-selected-button {
+  background: #E8656A;
+  color: white;
+}
+
+#delete-selected-button:hover {
+  background: #c7575b; 
 }

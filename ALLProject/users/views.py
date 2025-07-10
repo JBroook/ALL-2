@@ -18,6 +18,11 @@ class CustomLoginView(LoginView):
     def form_valid(self, form):
         response = super().form_valid(form)
         messages.add_message(self.request, messages.SUCCESS, "Login successful!")
+
+        print("Shit",self.request.user.username)
+        employee = Employee.objects.get(user=self.request.user)
+        employee.active = True
+        employee.save()
         
         return response
     
@@ -30,9 +35,8 @@ class CustomLoginView(LoginView):
         employee = Employee.objects.get(user=self.request.user)
 
         if employee.virgin_login:
-            print("Virgin account")
             return reverse_lazy('password_change')
-            
+
         
         return reverse_lazy('home')
     
@@ -120,11 +124,14 @@ def user_create_view(request):
     if request.method=="POST":
         user_form = UserForm(request.POST)
         if user_form.is_valid():
+            password = user_form.cleaned_data['password1']
             new_user = user_form.save()
             employee_form = EmployeeForm(request.POST)
+
             new_employee = employee_form.save(commit=False)
             new_employee.user = new_user
             new_employee.save()
+            new_employee.send_initiation_email(password)
             messages.add_message(request, messages.SUCCESS, "User added!")
         else:
             messages.add_message(request, messages.ERROR, "Failed!")
@@ -214,6 +221,10 @@ def home_view(request):
     )
 
 def logout_view(request):
+    if request.user.is_authenticated:
+        employee = Employee.objects.get(user=request.user)
+        employee.active = False
+        employee.save()
     logout(request)
     
     messages.add_message(request, messages.SUCCESS, "Logout successful!")

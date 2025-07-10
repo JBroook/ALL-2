@@ -1,0 +1,16 @@
+Welcome to WareHub! An account associated with {{user.email}} has been created for you!
+To get started, click on the link below and login to your new account.
+
+Username: {{user.username}}
+Password: {{first_password}}
+
+You will be prompted to change your password upon your first login.
+
+
+{{ protocol }}://{{ domain }}{% url 'user_login' %}
+
+If clicking the link above doesn't work, please copy and paste the URL in a new browser
+window instead.
+
+Sincerely,
+WareHub Team.

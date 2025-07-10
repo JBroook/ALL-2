@@ -9,7 +9,6 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, redirect
 from django.db.models import Sum
 
-import datetime
 import cv2
 from pyzbar.pyzbar import decode
 import os
@@ -394,7 +393,8 @@ def scanItem(request):
 
 
 def cashierHistoryView(request):
-    payments = Payment.objects.order_by('-timeStamp').annotate(
+    employee = Employee.objects.get(user=request.user)
+    payments = Payment.objects.filter(employeeID=employee).order_by('-timeStamp').annotate(
         items_sold=Sum('cart__cart_items__quantity')
     )
 
@@ -425,61 +425,9 @@ def date_filter_view(request):
     )
 
 def cashierHistoryPartialView(request, type):
-    nothing_message = "No sales found matching these filters"
-
-    payments = Payment.objects.order_by('-timeStamp').annotate(
-        items_sold=Sum('cart__cart_items__quantity')
-    )
-
-    payments_by_date = {}
-
-    specific = request.GET.get('specific')
-
-    upper_bound = datetime.date.today()
-    lower_bound = datetime.date.today() - datetime.timedelta(days=100)
-
-    if type=='selection':
-        match specific:
-            case 'today':
-                upper_bound = datetime.date.today()
-                lower_bound = datetime.date.today()
-                nothing_message = "No sales made today"
-            case 'week':
-                upper_bound = datetime.date.today()
-                lower_bound = datetime.date.today() - datetime.timedelta(days=7)
-                nothing_message = "No sales made in the last 7 days"
-            case 'month':
-                upper_bound = datetime.date.today()
-                lower_bound = datetime.date.today() - datetime.timedelta(days=30)
-                nothing_message = "No sales made in the past month"
-    elif type=='custom':
-        start_date = request.GET.get('start')
-        end_date = request.GET.get('end')
-        upper_bound = datetime.datetime.strptime(end_date, "%Y-%m-%d").date()
-        lower_bound = datetime.datetime.strptime(start_date, "%Y-%m-%d").date()
-        nothing_message = f"No sales made between {lower_bound} and {upper_bound}"
-    elif type=='payment':
-        payments = Payment.objects.filter(payment_method=specific).order_by('-timeStamp').annotate(
-            items_sold=Sum('cart__cart_items__quantity')
-        )
-        nothing_message = f"No sales made with {specific}"
-
-        payments_by_date = {}
-
-
-    for payment in payments:
-        i_date = payment.timeStamp.date()
-
-        print("Lower:",lower_bound)
-        print("Date:",i_date)
-        print("Upper:",upper_bound)
-        if not (lower_bound <= i_date <= upper_bound):
-            continue
-
-        if i_date not in payments_by_date:
-            payments_by_date[i_date] = []
-
-        payments_by_date[i_date].append(payment)
+    filter_results = Payment.filter(request, type)
+    payments_by_date = filter_results[0]
+    nothing_message = filter_results[1]
 
     return render(
         request,

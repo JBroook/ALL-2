@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <title>Welcome to WareHub!</title>
+
+      <style>
+        body, html{
+          font-family: "Mukta Mahee", sans-serif;
+          font-weight: 300;
+          font-style: normal;
+        }
+
+        #email-head {
+          height: fit-content;
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+        }
+
+        #email-head img{
+          height: 90px;
+          margin: 0 10px 0 10px;
+        }
+
+        h1 {
+          margin: auto 0;
+          margin-left: 20px;
+        }
+
+        p {
+          font-size: 14px;
+        }
+    </style>
+  </head>
+  <body>
+    <div id="email-head">
+      <img src="https://i.imgur.com/oJvGtXv.png" alt="Warehub logo">
+      <h1>Welcome to WareHub!</h1>
+    </div>
+
+    <p>
+      Welcome to WareHub! An account associated with {{user.email}} has been created for you!
+      To get started, click on the link below and login to your new account.
+    </p>
+
+    <p>
+      Username: {{user.username}} <br>
+      Password: {{first_password}}<br>
+
+      <strong>You will be prompted to change your password upon your first login.</strong>
+    </p>
+
+    <p>http://127.0.0.1:8000{% url 'user_login' %}</p>
+
+    <p>
+    If clicking the link above doesn't work, please copy and paste the URL in a new browser
+    window instead.
+    </p>
+
+    <p>
+    Sincerely,<br>
+    WareHub Team.
+    </p>
+  </body>
+
+</html>

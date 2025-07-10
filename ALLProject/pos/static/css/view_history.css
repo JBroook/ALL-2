@@ -11,7 +11,16 @@ h1,h4 {
     margin-bottom: 1%;
     padding-top: 1%;
     padding-left: 2%;
+    /* font-family: "Mukta Mahee", sans-serif; /*
+    font-weight: 300;
+    font-style: normal; */
 }
+
+.title {
+    font-family: "Mukta Mahee", sans-serif; 
+    font-style: normal;
+}
+
 h3 {
     font-family: "Mukta Mahee", sans-serif;
     font-weight: 300;

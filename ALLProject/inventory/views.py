@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
 from .models import Product, Category, Restock
 from .forms import ProductForm, RestockForm, CategoryForm
@@ -8,8 +8,10 @@ from django.db.models import Count, Avg, Sum, Prefetch, Q
 from django.urls import reverse
 from users.decorators import role_required
 from django.contrib import messages
-
 from django.http import HttpResponse
+
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import A4
 
 
 @role_required(['admin','manager'])
@@ -54,6 +56,37 @@ def product_list_partial_view(request):
     return render(
         request,
         'partials/product_list_partial.html',
+        context={
+            'products' : products,
+            'page': page
+        }
+    )
+
+def product_select_partial_view(request):
+    products = Product.objects.all()
+    category = request.GET.get('category')
+    availability = request.GET.get('availability')
+    text = request.GET.get('text')
+
+    if category!='none':
+        products = products.filter(category__name=category)
+
+    if availability!='none':
+        info = {
+            'low':5,
+            'zero':0
+        }
+        products = products.filter(quantity__lte=info[availability])
+
+    print(text)
+    if text:
+        products = products.filter(name__icontains=text)
+
+    page = "nav-inventory"
+    
+    return render(
+        request,
+        'partials/product_list_select.html',
         context={
             'products' : products,
             'page': page
@@ -123,7 +156,6 @@ def product_update_view(request, product_id):
 
 def product_delete_view(request, product_id):
     product = Product.objects.get(pk=product_id)
-    page = "nav-inventory"
 
     if request.method=="POST":
         action_type = request.POST.get('action')
@@ -136,7 +168,14 @@ def product_delete_view(request, product_id):
                 messages.add_message(request, messages.SUCCESS, "Product deleted!")
         return redirect("product_list")
     
-    return render(request, "inventory/product_delete.html", context={"product":product,'page':page})
+    return render(
+        request, 
+        "inventory/product_delete.html", 
+        context={
+            "product":product,
+            "delete_victim" : product.name,
+            "delete_link" : reverse('product_delete', args=[product.id])
+            })
 
 def product_restock_view(request, product_id):
     product = Product.objects.get(pk=product_id)
@@ -147,11 +186,11 @@ def product_restock_view(request, product_id):
 
     if request.method=="POST":
         form = RestockForm(request.POST)
+        form.product_id = product_id
         if form.is_valid:
             restock = form.save(commit=False)
-            restock.product = product
-            product.quantity += restock.units
-            product.save()
+            restock.product = Product.objects.get(pk=product_id)
+            restock.change_quantity()
             restock.save()
             messages.add_message(request, messages.SUCCESS, "Product restocked!")
             return redirect("product_list")
@@ -308,3 +347,69 @@ def product_print_view(request, product_id):
     product = Product.objects.get(pk=product_id)
     
     return product.print_codes()
+
+def product_select_list_view(request):
+
+    return render(
+        request,
+        'partials/product_select_list.html'
+    )
+
+def product_info_json_view(request, product_id):
+    product = Product.objects.get(pk=product_id)
+    return JsonResponse(
+        {
+            'name' : product.name
+        })
+
+def product_print_selected_view(request):
+    ids_str = request.GET.get('ids', '')
+    product_ids = list(map(int, ids_str.split(','))) if ids_str else []
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="product_x{len(product_ids)}_multicode.pdf"'
+
+    p = canvas.Canvas(response, pagesize=A4)
+
+    for product_id in product_ids:
+        product = Product.objects.get(pk=product_id)
+        product.print_code_to(p)
+
+    p.save()
+
+    return response
+
+def product_delete_selected_view(request):
+    if request.method=="POST":
+        action_type = request.POST.get('action')
+        if action_type=='confirm':
+            try:
+                product_ids = request.session.get('select_product_ids', [])
+
+                print("shi",len(product_ids))
+
+                for product_id in product_ids:
+                    product = Product.objects.get(pk=product_id)
+                    product.delete()
+                    print("del",product.name)
+            except Exception as e:
+                messages.add_message(request, messages.ERROR, "Cannot delete!")
+            else:
+                messages.add_message(request, messages.SUCCESS, "Product deleted!")
+        return redirect("product_list")
+    else:
+        ids_str = request.GET.get('ids', '')
+        product_ids = list(map(int, ids_str.split(','))) if ids_str else []
+
+        request.session['select_product_ids'] = product_ids
+        request.session.modified = True
+    
+    print("shit",len(product_ids))
+
+    return render(
+        request, 
+        "inventory/product_delete.html", 
+        context={
+            "delete_victim" : f"these {len(product_ids)} products",
+            "delete_link" : reverse('product_delete_selected')
+            })
