@@ -4,7 +4,7 @@
     left: 7%;
 
     width: 38%;
-    height: 34%;
+    height: 40%;
 
     background-color: rgb(255, 255, 245);
     border-radius: 20px;
@@ -18,5 +18,5 @@
 
 #chartContainer {
     position: absolute;
-    top: 6%;
+    top: 5%;
 }

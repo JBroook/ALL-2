@@ -1,6 +1,6 @@
 .container.product {
     display: flex;
-    top: 142vh;
+    top: 150vh;
     padding-bottom: 9vh;
 }
 
@@ -13,15 +13,17 @@
 
 #show-product {
     display: flex;
-    overflow-x: scroll;
-    overflow-y: hidden;
+    overflow: hidden;
     justify-self: center;
 
     margin: 0;
     padding-left: 0.5em;
 
     width: 96%;
-    height: 80%
+    height: 82%
+}
+#show-product:hover {
+    overflow-x: scroll;
 }
 
 .show-product {

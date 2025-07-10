@@ -1,6 +1,6 @@
 .container.stocks {
     display: flex;
-    top: 88vh;
+    top: 96vh;
     padding-bottom: 3%;
 }
 
@@ -36,6 +36,9 @@
 #stocks-table-box {
     width: 100%;
     height: 82%;
+    overflow: hidden;
+}
+#stocks-table-box:hover {
     overflow-y: scroll;
 }
 

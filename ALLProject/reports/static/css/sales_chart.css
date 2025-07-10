@@ -14,8 +14,12 @@
 #sales-box .column {
     margin: auto;
     width: 90%;
-    height: 90%;
+    height: 100%;
     padding-bottom: 5%;
+
+    font-family: "Mukta Mahee", sans-serif;
+    font-weight: 150;
+    font-style: normal;
 }
 
 #sales-box tbody{
