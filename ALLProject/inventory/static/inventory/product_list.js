@@ -67,6 +67,40 @@ function filter_products(){
     });
 }
 
+function change_to(type){
+    if(type=="qr"){
+        qr = document.getElementById('change-qr')
+        qr_img = document.getElementById('qr-image')
+        bar = document.getElementById('change-bar')
+        bar_img = document.getElementById('barcode-image')
+
+        // Buttons
+        qr.style.background = '#523249';
+        qr.style.color = 'white';
+        bar.style.background = 'transparent';
+        bar.style.color = 'black';
+
+        qr_img.style.display = 'block';
+        bar_img.style.display = 'none';
+    }else{
+        qr = document.getElementById('change-qr')
+        qr_img = document.getElementById('qr-image')
+        bar = document.getElementById('change-bar')
+        bar_img = document.getElementById('barcode-image')
+
+        // Buttons
+        bar.style.background = '#523249';
+        bar.style.color = 'white';
+        qr.style.background = 'transparent';
+        qr.style.color = 'black';
+
+        // Image
+        bar_img.style.display = 'block';
+        bar_img.style.visibility = 'visible';
+        qr_img.style.display = 'none';
+    }
+}
+
 function changeToQR() {
     console.log("Change to QR code")
     qr = document.getElementById('change-qr')

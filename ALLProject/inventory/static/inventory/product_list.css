@@ -222,8 +222,8 @@ a.fill-div {
   width: 30vw;
   height: 50vh;
   background-color: white;
-  border-radius: 5%;
-  margin: 20px;
+  border-radius: 1vw;
+  margin: 1.5vw;
   box-shadow: 0px 1px 5px #828282;
 }
 
@@ -250,24 +250,34 @@ a.fill-div {
 
 .product-details h2 {
   text-align: center;
-  margin: 10px 0px 10px 0px
+  margin: 1vw 0px 1vw 0px
 }
 
 .qr-details {
   width: 30vw;
   height: 40vh;
   background-color: white;
-  border-radius: 5%;
-  margin: 0px 20px 20px 20px;
+  border-radius: 1vw;
+  margin: 0px 1.5vw 1.5vw 1.5vw;
   box-shadow: 0px 1px 5px #828282;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
 }
 
-#qr-image{
+/* #qr-image{
   position: absolute;
   margin-left: 1.5vw;
+} */
+
+#barcode-image img{
+  width: 14vw;
+  object-fit: contain; 
+  /* display:none; */
+}
+
+#qr-image img{
+  width: 14vw;
 }
 
 #changeCode {
@@ -300,16 +310,16 @@ a.fill-div {
 }
 
 #detail-buttons button {
-  font-size: 20px;
+  font-size: 1.5vw;
 }
 
 .normal-button {
-  width: 162px;
-  height: 50px;
+  width: 12vw;
+  height: 7vh;
   border: none;
-  border-radius: 40px;
+  border-radius: 2vw;
   background: #DBEBC0;
-  margin: 5px 0 5px 0;
+  margin: 0.2vw 0 0.2vw 0;
 }
 
 .normal-button:hover {
@@ -317,13 +327,13 @@ a.fill-div {
 }
 
 #delete-button {
-  width: 162px;
-  height: 50px;
+  width: 12vw;
+  height: 7vh;
   border: none;
-  border-radius: 40px;
+  border-radius: 2vw;
   background: #E8656A;
   color: white;
-  margin: 5px 0 5px 0;
+  margin: 0.2vw 0 0.2vw 0;
 }
 
 #delete-button:hover {

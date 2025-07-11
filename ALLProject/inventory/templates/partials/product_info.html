@@ -25,14 +25,14 @@
     {% if chosen_product is not None%}
     <div>
         <div id="qr-image">
-            <img src="{{chosen_product.qr_code.url}}" width="200" height="200" alt="QR code">
+            <img src="{{chosen_product.qr_code.url}}" alt="QR code">
         </div>
-        <div id="barcode-image">
-            <img src="{{chosen_product.barcode_img.url}}" width="250" height="250" style="object-fit: contain;" alt="BarCode">
+        <div id="barcode-image" style="display:none;">
+            <img src="{{chosen_product.barcode_img.url}}" alt="BarCode">
         </div>
         <div id="changeCode">
-            <button type="button" id="change-qr" style="width: 50%; height: 100%; border-style: none;" onclick='changeToQR()'>QR Code</button>
-            <button type="button" id="change-bar" style="width: 50%; height: 100%; border-style: none;" onclick='changeToBar()'>Barcode</button>
+            <button type="button" id="change-qr" style="width: 50%; height: 100%; border-style: none;" onclick='change_to("qr")'>QR Code</button>
+            <button type="button" id="change-bar" style="width: 50%; height: 100%; border-style: none;" onclick='change_to("bar")'>Barcode</button>
         </div>
     </div>
     <div id="detail-buttons">
