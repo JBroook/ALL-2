@@ -34,6 +34,8 @@ def cashierPOSView(request):
         request.session['cart_cost'] = 0.00
     if request.session['cart']:
         request.session['cart_cost'] = sum(item['total_price'] for item in request.session['cart'])
+    if 'payment' not in request.session:
+        request.session['payment'] = None
     
     if request.method == 'POST':
         # Handle submission for item code
@@ -164,6 +166,7 @@ def cashierPOSView(request):
             return checkout(request)
     
     page = "nav-sale"
+    print('shit', request.session.get('payment'))
     context = {
         'item_code_form' : item_code_form,
         'quantity_form' : quantity_form,
@@ -281,7 +284,7 @@ def removeItem(request,):
 
 def scanItem(request):
     # cap = cv2.VideoCapture(0)
-    cap = cv2.VideoCapture('http://10.3.227.189:8080/video')
+    cap = cv2.VideoCapture('http://100.109.166.240:8080/video')
     # cap = cv2.VideoCapture('http://192.168.1.8:8080/video')
     
     while cap.isOpened():

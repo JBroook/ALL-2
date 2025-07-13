@@ -247,9 +247,9 @@
                         <p id="success-title">UPDATE SUCCESS</p>
                         <p id="success-msg">{{ message }}</p>
                         {% if "Checkout Successful" not in message %}
-                            <p></p>
+                            <button type="button" id="print" onclick="window.location.href='{% url 'history' %}'">Print</button>
                         {% else %}
-                            <button type="button" id="print" onclick="window.location.href='{% url 'print_payment' payment %}'">Print</button>
+                            <p></p>
                         {% endif %}
                     </div>
                 </div>
