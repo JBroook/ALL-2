@@ -4,7 +4,7 @@
     <link rel = "stylesheet" href="{% static 'css/best_product.css' %}">
     <div class="container product">
         <div id="best-product">
-            <h2 class="boxTitle">Best Selling Product (Monthly)</h2>
+            <h2 class="boxTitle">Best Selling Product</h2>
             <form action="" method="post" id="product_report" style="margin:0;">
                 {% csrf_token %}
                 {{product_report}}

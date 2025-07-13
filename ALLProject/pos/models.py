@@ -21,7 +21,7 @@ class Cart(models.Model):
     timeStamp = models.DateTimeField(auto_now_add=True)
 
     def get_cart_total(self):
-        return sum(item.get_product_total() for item in self.cart_items.all())
+        return sum(item.total_cost for item in self.cart_items.all())
     
     def get_total_items(self):
         return sum(item.quantity for item in self.cart_items.all())
