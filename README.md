@@ -85,11 +85,3 @@ List any environment variables or configuration settings required:
 EMAIL_USER = 'youremail@gmail.com'
 EMAIL_PASSWORD = 'App password here' 
 ```
-
-
-
-## 🙌 Acknowledgements
-
-- [Tool A](https://example.com)
-- [Inspiration B](https://example.com)
-- [Contributor C](https://github.com/contributor)
