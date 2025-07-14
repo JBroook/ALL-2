@@ -79,8 +79,6 @@ Visit `http://127.0.0.1:8000/` in your browser to view the app.
 
 ## Configuration
 
-List any environment variables or configuration settings required:
-
 ```env
 EMAIL_USER = 'youremail@gmail.com'
 EMAIL_PASSWORD = 'App password here' 
