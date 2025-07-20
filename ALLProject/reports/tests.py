@@ -45,7 +45,6 @@ class ReportTest(TestCase):
         # Define dates for testing
         self.date1 = datetime(2025, 7, 6, tzinfo=timezone.get_current_timezone())
         self.date2 = datetime(2025, 7, 5, tzinfo=timezone.get_current_timezone())
-        self.date3 = datetime(2025, 5, 5, tzinfo=timezone.get_current_timezone())
         
         # Cart and Payment for date1
         with freeze_time(self.date1):
@@ -59,6 +58,7 @@ class ReportTest(TestCase):
             CartItem.objects.create(cart=cart2, product=self.product2, quantity=1, total_cost=30.00)
             Payment.objects.create(cart=cart2, employeeID=employee, payment_method="Card", total_cost=54.50)
     
+        self.date3 = datetime(2025, 5, 5, tzinfo=timezone.get_current_timezone())
         with freeze_time(self.date3):
             cart3 = Cart.objects.create(total_cost=49.00, payment_status=True)
             CartItem.objects.create(cart=cart3, product=self.product1, quantity=3, total_cost=73.50)

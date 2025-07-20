@@ -25,28 +25,30 @@ class POSTest(TestCase):
                     sku="abc123",
                     timeStamp=timezone.now()
                     )
-        cart = Cart.objects.create(total_cost=24.50,payment_status=True)
+        cart = Cart.objects.create(payment_status=True)
         CartItem.objects.create(
             id=1,
             cart=cart,
             product=dummy,
-            quantity=1,
-            total_cost=24.50,
+            quantity=2,
+            total_cost=49.00,
         )
+        cart.total_cost = cart.get_cart_total()
+        cart.save()
         Payment.objects.create(
             cart=cart,
             employeeID=employee,
             payment_method="Cash",
-            total_cost=24.50
+            total_cost=cart.get_cart_total()
         )
 
     def test_cart(self):
         cart = Cart.objects.get(id=1)
-        self.assertEqual(cart.total_cost, 24.50)
+        self.assertEqual(cart.total_cost, 49.00)
 
-    def test_pos(self):
-        product = Product.objects.get(id=1)
-        items_in_cart = CartItem.objects.filter(product__name=product.name).first()
+    def test_product_in_cart(self):
+        cart = Cart.objects.get(id=1)
+        items_in_cart = CartItem.objects.filter(cart=cart).first()
 
         if items_in_cart is None:
             self.fail("No CartItem found")
@@ -58,5 +60,5 @@ class POSTest(TestCase):
         items_in_cart = CartItem.objects.filter(product__name=product.name).first()
         paid = Payment.objects.get(cart=items_in_cart.cart)
 
-        self.assertEqual(paid.total_cost, 24.50)
+        self.assertEqual(paid.total_cost, 49.00)
         self.assertEqual(paid.payment_method, "Cash")

@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.conf import settings
 from django.db.models import F, Count, Sum, Case, When, Value, Max, FloatField, IntegerField
 from django.db.models.functions import Coalesce
-from .models import Payment, Product, CartItem, Restock, Category
+from .models import Payment, Product, CartItem, Restock, Category, Employee
 from .forms import printSales, printBestProduct, printInventory
 from datetime import datetime,date,timedelta
 
@@ -134,7 +134,7 @@ def ManagerReportView(request):
     if 'sales_report' in request.POST:
         print("Printing Report")
         title = "Sales Report"
-        user = f"Manager Name - {this_month.capitalize()} {today.day} {today.year}"
+        user = f"{Employee.objects.values('user__username').get(user=request.user)['user__username']} - {this_month.capitalize()} {today.day} {today.year}"
 
         width, height = A4
         available_width = width-(1.5*cm*2)
@@ -195,7 +195,7 @@ def ManagerReportView(request):
         title = "Product Sales Report"
         report_type = "Monthly"
         period = f"{this_month.capitalize()} 1 2025 - {this_month.capitalize()} {last_day.day} 2025"
-        user = f"Manager Name - {this_month.capitalize()} {today.day} {today.year}"
+        user = f"{Employee.objects.values('user__username').get(user=request.user)['user__username']} - {this_month.capitalize()} {today.day} {today.year}"
 
         width, height = A4
         available_width = width-(1.5*cm*2)
@@ -247,7 +247,7 @@ def ManagerReportView(request):
         title = "Inventory Report"
         report_type = "Daily"
         period = f"{this_month.capitalize()} {today.day} 2025"
-        user = f"Manager Name - {this_month.capitalize()} {today.day} {today.year}"
+        user = f"{Employee.objects.values('user__username').get(user=request.user)['user__username']} - {this_month.capitalize()} {today.day} {today.year}"
 
         width, height = A4
         available_width = width-(1.5*cm*2)
