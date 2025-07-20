@@ -19,7 +19,6 @@ class CustomLoginView(LoginView):
         response = super().form_valid(form)
         messages.add_message(self.request, messages.SUCCESS, "Login successful!")
 
-        print("Shit",self.request.user.username)
         employee = Employee.objects.get(user=self.request.user)
         employee.active = True
         employee.save()

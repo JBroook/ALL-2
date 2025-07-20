@@ -12,7 +12,7 @@ from django.core.validators import MinValueValidator
 import random
 from io import BytesIO
 import qrcode
-from barcode import EAN13
+from barcode.ean import EAN13
 from barcode.writer import ImageWriter
 from users.models import Employee
 from reportlab.pdfgen import canvas

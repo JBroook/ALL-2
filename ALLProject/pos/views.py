@@ -166,7 +166,7 @@ def cashierPOSView(request):
             return checkout(request)
     
     page = "nav-sale"
-    print('shit', request.session.get('payment'))
+    
     context = {
         'item_code_form' : item_code_form,
         'quantity_form' : quantity_form,
@@ -284,7 +284,7 @@ def removeItem(request,):
 
 def scanItem(request):
     # cap = cv2.VideoCapture(0)
-    cap = cv2.VideoCapture('http://100.109.166.240:8080/video')
+    cap = cv2.VideoCapture('http://100.109.169.203:8080/video')
     # cap = cv2.VideoCapture('http://192.168.1.8:8080/video')
     
     while cap.isOpened():
